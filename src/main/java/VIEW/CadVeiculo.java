@@ -433,7 +433,7 @@ public class CadVeiculo extends javax.swing.JDialog {
         jButton9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/informacao.png"))); // NOI18N
-        jButton13.setText("Informações");
+        jButton13.setText("Info");
         jButton13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
