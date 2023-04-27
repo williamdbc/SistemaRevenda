@@ -67,6 +67,7 @@ public class CadMarca extends javax.swing.JDialog {
         jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         pnlMarca.setBorder(javax.swing.BorderFactory.createTitledBorder("Marca"));
 
@@ -97,7 +98,7 @@ public class CadMarca extends javax.swing.JDialog {
         jLabel1.setText("CADASTRO DE MARCA");
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/alerta.png"))); // NOI18N
-        jLabel11.setText("Você está editando um veículo nesse momento.");
+        jLabel11.setText("Você está editando uma marca nesse momento.");
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

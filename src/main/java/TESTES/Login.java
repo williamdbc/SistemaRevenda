@@ -103,7 +103,7 @@ public class Login extends javax.swing.JFrame {
         String senha = String.valueOf(pswSenha.getPassword());
         
         if(usuario.equals("admin") && senha.equals("123")){
-            gerenciadorJanela.janelaCadVeiculoComprado();
+//            gerenciadorJanela.janelaCadVeiculoComprado();
             this.dispose();
         }
     }//GEN-LAST:event_btnLoginActionPerformed
