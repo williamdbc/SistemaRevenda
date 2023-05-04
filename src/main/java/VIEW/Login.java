@@ -5,6 +5,7 @@
 package VIEW;
 
 //import CONTROL.GerenciadorVIEW;
+import com.formdev.flatlaf.*;
 import java.awt.event.KeyEvent;
 
 /**
@@ -116,7 +117,7 @@ public class Login extends javax.swing.JFrame {
         
         if(usuario.equals("admin") && senha.equals("123")){
             //gerenciadorJanela.janelaCadVeiculoComprado();
-            System.out.println("ENTRO NO SISTEMA");
+            System.out.println("ENTROU NO SISTEMA");
             this.dispose();
         }
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -158,7 +159,8 @@ public class Login extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        FlatDarkLaf.setup();
+        FlatLaf.updateUI();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
