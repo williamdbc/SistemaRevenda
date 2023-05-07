@@ -46,7 +46,19 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/SistemaRevenda</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">123</property>
+    <property name="hibernate.hbm2ddl.auto">create</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
+    
+    <mapping class="DOMINIO.Marca"></mapping>
+    <mapping class="DOMINIO.Modelo"></mapping>
+    <mapping class="DOMINIO.Versao"></mapping>
+    <mapping class="DOMINIO.Veiculo"></mapping>
+    <mapping class="DOMINIO.Revenda"></mapping>
+    <mapping class="DOMINIO.Despesa"></mapping>
+    <mapping class="DOMINIO.Cliente"></mapping>
+    <mapping class="DOMINIO.Fornecedor"></mapping>
+    <mapping class="DOMINIO.RelacaoComercial"></mapping>
+
   </session-factory>
 </hibernate-configuration>

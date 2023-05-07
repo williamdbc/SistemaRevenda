@@ -3,7 +3,11 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Despesa implements Serializable {
+    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private int id_despesa;
+    
     @Column (name = "nome_despesa", length = 50)
     private String nome_despesa;
     
@@ -15,7 +19,13 @@ public class Despesa implements Serializable {
     
     @Column (name="responsavel", length = 30)
     private String responsavel;
+    
+    @ManyToOne (fetch = FetchType.EAGER) @JoinColumn (name = "id_revenda")
+    private Revenda revenda;
+    
 /* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+    
     public String getNome_despesa() {
         return nome_despesa;
     }

@@ -13,4 +13,32 @@ public class RelacaoComercial {
     @Column (name = "cidade_cli_forn", length = 20)
     private String cidade_cli_forn;
     
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+
+    public int getId_cli_forn() {
+        return id_cli_forn;
+    }
+
+    public void setId_cli_forn(int id_cli_forn) {
+        this.id_cli_forn = id_cli_forn;
+    }
+
+    public String getNome_cli_forn() {
+        return nome_cli_forn;
+    }
+
+    public void setNome_cli_forn(String nome_cli_forn) {
+        this.nome_cli_forn = nome_cli_forn;
+    }
+
+    public String getCidade_cli_forn() {
+        return cidade_cli_forn;
+    }
+
+    public void setCidade_cli_forn(String cidade_cli_forn) {
+        this.cidade_cli_forn = cidade_cli_forn;
+    }
+    
+    
 }
