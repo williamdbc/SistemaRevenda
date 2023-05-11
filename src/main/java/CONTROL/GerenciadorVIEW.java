@@ -25,7 +25,7 @@ public class GerenciadorVIEW {
     
     GerenciadorDOMINIO gerenciadorDominio;
     
-    public GerenciadorVIEW() {
+    /*public GerenciadorVIEW() {
         try {
             gerenciadorDominio = new GerenciadorDOMINIO();
         } catch (ClassNotFoundException | SQLException  ex) {
@@ -37,6 +37,7 @@ public class GerenciadorVIEW {
     public GerenciadorDOMINIO getGerDominio() {
         return gerenciadorDominio;
     }
+    */
     
     private JDialog abrirJanela(java.awt.Frame parent, JDialog dlg, Class classe) {
         if (dlg == null){     
@@ -46,6 +47,7 @@ public class GerenciadorVIEW {
                 JOptionPane.showMessageDialog(parent, "Erro ao abrir a janela " + classe.getName() );
             } 
         }        
+        dlg.setLocationRelativeTo(null);
         dlg.setVisible(true); 
         return dlg;
     }
@@ -56,52 +58,47 @@ public class GerenciadorVIEW {
         janelaPrincipal.setVisible(true);
     }
     
-    public void Login() {
+    public void janelaLogin() {
         janelaLogin = (Login) abrirJanela(null, janelaLogin, Login.class);
     }
     
-    public void CadCliente() {
+    public void janelaCadCliente() {
         cadCliente = (CadCliente) abrirJanela(janelaPrincipal, cadCliente, CadCliente.class);
     }
         
-    public void CadFornecedor() {
+    public void janelaCadFornecedor() {
         cadFornecedor = (CadFornecedor) abrirJanela(janelaPrincipal, cadFornecedor, CadFornecedor.class);
     }
     
-    public void CadMarca() {
+    public void janelaCadMarca() {
         cadMarca = (CadMarca) abrirJanela(janelaPrincipal, cadMarca, CadMarca.class);
     }
     
-    public void CadModelo() {
+    public void janelaCadModelo() {
         cadModelo = (CadModelo) abrirJanela(janelaPrincipal, cadModelo, CadModelo.class);
     }
     
-    public void CadVersao() {
+    public void janelaCadVersao() {
         cadVersao = (CadVersao) abrirJanela(janelaPrincipal, cadVersao, CadVersao.class);
     }
     
-    public void CadVeiculo() {
+    public void janelaCadVeiculo() {
         cadVeiculo = (CadVeiculo) abrirJanela(janelaPrincipal, cadVeiculo, CadVeiculo.class);
     }
     
-    public void CadVeiculoComprado() {
+    public void janelaCadVeiculoComprado() {
         cadVeiculoComprado = (CadVeiculoComprado) abrirJanela(janelaPrincipal, cadVeiculoComprado, CadVeiculoComprado.class);
     }
     
-    public void CadVeiculoVendido() {
+    public void janelaCadVeiculoVendido() {
         cadVeiculoVendido = (CadVeiculoVendido) abrirJanela(janelaPrincipal, cadVeiculoVendido, CadVeiculoVendido.class);
     }
     
-    public void ListaDespesa() {
+    public void janelaListaDespesa() {
         listaDespesa = (ListaDespesa) abrirJanela(null, listaDespesa, ListaDespesa.class);
     }
     
      public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 // System.out.println( info.getName() );
@@ -119,7 +116,6 @@ public class GerenciadorVIEW {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         try{
             UIManager.setLookAndFeel(new FlatLightLaf());
@@ -131,7 +127,7 @@ public class GerenciadorVIEW {
         javax.swing.UIManager.put("OptionPane.noButtonText", "Não");
 
         GerenciadorVIEW gerIG = new GerenciadorVIEW();
-        gerIG.janelaPrincipal();
+        gerIG.janelaLogin();
      }
 }
         
