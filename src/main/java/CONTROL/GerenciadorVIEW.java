@@ -25,7 +25,7 @@ public class GerenciadorVIEW {
     
     GerenciadorDOMINIO gerenciadorDominio;
     
-    /*public GerenciadorVIEW() {
+    public GerenciadorVIEW() {
         try {
             gerenciadorDominio = new GerenciadorDOMINIO();
         } catch (ClassNotFoundException | SQLException  ex) {
@@ -37,7 +37,7 @@ public class GerenciadorVIEW {
     public GerenciadorDOMINIO getGerDominio() {
         return gerenciadorDominio;
     }
-    */
+    
     
     private JDialog abrirJanela(java.awt.Frame parent, JDialog dlg, Class classe) {
         if (dlg == null){     

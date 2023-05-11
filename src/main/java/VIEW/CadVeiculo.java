@@ -305,6 +305,11 @@ public class CadVeiculo extends javax.swing.JDialog {
 
         btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/apagar.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         btnEditarOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar_ok.png"))); // NOI18N
@@ -498,12 +503,30 @@ public class CadVeiculo extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void limparCampos(){
+        cmbMarca.setSelectedIndex(-1);
+        cmbModelo.setSelectedIndex(-1);
+        cmbVersao.setSelectedIndex(-1);
+        spnAno.setValue(0);
+        
+        cmbCambio.setSelectedIndex(-1);
+        cmbCombustivel.setSelectedIndex(-1);
+        cmbDirecao.setSelectedIndex(-1);
+        spnMotor.setValue(0);     
+        
+        chkAirbag.setSelected(false);
+        chkAlarme.setSelected(false);
+        chkArCondicionado.setSelected(false);
+        chkTravaEletrica.setSelected(false);
+        chkFreiosABS.setSelected(false);
+        chkVidroEletrico.setSelected(false);
+    }
     private void btnAddVersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVersaoActionPerformed
-        // TODO add your handling code here:
+        gerenciadorVIEW.janelaCadVersao();
     }//GEN-LAST:event_btnAddVersaoActionPerformed
 
     private void btnAddModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddModeloActionPerformed
-        // TODO add your handling code here:
+        gerenciadorVIEW.janelaCadModelo();
     }//GEN-LAST:event_btnAddModeloActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -524,7 +547,7 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        jTabbedPane1.setSelectedIndex(1);
+        limparCampos();
         btnEditando.setVisible(false);
         btnLimpar.setVisible(true);
         btnEditarOK.setVisible(false);
@@ -542,6 +565,10 @@ public class CadVeiculo extends javax.swing.JDialog {
     private void btnAddMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMarcaActionPerformed
        gerenciadorVIEW.janelaCadMarca();
     }//GEN-LAST:event_btnAddMarcaActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        limparCampos();
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     /**
      * @param args the command line arguments
