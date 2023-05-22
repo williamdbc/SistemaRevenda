@@ -5,6 +5,13 @@
 package VIEW;
 
 import CONTROL.GerenciadorVIEW;
+import DOMINIO.Marca;
+import DOMINIO.Modelo;
+import DOMINIO.Versao;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -13,12 +20,15 @@ import CONTROL.GerenciadorVIEW;
 public class CadVersao extends javax.swing.JDialog {
 
     private GerenciadorVIEW gerenciadorVIEW;
+    private Versao versaoSelecionada;
     /**
      * Creates new form CadVersao
      */
     public CadVersao(java.awt.Frame parent, boolean modal, GerenciadorVIEW gerVIEW) {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
+        versaoSelecionada = null;
+        btnPesquisarActionPerformed(null);
     }
 
     /**
@@ -38,7 +48,7 @@ public class CadVersao extends javax.swing.JDialog {
         lblModelo = new javax.swing.JLabel();
         cmbModelo = new javax.swing.JComboBox<>();
         lblVersao = new javax.swing.JLabel();
-        txtVresao = new javax.swing.JTextField();
+        txtVersao = new javax.swing.JTextField();
         cmbMarca = new javax.swing.JComboBox<>();
         pnlBotoes = new javax.swing.JPanel();
         btnCadastrar = new javax.swing.JButton();
@@ -61,6 +71,11 @@ public class CadVersao extends javax.swing.JDialog {
         tblVersao = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         lblCadVersao.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblCadVersao.setText("CADASTRO DE VERSÃO");
@@ -71,11 +86,25 @@ public class CadVersao extends javax.swing.JDialog {
 
         lblModelo.setText("Nome do modelo");
 
-        cmbModelo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbModeloActionPerformed(evt);
+            }
+        });
 
         lblVersao.setText("Nome da versão");
 
-        cmbMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtVersao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtVersaoActionPerformed(evt);
+            }
+        });
+
+        cmbMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMarcaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlVersaoLayout = new javax.swing.GroupLayout(pnlVersao);
         pnlVersao.setLayout(pnlVersaoLayout);
@@ -98,7 +127,7 @@ public class CadVersao extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(lblVersao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtVresao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlVersaoLayout.setVerticalGroup(
@@ -115,7 +144,7 @@ public class CadVersao extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(pnlVersaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblVersao)
-                    .addComponent(txtVresao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtVersao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -123,6 +152,11 @@ public class CadVersao extends javax.swing.JDialog {
 
         btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnCadastrar.setText(" Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 25));
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/erro.png"))); // NOI18N
@@ -292,8 +326,30 @@ public class CadVersao extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
+    private Object[] extrairInformacoes(Versao versaoGenerica){
+        int id_versao = versaoGenerica.getId_versao();
+        String nome_marca = versaoGenerica.getModelo().getMarca().getNome_marca();
+        String nome_modelo = versaoGenerica.getModelo().getNome_modelo();
+        String nome_versao = versaoGenerica.getNome_versao();
+        
+    
+        Object listaInformacoes[] = {id_versao, nome_marca, nome_modelo, nome_versao};
+        return listaInformacoes;
+    }
+    
+    
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        // TODO add your handling code here:
+        try {
+            List<Versao> listaVersoes = gerenciadorVIEW.getGerDominio().listar(Versao.class); 
+            ((DefaultTableModel) tblVersao.getModel()).setNumRows(0);
+            
+            for (Versao versao : listaVersoes ) {
+                Object informacoesVersao[] = extrairInformacoes(versao);
+                ((DefaultTableModel)tblVersao.getModel()).addRow(informacoesVersao);     
+            }
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+        } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -302,6 +358,43 @@ public class CadVersao extends javax.swing.JDialog {
         btnEditarOK.setVisible(true);
         btnCancelar.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
+        gerenciadorVIEW.carregarComboBox(cmbModelo, Modelo.class);
+    }//GEN-LAST:event_formComponentShown
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        Modelo objetoModelo = (Modelo) cmbModelo.getSelectedItem();
+        String nomeVersao = txtVersao.getText();
+
+        try {
+            if (versaoSelecionada == null) {
+                gerenciadorVIEW.getGerDominio().inserirVersao(objetoModelo, nomeVersao);
+                JOptionPane.showMessageDialog(this, "Modelo inserido com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
+            } else {
+                // ALTERAR
+               // gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, dt, sexo, cep, ender,  bairro, num, complemento, referencia, telFixo, celular, email, fotoBytes, cidade);
+                //int id = cliSelecionado.getIdCliente();
+                //JOptionPane.showMessageDialog(this, "Cliente " + id + "alterado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );                    
+            }
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+        }
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void txtVersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVersaoActionPerformed
+        
+    }//GEN-LAST:event_txtVersaoActionPerformed
+
+    private void cmbModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbModeloActionPerformed
+         
+    }//GEN-LAST:event_cmbModeloActionPerformed
+
+    private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
+        gerenciadorVIEW.carregarComboModelo(cmbModelo, Modelo.class, cmbMarca.getSelectedItem().toString());
+    }//GEN-LAST:event_cmbMarcaActionPerformed
 
   
 
@@ -335,6 +428,6 @@ public class CadVersao extends javax.swing.JDialog {
     private javax.swing.JPanel pnlVersao;
     private javax.swing.JTable tblVersao;
     private javax.swing.JTextField txtPesquisar;
-    private javax.swing.JTextField txtVresao;
+    private javax.swing.JTextField txtVersao;
     // End of variables declaration//GEN-END:variables
 }

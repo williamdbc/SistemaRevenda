@@ -37,6 +37,26 @@ public class Versao {
     public void setNome_versao(String nome_versao) {
         this.nome_versao = nome_versao;
     }
+
+    public Modelo getModelo() {
+        return modelo;
+    }
     
     
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+
+    public Versao() {
+    }
+
+    public Versao(Modelo modelo, String nome_versao) {
+        this.nome_versao = nome_versao;
+        this.modelo = modelo;
+    }
+
+    @Override
+    public String toString() {
+        return nome_versao;
+    }
+   
 }

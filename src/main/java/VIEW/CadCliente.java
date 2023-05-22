@@ -184,8 +184,6 @@ public class CadCliente extends javax.swing.JDialog {
 
         cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
 
-        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
         btnFiltrar.addActionListener(new java.awt.event.ActionListener() {

@@ -1,5 +1,6 @@
 package DOMINIO;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -34,6 +35,30 @@ public class Modelo implements Serializable {
 
     public void setNome_modelo(String nome_modelo) {
         this.nome_modelo = nome_modelo;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+    
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+
+    public Modelo() {
+    }
+
+    public Modelo(Marca marca, String nome_modelo) {
+        this.marca = marca;
+        this.nome_modelo = nome_modelo;
+    }
+
+    @Override
+    public String toString() {
+        return nome_modelo;
+    }
+    
+    public Object[] toArray(){
+        return new Object[] {id_modelo, marca.getNome_marca(), nome_modelo};
     }
     
     

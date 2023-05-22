@@ -23,3 +23,6 @@ public class ConexaoHibernate {
         return sessionFactory;
     }
 }
+
+
+

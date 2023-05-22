@@ -25,6 +25,8 @@ VIEW\CadVeiculoComprado$2.class
 VIEW\CadMarca$4.class
 VIEW\CadVeiculo$2.class
 VIEW\CadVersao$1.class
+.netbeans_automatic_build
+DAO\GenericDAO.class
 DOMINIO\Cliente.class
 VIEW\CadFornecedor$3.class
 VIEW\CadVeiculoComprado$10.class

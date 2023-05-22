@@ -65,12 +65,27 @@ public class FrmPrincipal extends javax.swing.JFrame {
         mnuItemVeiculos.setText("Veiculos");
 
         mnuItemMarca.setText("Marca");
+        mnuItemMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuItemMarcaActionPerformed(evt);
+            }
+        });
         mnuItemVeiculos.add(mnuItemMarca);
 
         mnuItemModelo.setText("Modelo");
+        mnuItemModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuItemModeloActionPerformed(evt);
+            }
+        });
         mnuItemVeiculos.add(mnuItemModelo);
 
         mnuItemVersao.setText("Versão");
+        mnuItemVersao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuItemVersaoActionPerformed(evt);
+            }
+        });
         mnuItemVeiculos.add(mnuItemVersao);
 
         mnuItemVeiculo.setText("Veículo");
@@ -139,6 +154,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -168,6 +184,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
         FlatLaf.updateUI();
         FlatAnimatedLafChange.hideSnapshotWithAnimation();
     }//GEN-LAST:event_rbtnClaroActionPerformed
+
+    private void mnuItemVersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemVersaoActionPerformed
+        gerenciadorVIEW.janelaCadVersao();
+    }//GEN-LAST:event_mnuItemVersaoActionPerformed
+
+    private void mnuItemModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemModeloActionPerformed
+        gerenciadorVIEW.janelaCadModelo();
+    }//GEN-LAST:event_mnuItemModeloActionPerformed
+
+    private void mnuItemMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemMarcaActionPerformed
+        gerenciadorVIEW.janelaCadMarca();
+    }//GEN-LAST:event_mnuItemMarcaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btnGroupTema;

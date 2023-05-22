@@ -1,14 +1,20 @@
 package CONTROL;
 
+import DOMINIO.Modelo;
 import VIEW.*;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.hibernate.HibernateException;
 
 public class GerenciadorVIEW {
     private FrmPrincipal janelaPrincipal = null;
@@ -28,7 +34,7 @@ public class GerenciadorVIEW {
     public GerenciadorVIEW() {
         try {
             gerenciadorDominio = new GerenciadorDOMINIO();
-        } catch (ClassNotFoundException | SQLException  ex) {
+        } catch (HibernateException  ex) {
             JOptionPane.showMessageDialog(janelaPrincipal, "Erro de conexão com o banco. " + ex.getMessage() );
                 System.exit(-1);
         } 
@@ -37,7 +43,6 @@ public class GerenciadorVIEW {
     public GerenciadorDOMINIO getGerDominio() {
         return gerenciadorDominio;
     }
-    
     
     private JDialog abrirJanela(java.awt.Frame parent, JDialog dlg, Class classe) {
         if (dlg == null){     
@@ -98,6 +103,34 @@ public class GerenciadorVIEW {
         listaDespesa = (ListaDespesa) abrirJanela(null, listaDespesa, ListaDespesa.class);
     }
     
+    public void carregarComboBox(JComboBox combo, Class classe){
+        try {
+            List lista = getGerDominio().listar(classe);
+            combo.setModel( new DefaultComboBoxModel( lista.toArray() )  );                       
+        } catch (HibernateException  ex) {
+            JOptionPane.showMessageDialog(janelaPrincipal, "Erro ao carregar cidades. " + ex.getMessage() );          
+        } 
+    }
+    
+    public void carregarComboModelo(JComboBox combo, Class classe, String nomeMarca){
+        
+        try {
+            List <Modelo> lista = gerenciadorDominio.listar(classe);
+            List <Modelo> lista2 = new ArrayList<>();
+            for(Modelo modelo : lista){
+                if(modelo.getMarca().getNome_marca().equals(nomeMarca)){
+                    lista2.add(modelo);
+                }
+            }
+              
+            
+            combo.setModel( new DefaultComboBoxModel( lista2.toArray() )  );                       
+        } catch (HibernateException  ex) {
+            System.out.println("DEU ERRO");
+        } 
+    }
+    
+    
      public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -107,13 +140,7 @@ public class GerenciadorVIEW {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 

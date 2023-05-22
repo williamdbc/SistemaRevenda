@@ -34,5 +34,21 @@ public class Marca implements Serializable {
         this.nome_marca = nome_marca;
     }
     
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+    
+    public Marca(){      
+    }
+    
+    public Marca(String nome_marca) {
+        this.nome_marca = nome_marca;
+    }
+
+    @Override
+    public String toString() {
+        return nome_marca;
+    }
+    
+    
     
 }

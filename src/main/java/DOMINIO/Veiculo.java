@@ -145,6 +145,33 @@ public class Veiculo {
     public void setTrava_eletrica(boolean trava_eletrica) {
         this.trava_eletrica = trava_eletrica;
     }
+
+    public Versao getVersao() {
+        return versao;
+    }
+
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+    
+    public Veiculo() {
+    }
+
+    public Veiculo(Versao versao, int ano, String combustivel, String cambio, String direcao, float motor, boolean airbag, boolean alarme, 
+                    boolean ar_condicionado, boolean freios_abs, boolean trava_eletrica, boolean vidro_eletrico) {
+        this.ano = ano;
+        this.combustivel = combustivel;
+        this.cambio = cambio;
+        this.direcao = direcao;
+        this.motor = motor;
+        this.airbag = airbag;
+        this.alarme = alarme;
+        this.freios_abs = freios_abs;
+        this.ar_condicionado = ar_condicionado;
+        this.vidro_eletrico = vidro_eletrico;
+        this.trava_eletrica = trava_eletrica;
+        this.versao = versao;
+    }
+    
     
     
 }
