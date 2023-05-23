@@ -173,13 +173,16 @@ public class CadVeiculo extends javax.swing.JDialog {
 
         lblCambio.setText("Câmbio");
 
-        cmbCombustivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCombustivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Álcool", "Diesel", "Flex", "Gasolina", "Hibrído", "Elétrico" }));
+        cmbCombustivel.setSelectedIndex(3);
 
-        cmbCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Automático", "Manual", "Semi-automático" }));
+        cmbCambio.setSelectedIndex(1);
 
-        cmbDirecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbDirecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Assistida", "Elétrica", "Hidraulica", "Mecânica" }));
+        cmbDirecao.setSelectedIndex(3);
 
-        spnMotor.setModel(new javax.swing.SpinnerNumberModel(0.0f, null, null, 0.1f));
+        spnMotor.setModel(new javax.swing.SpinnerNumberModel(1.0f, null, null, 0.1f));
 
         spnAno.setModel(new javax.swing.SpinnerNumberModel(2000, 2000, 2023, 1));
 
@@ -553,28 +556,13 @@ public class CadVeiculo extends javax.swing.JDialog {
         
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
-    private Object[] extrairInformacoes(Veiculo veiculoGenerico){
-        String nome_marca = veiculoGenerico.getVersao().getModelo().getMarca().getNome_marca();
-        String nome_modelo = veiculoGenerico.getVersao().getModelo().getNome_modelo();
-        String nome_versao = veiculoGenerico.getVersao().getNome_versao();
-        int ano = veiculoGenerico.getAno();
-        String combustivel = veiculoGenerico.getCombustivel();
-        String cambio = veiculoGenerico.getCambio();
-        String direcao = veiculoGenerico.getDirecao();
-        float motor = veiculoGenerico.getMotor();
-                
-        Object listaInformacoes[] = {nome_marca, nome_modelo, nome_versao, ano, combustivel, cambio, direcao, motor};
-        return listaInformacoes;
-    }
-    
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
          try {
             List<Veiculo> listaVeiculos = gerenciadorVIEW.getGerDominio().listar(Veiculo.class); 
             ((DefaultTableModel) tblVeiculo.getModel()).setNumRows(0);
             
             for (Veiculo veiculo : listaVeiculos ) {
-                Object informacoesVeiculo[] = extrairInformacoes(veiculo);
-                ((DefaultTableModel)tblVeiculo.getModel()).addRow(informacoesVeiculo);     
+                ((DefaultTableModel)tblVeiculo.getModel()).addRow(veiculo.toArray());     
             }
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );

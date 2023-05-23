@@ -5,6 +5,11 @@
 package VIEW;
 
 import CONTROL.GerenciadorVIEW;
+import DOMINIO.Fornecedor;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -13,12 +18,14 @@ import CONTROL.GerenciadorVIEW;
 public class CadFornecedor extends javax.swing.JDialog {
 
     private GerenciadorVIEW gerenciadorVIEW;
+    private Fornecedor fornecedorSelecionado;
     /**
      * Creates new form CadFornecedor
      */
     public CadFornecedor(java.awt.Frame parent, boolean modal, GerenciadorVIEW gerVIEW) {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
+        fornecedorSelecionado = null;
     }
 
     /**
@@ -116,6 +123,11 @@ public class CadFornecedor extends javax.swing.JDialog {
 
         btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnCadastrar.setText(" Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 25));
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/erro.png"))); // NOI18N
@@ -308,7 +320,16 @@ public class CadFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        // TODO add your handling code here:
+        try{
+        List<Fornecedor> listaFornecedor = gerenciadorVIEW.getGerDominio().listar(Fornecedor.class); 
+        ((DefaultTableModel) tblFornecedor.getModel()).setNumRows(0);
+            
+        for (Fornecedor fornecedor : listaFornecedor ) {
+                ((DefaultTableModel)tblFornecedor.getModel()).addRow(fornecedor.toArray());     
+            }
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+        } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -317,6 +338,28 @@ public class CadFornecedor extends javax.swing.JDialog {
         btnEditarOK.setVisible(true);
         btnCancelar.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        String nome = txtNome.getText();
+        String cidade = txtCidade.getText();
+        String telefone = txtTelefone.getText();
+            
+        try {
+            if (fornecedorSelecionado == null) {
+                gerenciadorVIEW.getGerDominio().inserirFornecedor(nome, cidade, telefone);
+                JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
+            } else {
+                // ALTERAR
+               // gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, dt, sexo, cep, ender,  bairro, num, complemento, referencia, telFixo, celular, email, fotoBytes, cidade);
+                //int id = cliSelecionado.getIdCliente();
+                //JOptionPane.showMessageDialog(this, "Cliente " + id + "alterado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );                    
+            }
+
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+        } 
+
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -326,17 +326,6 @@ public class CadVersao extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
-    private Object[] extrairInformacoes(Versao versaoGenerica){
-        int id_versao = versaoGenerica.getId_versao();
-        String nome_marca = versaoGenerica.getModelo().getMarca().getNome_marca();
-        String nome_modelo = versaoGenerica.getModelo().getNome_modelo();
-        String nome_versao = versaoGenerica.getNome_versao();
-        
-    
-        Object listaInformacoes[] = {id_versao, nome_marca, nome_modelo, nome_versao};
-        return listaInformacoes;
-    }
-    
     
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
@@ -344,8 +333,7 @@ public class CadVersao extends javax.swing.JDialog {
             ((DefaultTableModel) tblVersao.getModel()).setNumRows(0);
             
             for (Versao versao : listaVersoes ) {
-                Object informacoesVersao[] = extrairInformacoes(versao);
-                ((DefaultTableModel)tblVersao.getModel()).addRow(informacoesVersao);     
+                ((DefaultTableModel)tblVersao.getModel()).addRow(versao.toArray());     
             }
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );

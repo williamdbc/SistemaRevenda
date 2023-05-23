@@ -367,13 +367,16 @@
                 <Component class="javax.swing.JComboBox" name="cmbCombustivel">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="4">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
+                      <StringArray count="6">
+                        <StringItem index="0" value="&#xc1;lcool"/>
+                        <StringItem index="1" value="Diesel"/>
+                        <StringItem index="2" value="Flex"/>
+                        <StringItem index="3" value="Gasolina"/>
+                        <StringItem index="4" value="Hibr&#xed;do"/>
+                        <StringItem index="5" value="El&#xe9;trico"/>
                       </StringArray>
                     </Property>
+                    <Property name="selectedIndex" type="int" value="3"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -382,13 +385,13 @@
                 <Component class="javax.swing.JComboBox" name="cmbCambio">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="4">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
+                      <StringArray count="3">
+                        <StringItem index="0" value="Autom&#xe1;tico"/>
+                        <StringItem index="1" value="Manual"/>
+                        <StringItem index="2" value="Semi-autom&#xe1;tico"/>
                       </StringArray>
                     </Property>
+                    <Property name="selectedIndex" type="int" value="1"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -398,12 +401,13 @@
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="4">
-                        <StringItem index="0" value="Item 1"/>
-                        <StringItem index="1" value="Item 2"/>
-                        <StringItem index="2" value="Item 3"/>
-                        <StringItem index="3" value="Item 4"/>
+                        <StringItem index="0" value="Assistida"/>
+                        <StringItem index="1" value="El&#xe9;trica"/>
+                        <StringItem index="2" value="Hidraulica"/>
+                        <StringItem index="3" value="Mec&#xe2;nica"/>
                       </StringArray>
                     </Property>
+                    <Property name="selectedIndex" type="int" value="3"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -412,7 +416,7 @@
                 <Component class="javax.swing.JSpinner" name="spnMotor">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                      <SpinnerModel initial="0.0" numberType="java.lang.Float" stepSize="0.1" type="number"/>
+                      <SpinnerModel initial="1.0" numberType="java.lang.Float" stepSize="0.1" type="number"/>
                     </Property>
                   </Properties>
                 </Component>

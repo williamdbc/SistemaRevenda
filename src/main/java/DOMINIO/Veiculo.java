@@ -172,6 +172,14 @@ public class Veiculo {
         this.versao = versao;
     }
     
+      public Object[] toArray(){
+        return new Object[] {getVersao().getModelo().getMarca().getNome_marca(), 
+                            getVersao().getModelo().getNome_modelo(),
+                            getVersao().getNome_versao(),
+                            ano, combustivel, cambio, direcao, motor};
+    }
+    
+    
     
     
 }

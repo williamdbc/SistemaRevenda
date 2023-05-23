@@ -279,21 +279,13 @@ public class CadMarca extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
  
-    private Object[] extrairInformacoes(Marca marcaGenerica){
-        int id_marca = marcaGenerica.getId_marca();
-        String nome_marca = marcaGenerica.getNome_marca();
-    
-        Object listaInformacoes[] = {id_marca, nome_marca};
-        return listaInformacoes;
-    }
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
          try {
             List<Marca> listaMarcas = gerenciadorVIEW.getGerDominio().listar(Marca.class); 
             ((DefaultTableModel) tblMarca.getModel()).setNumRows(0);
             
             for (Marca marca : listaMarcas ) {
-                Object informacoesMarca[] = extrairInformacoes(marca);
-                ((DefaultTableModel)tblMarca.getModel()).addRow(informacoesMarca);     
+                ((DefaultTableModel)tblMarca.getModel()).addRow(marca.toArray());     
             }
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );

@@ -23,6 +23,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Fornecedores"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuItemFornecedoresActionPerformed"/>
+              </Events>
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="mnuItemVeiculos">
               <Properties>
@@ -72,11 +75,17 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ve&#xed;culo comprado"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuItemVeiculoCmpActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuItemVeiculoVnd">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ve&#xed;culo vendido"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuItemVeiculoVndActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>

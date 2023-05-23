@@ -60,6 +60,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         mnuCadastros.add(mnuItemClientes);
 
         mnuItemFornecedores.setText("Fornecedores");
+        mnuItemFornecedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuItemFornecedoresActionPerformed(evt);
+            }
+        });
         mnuCadastros.add(mnuItemFornecedores);
 
         mnuItemVeiculos.setText("Veiculos");
@@ -101,9 +106,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
         mnuItemRevendas.setText("Revendas");
 
         mnuItemVeiculoCmp.setText("Veículo comprado");
+        mnuItemVeiculoCmp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuItemVeiculoCmpActionPerformed(evt);
+            }
+        });
         mnuItemRevendas.add(mnuItemVeiculoCmp);
 
         mnuItemVeiculoVnd.setText("Veículo vendido");
+        mnuItemVeiculoVnd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuItemVeiculoVndActionPerformed(evt);
+            }
+        });
         mnuItemRevendas.add(mnuItemVeiculoVnd);
 
         mnuCadastros.add(mnuItemRevendas);
@@ -171,7 +186,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtnEscuroActionPerformed
 
     private void mnuItemClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemClientesActionPerformed
-
+        gerenciadorVIEW.janelaCadCliente();
     }//GEN-LAST:event_mnuItemClientesActionPerformed
 
     private void mnuItemVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemVeiculoActionPerformed
@@ -196,6 +211,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void mnuItemMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemMarcaActionPerformed
         gerenciadorVIEW.janelaCadMarca();
     }//GEN-LAST:event_mnuItemMarcaActionPerformed
+
+    private void mnuItemFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemFornecedoresActionPerformed
+        gerenciadorVIEW.janelaCadFornecedor();
+    }//GEN-LAST:event_mnuItemFornecedoresActionPerformed
+
+    private void mnuItemVeiculoCmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemVeiculoCmpActionPerformed
+        gerenciadorVIEW.janelaCadVeiculoComprado();
+    }//GEN-LAST:event_mnuItemVeiculoCmpActionPerformed
+
+    private void mnuItemVeiculoVndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemVeiculoVndActionPerformed
+        gerenciadorVIEW.janelaCadVeiculoVendido();
+    }//GEN-LAST:event_mnuItemVeiculoVndActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btnGroupTema;

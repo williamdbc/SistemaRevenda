@@ -46,7 +46,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         btnAddVersao = new javax.swing.JButton();
         btnAddModelo = new javax.swing.JButton();
         btnAddMarca = new javax.swing.JButton();
-        spnAno = new javax.swing.JSpinner();
+        cmbAno = new javax.swing.JComboBox<>();
         pnlInformacoes = new javax.swing.JPanel();
         lblPlaca = new javax.swing.JLabel();
         lblCor = new javax.swing.JLabel();
@@ -59,8 +59,8 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         lblValor = new javax.swing.JLabel();
         lblData = new javax.swing.JLabel();
         txtValor = new javax.swing.JTextField();
-        txtFornecedor = new javax.swing.JTextField();
         txtData = new javax.swing.JFormattedTextField();
+        cmbFornecedor = new javax.swing.JComboBox<>();
         lblEditando = new javax.swing.JLabel();
         pnlBotoes = new javax.swing.JPanel();
         btnCadastrar = new javax.swing.JButton();
@@ -105,11 +105,16 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
         lblCambio.setText("Câmbio");
 
-        cmbCombustivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCombustivel.setEditable(true);
+        cmbCombustivel.setEnabled(false);
 
-        cmbCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbCambio.setEditable(true);
+        cmbCambio.setEnabled(false);
 
-        cmbDirecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbDirecao.setEnabled(false);
+
+        spnMotor.setModel(new javax.swing.SpinnerNumberModel(1.0f, null, null, 1.0f));
+        spnMotor.setEnabled(false);
 
         lblVersao.setText("Versão");
 
@@ -153,7 +158,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                                     .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(spnAno, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(lblVersao))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,14 +209,14 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                         .addComponent(lblVersao))
                     .addComponent(cmVersao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAddVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                .addGap(9, 9, 9)
                 .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblAno)
-                        .addComponent(spnAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(spnMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMotor))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pnlInformacoes.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações"));
@@ -286,27 +291,31 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDadosCompraLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlDadosCompraLayout.createSequentialGroup()
-                        .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblData)
-                            .addComponent(lblFornecedor))
-                        .addGap(0, 15, Short.MAX_VALUE)))
-                .addGap(0, 0, 0)
-                .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(lblFornecedor)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlDadosCompraLayout.createSequentialGroup()
+                        .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlDadosCompraLayout.createSequentialGroup()
+                                .addComponent(lblData)
+                                .addGap(48, 48, 48)
+                                .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlDadosCompraLayout.createSequentialGroup()
+                                .addComponent(lblValor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(68, 68, 68))))
         );
         pnlDadosCompraLayout.setVerticalGroup(
             pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDadosCompraLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFornecedor))
+                    .addComponent(lblFornecedor)
+                    .addComponent(cmbFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -365,7 +374,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                 .addGroup(pnlCadVeiculoCmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnlInformacoes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlDadosCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         pnlCadVeiculoCmpLayout.setVerticalGroup(
             pnlCadVeiculoCmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -634,11 +643,13 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVender1;
     private javax.swing.JComboBox<String> cmVersao;
+    private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JComboBox<String> cmbCambio;
     private javax.swing.JComboBox<String> cmbCombustivel;
     private javax.swing.JComboBox<String> cmbDirecao;
     private javax.swing.JComboBox<String> cmbFiltrar;
     private javax.swing.JComboBox<String> cmbFiltrarOrdem;
+    private javax.swing.JComboBox<String> cmbFornecedor;
     private javax.swing.JComboBox<String> cmbMarca;
     private javax.swing.JComboBox<String> cmbModelo;
     private javax.swing.JComboBox<String> cmbPesquisar;
@@ -667,12 +678,10 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private javax.swing.JPanel pnlFichaTecnica;
     private javax.swing.JPanel pnlInformacoes;
     private javax.swing.JPanel pnlListVeiculoCmp;
-    private javax.swing.JSpinner spnAno;
     private javax.swing.JSpinner spnMotor;
     private javax.swing.JTable tblVeiculoCmp;
     private javax.swing.JTextField txtCor;
     private javax.swing.JFormattedTextField txtData;
-    private javax.swing.JTextField txtFornecedor;
     private javax.swing.JFormattedTextField txtKM;
     private javax.swing.JTextField txtPesquisar;
     private javax.swing.JTextField txtPlaca;

@@ -49,6 +49,9 @@ public class Marca implements Serializable {
         return nome_marca;
     }
     
+    public Object[] toArray(){
+        return new Object[] {id_marca, nome_marca};
+    }
     
     
 }

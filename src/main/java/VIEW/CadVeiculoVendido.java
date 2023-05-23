@@ -52,7 +52,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         btnAddVersao = new javax.swing.JButton();
         btnAddModelo = new javax.swing.JButton();
         btnAddMarca = new javax.swing.JButton();
-        spnAno = new javax.swing.JSpinner();
+        cmbAno = new javax.swing.JComboBox<>();
         pnlInformacoes = new javax.swing.JPanel();
         lblPlaca = new javax.swing.JLabel();
         lblCor = new javax.swing.JLabel();
@@ -115,11 +115,8 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
         lblCambio.setText("Câmbio");
 
-        cmbCombustivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cmbDirecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        spnMotor.setModel(new javax.swing.SpinnerNumberModel(1.0f, null, null, 1.0f));
+        spnMotor.setEnabled(false);
 
         lblVersao.setText("Versão");
 
@@ -163,7 +160,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                                     .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(spnAno, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(lblVersao))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,14 +211,14 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                         .addComponent(lblVersao))
                     .addComponent(cmbVersao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAddVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                .addGap(9, 9, 9)
                 .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblAno)
-                        .addComponent(spnAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(spnMotor, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMotor))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pnlInformacoes.setBorder(javax.swing.BorderFactory.createTitledBorder("Informações"));
@@ -338,8 +335,6 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         lblValorVenda.setText("Valor venda");
 
         lblDataVenda.setText("Data");
-
-        cmbCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         try {
             txtDataVenda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -653,6 +648,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     private javax.swing.JButton btnInfo;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JComboBox<String> cmbCambio;
     private javax.swing.JComboBox<String> cmbCliente;
     private javax.swing.JComboBox<String> cmbCombustivel;
@@ -693,7 +689,6 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     private javax.swing.JPanel pnlFichaTecnica;
     private javax.swing.JPanel pnlInformacoes;
     private javax.swing.JPanel pnlListVeiculoVnd;
-    private javax.swing.JSpinner spnAno;
     private javax.swing.JSpinner spnMotor;
     private javax.swing.JTable tblVeiculoVnd;
     private javax.swing.JTextField txtCor;
