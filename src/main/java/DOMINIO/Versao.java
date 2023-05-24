@@ -41,6 +41,11 @@ public class Versao {
     public Modelo getModelo() {
         return modelo;
     }
+
+    public List<Veiculo> getVeiculos() {
+        return veiculos;
+    }
+    
     
     
 /* ----------------------------------------------------------------------------------------------------------------------- */

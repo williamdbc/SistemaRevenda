@@ -4,8 +4,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 @Entity
+
 public class Modelo implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_modelo;
@@ -40,6 +42,12 @@ public class Modelo implements Serializable {
     public Marca getMarca() {
         return marca;
     }
+
+    public List<Versao> getVersoes() {
+        return versoes;
+    }
+    
+    
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -60,6 +68,8 @@ public class Modelo implements Serializable {
     public Object[] toArray(){
         return new Object[] {id_modelo, marca.getNome_marca(), nome_modelo};
     }
+    
+    
     
     
 }

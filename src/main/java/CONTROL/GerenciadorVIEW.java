@@ -1,6 +1,7 @@
 package CONTROL;
 
-import DOMINIO.Modelo;
+import DAO.ConexaoHibernate;
+import DOMINIO.*;
 import VIEW.*;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Frame;
@@ -14,7 +15,10 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 public class GerenciadorVIEW {
     private FrmPrincipal janelaPrincipal = null;
@@ -129,6 +133,36 @@ public class GerenciadorVIEW {
             System.out.println("DEU ERRO");
         } 
     }
+    
+    
+    
+    public void carregarModelos(JComboBox comboModelo, Marca objetoMarca){
+       // Criteria criteria = session.createCriteria(User.class);
+      //  criteria.setFetchMode("roles", FetchMode.EAGER);
+        List <Modelo> listaModelos = objetoMarca.getModelos();
+        comboModelo.setModel(new DefaultComboBoxModel(listaModelos.toArray()));
+        
+    }
+    
+  
+    public void carregarGenerico(JComboBox comboGenerico, List listaObjetos){
+        comboGenerico.setModel(new DefaultComboBoxModel(listaObjetos.toArray()));   
+    }
+    
+    public void carregarVersoes(JComboBox comboModelo, Modelo objetoModelo){
+       // Criteria criteria = session.createCriteria(User.class);
+      //  criteria.setFetchMode("roles", FetchMode.EAGER);
+        List <Versao> listaVersoes = objetoModelo.getVersoes();
+        comboModelo.setModel(new DefaultComboBoxModel(listaVersoes.toArray()));
+        
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
      public static void main(String args[]) {

@@ -3,8 +3,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 @Entity
+@Transactional
 public class Marca implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_marca;
@@ -12,7 +14,8 @@ public class Marca implements Serializable {
     @Column (name = "nome_marca", length = 15)
     private String nome_marca;
     
-    @OneToMany(mappedBy = "marca", fetch = FetchType.LAZY)
+    
+    @OneToMany(mappedBy = "marca", fetch = FetchType.EAGER) //era LAZY
     private List<Modelo> modelos = new ArrayList();
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -33,6 +36,15 @@ public class Marca implements Serializable {
     public void setNome_marca(String nome_marca) {
         this.nome_marca = nome_marca;
     }
+
+    public List<Modelo> getModelos() {
+        return modelos;
+    }
+    
+    public List<Modelo> teste(){
+        return modelos;
+    }
+    
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */

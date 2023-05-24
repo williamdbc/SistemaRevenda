@@ -9,6 +9,7 @@ import DOMINIO.Marca;
 import DOMINIO.Modelo;
 import DOMINIO.Versao;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
@@ -349,7 +350,12 @@ public class CadVersao extends javax.swing.JDialog {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
-        gerenciadorVIEW.carregarComboBox(cmbModelo, Modelo.class);
+        
+            
+             
+        
+        
+        //gerenciadorVIEW.carregarComboModelo(cmbModelo, Modelo.class, cmbMarca.getSelectedItem().toString());
     }//GEN-LAST:event_formComponentShown
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -381,7 +387,11 @@ public class CadVersao extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbModeloActionPerformed
 
     private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
-        gerenciadorVIEW.carregarComboModelo(cmbModelo, Modelo.class, cmbMarca.getSelectedItem().toString());
+        Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
+        List <Modelo> listaModelos = objetoMarca.getModelos();
+
+    gerenciadorVIEW.carregarGenerico(cmbModelo, listaModelos);
+//gerenciadorVIEW.carregarComboModelo(cmbModelo, Modelo.class, cmbMarca.getSelectedItem().toString());
     }//GEN-LAST:event_cmbMarcaActionPerformed
 
   
