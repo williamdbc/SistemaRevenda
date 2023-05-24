@@ -5,6 +5,7 @@ import DOMINIO.Marca;
 import java.text.ParseException;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -292,15 +293,27 @@ public class CadMarca extends javax.swing.JDialog {
         } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
+    private void botaoEditar(){
+        btnLimpar.setVisible(false);
+        lblEditando.setVisible(true);
+        btnEditarOK.setVisible(true);
+        btnCancelar.setVisible(true);
+    }
+    
+    private void botaoCancelar(){
+        lblEditando.setVisible(false);
+        btnLimpar.setVisible(true);
+        btnEditarOK.setVisible(false);
+        btnCancelar.setVisible(false);  
+    }
+    
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+        TabbedPane.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
@@ -308,11 +321,7 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        TabbedPane.setSelectedIndex(1);
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);
+        botaoCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
@@ -341,7 +350,7 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        
+        botaoCancelar();
     }//GEN-LAST:event_formComponentShown
 
     /**

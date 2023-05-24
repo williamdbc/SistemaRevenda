@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package VIEW;
 
 import CONTROL.GerenciadorVIEW;
@@ -14,10 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
-/**
- *
- * @author usuario
- */
 public class CadModelo extends javax.swing.JDialog {
 
     private GerenciadorVIEW gerenciadorVIEW;
@@ -78,7 +70,6 @@ public class CadModelo extends javax.swing.JDialog {
 
         lblModelo.setText("Nome do modelo");
 
-        cmbMarca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbMarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbMarcaActionPerformed(evt);
@@ -311,7 +302,19 @@ public class CadModelo extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
    
-        
+    private void botaoEditar(){
+        btnLimpar.setVisible(false);
+        lblEditando.setVisible(true);
+        btnEditarOK.setVisible(true);
+        btnCancelar.setVisible(true);
+    }
+    
+    private void botaoCancelar(){
+        lblEditando.setVisible(false);
+        btnLimpar.setVisible(true);
+        btnEditarOK.setVisible(false);
+        btnCancelar.setVisible(false);  
+    }
  
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
@@ -329,14 +332,12 @@ public class CadModelo extends javax.swing.JDialog {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         jTabbedPane1.setSelectedIndex(1);
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);
+        botaoCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
-        // TODO add your handling code here:
+        jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
@@ -344,7 +345,9 @@ public class CadModelo extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbMarcaActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
+        cmbMarca.setSelectedIndex(-1);
     }//GEN-LAST:event_formComponentShown
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed

@@ -1,15 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package VIEW;
-
 import CONTROL.GerenciadorVIEW;
+import DOMINIO.Marca;
+import DOMINIO.Modelo;
+import DOMINIO.Veiculo;
+import DOMINIO.Versao;
+import java.util.List;
 
-/**
- *
- * @author William
- */
 public class CadVeiculoComprado extends javax.swing.JDialog {
 
     private GerenciadorVIEW gerenciadorVIEW;
@@ -18,7 +14,6 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         this.gerenciadorVIEW = gerVIEW;
         
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -42,7 +37,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         lblVersao = new javax.swing.JLabel();
         cmbMarca = new javax.swing.JComboBox<>();
         cmbModelo = new javax.swing.JComboBox<>();
-        cmVersao = new javax.swing.JComboBox<>();
+        cmbVersao = new javax.swing.JComboBox<>();
         btnAddVersao = new javax.swing.JButton();
         btnAddModelo = new javax.swing.JButton();
         btnAddMarca = new javax.swing.JButton();
@@ -85,6 +80,11 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         btnVender1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         lblCadVeiculoCmp.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblCadVeiculoCmp.setText("CADASTRO DE VEÍCULO COMPRADO");
@@ -118,6 +118,24 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
         lblVersao.setText("Versão");
 
+        cmbMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMarcaActionPerformed(evt);
+            }
+        });
+
+        cmbModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbModeloActionPerformed(evt);
+            }
+        });
+
+        cmbVersao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbVersaoActionPerformed(evt);
+            }
+        });
+
         btnAddVersao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar2.png"))); // NOI18N
         btnAddVersao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,6 +157,12 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             }
         });
 
+        cmbAno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAnoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlFichaTecnicaLayout = new javax.swing.GroupLayout(pnlFichaTecnica);
         pnlFichaTecnica.setLayout(pnlFichaTecnicaLayout);
         pnlFichaTecnicaLayout.setHorizontalGroup(
@@ -157,7 +181,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                                 .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(lblVersao))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -207,7 +231,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                         .addComponent(lblDirecao)
                         .addComponent(cmbDirecao, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblVersao))
-                    .addComponent(cmVersao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbVersao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAddVersao, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(pnlFichaTecnicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -565,8 +589,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-   // private void 
+
     
     
     private void btnAddVersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVersaoActionPerformed
@@ -621,6 +644,54 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVender1ActionPerformed
 
+    private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
+        Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
+        if(objetoMarca != null){
+            List <Modelo> listaModelos = objetoMarca.getModelos();
+            gerenciadorVIEW.carregarGenerico(cmbModelo, listaModelos);
+            cmbModelo.setSelectedIndex(-1);
+        }
+    }//GEN-LAST:event_cmbMarcaActionPerformed
+
+    private void cmbModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbModeloActionPerformed
+        Modelo objetoModelo = (Modelo) cmbModelo.getSelectedItem();
+        if(objetoModelo != null){
+            List <Versao> listaVersoes = objetoModelo.getVersoes();
+            gerenciadorVIEW.carregarGenerico(cmbVersao, listaVersoes);
+            cmbVersao.setSelectedIndex(-1);
+        }
+    }//GEN-LAST:event_cmbModeloActionPerformed
+
+    private void cmbVersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbVersaoActionPerformed
+        Versao objetoVersao = (Versao) cmbVersao.getSelectedItem();
+        if(objetoVersao != null){
+            List <Veiculo> listaVeiculos = objetoVersao.getVeiculos();
+            gerenciadorVIEW.carregarGenerico(cmbAno, listaVeiculos);
+            cmbAno.setSelectedIndex(-1);
+        }
+    }//GEN-LAST:event_cmbVersaoActionPerformed
+
+    private void cmbAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAnoActionPerformed
+        //Integer.
+        Veiculo objetoVeiculo = (Veiculo) cmbAno.getSelectedItem();
+        if(objetoVeiculo != null){
+            cmbCombustivel.setSelectedItem(objetoVeiculo.getCombustivel());
+            cmbCambio.setSelectedItem(objetoVeiculo.getCambio());
+            cmbDirecao.setSelectedItem(objetoVeiculo.getDirecao());
+            spnMotor.setValue(objetoVeiculo.getMotor());
+            
+            
+            
+            
+        }
+    }//GEN-LAST:event_cmbAnoActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        //botaoCancelar();
+        gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
+        cmbMarca.setSelectedIndex(-1);
+    }//GEN-LAST:event_formComponentShown
+
     /**
      * @param args the command line arguments
      */
@@ -642,7 +713,6 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVender1;
-    private javax.swing.JComboBox<String> cmVersao;
     private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JComboBox<String> cmbCambio;
     private javax.swing.JComboBox<String> cmbCombustivel;
@@ -653,6 +723,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cmbMarca;
     private javax.swing.JComboBox<String> cmbModelo;
     private javax.swing.JComboBox<String> cmbPesquisar;
+    private javax.swing.JComboBox<String> cmbVersao;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblAno;

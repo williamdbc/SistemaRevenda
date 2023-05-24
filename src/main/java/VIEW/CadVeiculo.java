@@ -184,6 +184,18 @@ public class CadVeiculo extends javax.swing.JDialog {
 
         spnMotor.setModel(new javax.swing.SpinnerNumberModel(1.0f, null, null, 0.1f));
 
+        cmbModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbModeloActionPerformed(evt);
+            }
+        });
+
+        cmbMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMarcaActionPerformed(evt);
+            }
+        });
+
         spnAno.setModel(new javax.swing.SpinnerNumberModel(2000, 2000, 2023, 1));
 
         btnAddVersao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar2.png"))); // NOI18N
@@ -569,21 +581,29 @@ public class CadVeiculo extends javax.swing.JDialog {
         } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        jTabbedPane1.setSelectedIndex(0);
+    private void botaoEditar(){
         btnLimpar.setVisible(false);
         lblEditando.setVisible(true);
         btnEditarOK.setVisible(true);
         btnCancelar.setVisible(true);
-        
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        limparCampos();
+    }
+    
+    private void botaoCancelar(){
         lblEditando.setVisible(false);
         btnLimpar.setVisible(true);
         btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);
+        btnCancelar.setVisible(false);  
+    }
+    
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+
+    
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        limparCampos();
+        botaoCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
@@ -603,9 +623,9 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
-        gerenciadorVIEW.carregarComboBox(cmbModelo, Modelo.class);
-        gerenciadorVIEW.carregarComboBox(cmbVersao, Versao.class);
+        cmbMarca.setSelectedIndex(-1);
         
         
     }//GEN-LAST:event_formComponentShown
@@ -642,6 +662,25 @@ public class CadVeiculo extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void cmbModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbModeloActionPerformed
+        Modelo objetoModelo = (Modelo) cmbModelo.getSelectedItem();
+        if(objetoModelo != null){
+            List <Versao> listaVersoes = objetoModelo.getVersoes();
+            gerenciadorVIEW.carregarGenerico(cmbVersao, listaVersoes);
+            cmbVersao.setSelectedIndex(-1);
+        }
+    }//GEN-LAST:event_cmbModeloActionPerformed
+
+    private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
+        Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
+        if(objetoMarca != null){
+            List <Modelo> listaModelos = objetoMarca.getModelos();
+            gerenciadorVIEW.carregarGenerico(cmbModelo, listaModelos);
+            cmbModelo.setSelectedIndex(-1);
+        }
+
+    }//GEN-LAST:event_cmbMarcaActionPerformed
 
     /**
      * @param args the command line arguments

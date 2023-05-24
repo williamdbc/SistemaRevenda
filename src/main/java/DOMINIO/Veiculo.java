@@ -171,12 +171,19 @@ public class Veiculo {
         this.trava_eletrica = trava_eletrica;
         this.versao = versao;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(ano);
+    }
     
-      public Object[] toArray(){
-        return new Object[] {getVersao().getModelo().getMarca().getNome_marca(), 
-                            getVersao().getModelo().getNome_modelo(),
-                            getVersao().getNome_versao(),
-                            ano, combustivel, cambio, direcao, motor};
+    
+    
+    public Object[] toArray(){
+    return new Object[] {getVersao().getModelo().getMarca().getNome_marca(), 
+                        getVersao().getModelo().getNome_modelo(),
+                        getVersao().getNome_versao(),
+                        ano, combustivel, cambio, direcao, motor};
     }
     
     

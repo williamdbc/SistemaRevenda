@@ -68,6 +68,11 @@ public class CadFornecedor extends javax.swing.JDialog {
         tblFornecedor = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         lblCadFornecedor.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblCadFornecedor.setText("CADASTRO DE FORNECEDOR");
@@ -308,13 +313,22 @@ public class CadFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        jTabbedPane1.setSelectedIndex(1);
+        botaoCancelar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void botaoEditar(){
+        btnLimpar.setVisible(false);
+        lblEditando.setVisible(true);
+        btnEditarOK.setVisible(true);
+        btnCancelar.setVisible(true);
+    }
+    
+    private void botaoCancelar(){
         lblEditando.setVisible(false);
         btnLimpar.setVisible(true);
         btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
+        btnCancelar.setVisible(false);  
+    }
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
@@ -333,10 +347,8 @@ public class CadFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+        jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -360,6 +372,10 @@ public class CadFornecedor extends javax.swing.JDialog {
         } 
 
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        botaoCancelar();
+    }//GEN-LAST:event_formComponentShown
 
     /**
      * @param args the command line arguments

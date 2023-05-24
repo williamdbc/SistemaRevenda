@@ -61,6 +61,11 @@ public class CadCliente extends javax.swing.JDialog {
         tblCliente = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         lblCadCliente.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblCadCliente.setText("CADASTRO DE CLIENTE");
@@ -305,11 +310,7 @@ public class CadCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        jTabbedPane1.setSelectedIndex(1);
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);
+        botaoCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -330,11 +331,23 @@ public class CadCliente extends javax.swing.JDialog {
      
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+    private void botaoEditar(){
         btnLimpar.setVisible(false);
         lblEditando.setVisible(true);
         btnEditarOK.setVisible(true);
         btnCancelar.setVisible(true);
+    }
+    
+    private void botaoCancelar(){
+        lblEditando.setVisible(false);
+        btnLimpar.setVisible(true);
+        btnEditarOK.setVisible(false);
+        btnCancelar.setVisible(false);  
+    }
+    
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void txtCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCidadeActionPerformed
@@ -362,6 +375,10 @@ public class CadCliente extends javax.swing.JDialog {
         }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        botaoCancelar();
+    }//GEN-LAST:event_formComponentShown
 
 
 

@@ -116,46 +116,12 @@ public class GerenciadorVIEW {
         } 
     }
     
-    public void carregarComboModelo(JComboBox combo, Class classe, String nomeMarca){
-        
-        try {
-            List <Modelo> lista = gerenciadorDominio.listar(classe);
-            List <Modelo> lista2 = new ArrayList<>();
-            for(Modelo modelo : lista){
-                if(modelo.getMarca().getNome_marca().equals(nomeMarca)){
-                    lista2.add(modelo);
-                }
-            }
-              
-            
-            combo.setModel( new DefaultComboBoxModel( lista2.toArray() )  );                       
-        } catch (HibernateException  ex) {
-            System.out.println("DEU ERRO");
-        } 
-    }
     
     
-    
-    public void carregarModelos(JComboBox comboModelo, Marca objetoMarca){
-       // Criteria criteria = session.createCriteria(User.class);
-      //  criteria.setFetchMode("roles", FetchMode.EAGER);
-        List <Modelo> listaModelos = objetoMarca.getModelos();
-        comboModelo.setModel(new DefaultComboBoxModel(listaModelos.toArray()));
-        
-    }
-    
-  
     public void carregarGenerico(JComboBox comboGenerico, List listaObjetos){
         comboGenerico.setModel(new DefaultComboBoxModel(listaObjetos.toArray()));   
     }
-    
-    public void carregarVersoes(JComboBox comboModelo, Modelo objetoModelo){
-       // Criteria criteria = session.createCriteria(User.class);
-      //  criteria.setFetchMode("roles", FetchMode.EAGER);
-        List <Versao> listaVersoes = objetoModelo.getVersoes();
-        comboModelo.setModel(new DefaultComboBoxModel(listaVersoes.toArray()));
-        
-    }
+       
     
     
     

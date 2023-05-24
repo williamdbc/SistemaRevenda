@@ -14,7 +14,7 @@ public class Versao {
     @ManyToOne (fetch = FetchType.EAGER) @JoinColumn (name = "id_modelo")
     private Modelo modelo;
     
-    @OneToMany (mappedBy = "versao")
+    @OneToMany (mappedBy = "versao", fetch = FetchType.EAGER) //nao tinha nada no fetch
     private List<Veiculo> veiculos = new ArrayList();
     
     
@@ -65,7 +65,7 @@ public class Versao {
     }
    
     public Object[] toArray(){
-        return new Object[] {getModelo().getId_modelo(), getModelo().getMarca().getNome_marca(), getModelo().getNome_modelo()};
+        return new Object[] {getModelo().getId_modelo(), getModelo().getMarca().getNome_marca(), getModelo().getNome_modelo(), getNome_versao()};
     }
     
 }

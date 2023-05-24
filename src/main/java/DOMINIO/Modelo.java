@@ -18,7 +18,7 @@ public class Modelo implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "id_marca")
     private Marca marca;
     
-    @OneToMany (mappedBy = "modelo", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "modelo", fetch = FetchType.EAGER)    //Era Lazy
     private List<Versao> versoes = new ArrayList();
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
