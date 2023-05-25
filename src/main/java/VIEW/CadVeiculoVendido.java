@@ -5,20 +5,30 @@
 package VIEW;
 
 import CONTROL.GerenciadorVIEW;
+import DOMINIO.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 /**
  *
  * @author William
  */
-public class CadVeiculoVendido extends javax.swing.JDialog {
+               public class CadVeiculoVendido extends javax.swing.JDialog {
 
     private GerenciadorVIEW gerenciadorVIEW;
-    /**
-     * Creates new form CadVeiculoComprado
-     */
+    private Revenda revendaSelecionada;
+ 
     public CadVeiculoVendido(java.awt.Frame parent, boolean modal, GerenciadorVIEW gerVIEW) {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
+        revendaSelecionada = null;
     }
 
     /**
@@ -64,14 +74,14 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         lblFornecedor4 = new javax.swing.JLabel();
         lblValor4 = new javax.swing.JLabel();
         lblData4 = new javax.swing.JLabel();
-        txtValor4 = new javax.swing.JTextField();
-        txtFornecedor4 = new javax.swing.JTextField();
-        ftxtData4 = new javax.swing.JFormattedTextField();
+        txtValorCompra = new javax.swing.JTextField();
+        txtFornecedor = new javax.swing.JTextField();
+        ftxtData_compra = new javax.swing.JFormattedTextField();
         lblEditando = new javax.swing.JLabel();
         pnlCliente = new javax.swing.JPanel();
         lblCliente = new javax.swing.JLabel();
         lblValorVenda = new javax.swing.JLabel();
-        txtData = new javax.swing.JTextField();
+        txtValorVenda = new javax.swing.JTextField();
         lblDataVenda = new javax.swing.JLabel();
         cmbCliente = new javax.swing.JComboBox<>();
         txtDataVenda = new javax.swing.JFormattedTextField();
@@ -95,6 +105,11 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         btnFiltrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         kbkCadVeiculoVnd.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         kbkCadVeiculoVnd.setText("CADASTRO DE VEÍCULO VENDIDO");
@@ -115,10 +130,28 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
         lblCambio.setText("Câmbio");
 
+        cmbCombustivel.setEditable(true);
+        cmbCombustivel.setEnabled(false);
+
+        cmbCambio.setEditable(true);
+        cmbCambio.setEnabled(false);
+
+        cmbDirecao.setEditable(true);
+        cmbDirecao.setEnabled(false);
+
         spnMotor.setModel(new javax.swing.SpinnerNumberModel(1.0f, null, null, 1.0f));
         spnMotor.setEnabled(false);
 
         lblVersao.setText("Versão");
+
+        cmbMarca.setEditable(true);
+        cmbMarca.setEnabled(false);
+
+        cmbModelo.setEditable(true);
+        cmbModelo.setEnabled(false);
+
+        cmbVersao.setEditable(true);
+        cmbVersao.setEnabled(false);
 
         btnAddVersao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar2.png"))); // NOI18N
         btnAddVersao.addActionListener(new java.awt.event.ActionListener() {
@@ -140,6 +173,9 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                 btnAddMarcaActionPerformed(evt);
             }
         });
+
+        cmbAno.setEditable(true);
+        cmbAno.setEnabled(false);
 
         javax.swing.GroupLayout pnlFichaTecnicaLayout = new javax.swing.GroupLayout(pnlFichaTecnica);
         pnlFichaTecnica.setLayout(pnlFichaTecnicaLayout);
@@ -229,11 +265,12 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
         lblKM.setText("KM");
 
-        try {
-            txtKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtCor.setEnabled(false);
+
+        txtPlaca.setEnabled(false);
+
+        txtKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txtKM.setEnabled(false);
 
         javax.swing.GroupLayout pnlInformacoesLayout = new javax.swing.GroupLayout(pnlInformacoes);
         pnlInformacoes.setLayout(pnlInformacoesLayout);
@@ -281,11 +318,16 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
         lblData4.setText("Data");
 
+        txtValorCompra.setEnabled(false);
+
+        txtFornecedor.setEnabled(false);
+
         try {
-            ftxtData4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            ftxtData_compra.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        ftxtData_compra.setEnabled(false);
 
         javax.swing.GroupLayout pnlDadosCompraLayout = new javax.swing.GroupLayout(pnlDadosCompra);
         pnlDadosCompra.setLayout(pnlDadosCompraLayout);
@@ -302,9 +344,9 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                         .addGap(0, 15, Short.MAX_VALUE)))
                 .addGap(0, 0, 0)
                 .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtValor4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ftxtData4, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFornecedor4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ftxtData_compra, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         pnlDadosCompraLayout.setVerticalGroup(
@@ -312,15 +354,15 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
             .addGroup(pnlDadosCompraLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFornecedor4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblFornecedor4))
                 .addGap(15, 15, 15)
                 .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtValor4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValorCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblValor4))
                 .addGap(15, 15, 15)
                 .addGroup(pnlDadosCompraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ftxtData4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ftxtData_compra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblData4))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -333,6 +375,12 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         lblCliente.setText("Cliente");
 
         lblValorVenda.setText("Valor venda");
+
+        txtValorVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtValorVendaActionPerformed(evt);
+            }
+        });
 
         lblDataVenda.setText("Data");
 
@@ -354,7 +402,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                     .addComponent(lblDataVenda))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDataVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(44, Short.MAX_VALUE))
@@ -370,7 +418,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                 .addGroup(pnlClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblValorVenda)
                     .addGroup(pnlClienteLayout.createSequentialGroup()
-                        .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtValorVenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
                         .addGroup(pnlClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDataVenda)
@@ -382,6 +430,11 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
         btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnCadastrar.setText(" Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 25));
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/erro.png"))); // NOI18N
@@ -630,6 +683,81 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarOKComponentShown
 
+    private String dateToString(Date dataSQL){
+        return new SimpleDateFormat("dd/MM/yyyy").format(dataSQL);
+    }
+ 
+    private Date stringToDate(String dataString) throws ParseException{
+        return new SimpleDateFormat("dd/MM/yyyy").parse(dataString);
+    }
+    
+    private void limparComboText(JComboBox[] listaCombos, JTextField[] listaTextos){
+        for(JComboBox combo : listaCombos){
+            combo.setSelectedIndex(-1);
+        }
+        
+        for(JTextField textField : listaTextos){
+            textField.setText("");
+        }
+    }
+    
+    private void limparCampos(){
+        JComboBox[] listaCombos = new JComboBox[]{cmbAno, cmbCambio, cmbCliente, cmbCombustivel, cmbDirecao, cmbFiltrar, 
+                                                cmbFiltrarOrdem, cmbMarca, cmbModelo, cmbPesquisar, cmbVersao};
+                
+        JTextField[] listaTextField = new JTextField[]{txtCor, txtDataVenda, txtFornecedor, txtKM, txtPesquisar, txtPlaca, txtValorCompra, txtValorVenda, ftxtData_compra};
+       
+        limparComboText(listaCombos, listaTextField);
+    }
+    
+    private void setarCampos(){
+        cmbMarca.setSelectedItem(revendaSelecionada.getVeiculo().getVersao().getModelo().getMarca());
+        cmbModelo.setSelectedItem(revendaSelecionada.getVeiculo().getVersao().getModelo());
+        cmbVersao.setSelectedItem(revendaSelecionada.getVeiculo().getVersao());
+        cmbAno.setSelectedItem(revendaSelecionada.getVeiculo());
+        cmbCombustivel.setSelectedItem(revendaSelecionada.getVeiculo().getCombustivel());
+        cmbCambio.setSelectedItem(revendaSelecionada.getVeiculo().getCambio());
+        cmbDirecao.setSelectedItem(revendaSelecionada.getVeiculo().getDirecao());
+        spnMotor.setValue(revendaSelecionada.getVeiculo().getMotor());
+        
+        txtPlaca.setText(revendaSelecionada.getPlaca());
+        txtCor.setText(revendaSelecionada.getCor());
+        txtKM.setText(String.valueOf(revendaSelecionada.getQuilometragem()));
+        
+        txtFornecedor.setText(revendaSelecionada.getFornecedor().toString());
+        txtValorCompra.setText(String.valueOf(revendaSelecionada.getValor_compra()));
+        ftxtData_compra.setText(dateToString(revendaSelecionada.getData_compra()));
+    }
+    
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        gerenciadorVIEW.carregarComboBox(cmbCliente, Cliente.class);
+        revendaSelecionada = gerenciadorVIEW.getRevenda();
+        if(revendaSelecionada != null){
+            setarCampos();
+        } else {
+            
+            limparCampos();
+        }
+    }//GEN-LAST:event_formComponentShown
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        try {
+            Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
+            float valor_venda = Float.valueOf(txtValorVenda.getText());
+            Date data_venda = stringToDate(txtDataVenda.getText());
+            
+            gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(cliente, data_venda, valor_venda);
+            
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(CadVeiculoVendido.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void txtValorVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorVendaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtValorVendaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -659,7 +787,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cmbModelo;
     private javax.swing.JComboBox<String> cmbPesquisar;
     private javax.swing.JComboBox<String> cmbVersao;
-    private javax.swing.JFormattedTextField ftxtData4;
+    private javax.swing.JFormattedTextField ftxtData_compra;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel kbkCadVeiculoVnd;
@@ -692,12 +820,12 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     private javax.swing.JSpinner spnMotor;
     private javax.swing.JTable tblVeiculoVnd;
     private javax.swing.JTextField txtCor;
-    private javax.swing.JTextField txtData;
     private javax.swing.JFormattedTextField txtDataVenda;
-    private javax.swing.JTextField txtFornecedor4;
+    private javax.swing.JTextField txtFornecedor;
     private javax.swing.JFormattedTextField txtKM;
     private javax.swing.JTextField txtPesquisar;
     private javax.swing.JTextField txtPlaca;
-    private javax.swing.JTextField txtValor4;
+    private javax.swing.JTextField txtValorCompra;
+    private javax.swing.JTextField txtValorVenda;
     // End of variables declaration//GEN-END:variables
 }

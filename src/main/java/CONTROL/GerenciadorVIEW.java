@@ -31,6 +31,7 @@ public class GerenciadorVIEW {
     private CadVeiculo cadVeiculo = null;
     private CadVeiculoComprado cadVeiculoComprado = null;
     private CadVeiculoVendido cadVeiculoVendido = null;
+    private Revenda revendaSelecionada = null;
     private ListaDespesa listaDespesa = null;
     
     GerenciadorDOMINIO gerenciadorDominio;
@@ -95,12 +96,14 @@ public class GerenciadorVIEW {
         cadVeiculo = (CadVeiculo) abrirJanela(janelaPrincipal, cadVeiculo, CadVeiculo.class);
     }
     
-    public void janelaCadVeiculoComprado() {
+    public Revenda janelaCadVeiculoComprado() {
         cadVeiculoComprado = (CadVeiculoComprado) abrirJanela(janelaPrincipal, cadVeiculoComprado, CadVeiculoComprado.class);
+        return cadVeiculoComprado.getRevenda();
     }
     
     public void janelaCadVeiculoVendido() {
         cadVeiculoVendido = (CadVeiculoVendido) abrirJanela(janelaPrincipal, cadVeiculoVendido, CadVeiculoVendido.class);
+        
     }
     
     public void janelaListaDespesa() {
@@ -116,8 +119,14 @@ public class GerenciadorVIEW {
         } 
     }
     
+    public void setRevenda(Revenda revendaParametro){
+        revendaSelecionada = revendaParametro;
+    }
     
-    
+    public Revenda getRevenda(){
+        return revendaSelecionada;
+    }
+
     public void carregarGenerico(JComboBox comboGenerico, List listaObjetos){
         comboGenerico.setModel(new DefaultComboBoxModel(listaObjetos.toArray()));   
     }
@@ -125,13 +134,8 @@ public class GerenciadorVIEW {
     
     
     
-    
-    
-    
-    
-    
-    
      public static void main(String args[]) {
+         
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 // System.out.println( info.getName() );
@@ -152,7 +156,7 @@ public class GerenciadorVIEW {
         
         javax.swing.UIManager.put("OptionPane.yesButtonText", "Sim"); 
         javax.swing.UIManager.put("OptionPane.noButtonText", "Não");
-
+        
         GerenciadorVIEW gerIG = new GerenciadorVIEW();
         gerIG.janelaLogin();
      }

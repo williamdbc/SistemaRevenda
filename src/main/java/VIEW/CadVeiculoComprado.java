@@ -1,17 +1,28 @@
 package VIEW;
 import CONTROL.GerenciadorVIEW;
-import DOMINIO.Marca;
+import DOMINIO.*;
 import DOMINIO.Modelo;
 import DOMINIO.Veiculo;
 import DOMINIO.Versao;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 public class CadVeiculoComprado extends javax.swing.JDialog {
 
     private GerenciadorVIEW gerenciadorVIEW;
+    private Revenda revendaSelecionada;
+    
     public CadVeiculoComprado(java.awt.Frame parent, boolean modal, GerenciadorVIEW gerVIEW) {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
+        revendaSelecionada = null;
         
     }
 
@@ -111,6 +122,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         cmbCambio.setEditable(true);
         cmbCambio.setEnabled(false);
 
+        cmbDirecao.setEditable(true);
         cmbDirecao.setEnabled(false);
 
         spnMotor.setModel(new javax.swing.SpinnerNumberModel(1.0f, null, null, 1.0f));
@@ -251,11 +263,12 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
         lblKM.setText("KM");
 
-        try {
-            txtKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        txtKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txtKM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKMActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlInformacoesLayout = new javax.swing.GroupLayout(pnlInformacoes);
         pnlInformacoes.setLayout(pnlInformacoesLayout);
@@ -358,6 +371,11 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
         btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnCadastrar.setText(" Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 25));
 
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/erro.png"))); // NOI18N
@@ -417,7 +435,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                         .addComponent(pnlBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblEditando)))
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cadastro", pnlCadVeiculoCmp);
@@ -578,7 +596,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                         .addComponent(btnVender1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
         );
 
@@ -590,6 +608,9 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
 
+    public Revenda getRevenda(){
+        return revendaSelecionada;
+    }
     
     
     private void btnAddVersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVersaoActionPerformed
@@ -617,7 +638,25 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        // TODO add your handling code here:
+        try {
+            List<Revenda> listaVeiculoComprado = gerenciadorVIEW.getGerDominio().listar(Revenda.class); 
+            ((DefaultTableModel) tblVeiculoCmp.getModel()).setNumRows(0);
+            
+            for (Revenda revenda : listaVeiculoComprado ) {
+                ((DefaultTableModel)tblVeiculoCmp.getModel()).addRow(revenda.toArray_Compra());     
+            }
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+        } 
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -625,7 +664,13 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        // TODO add your handling code here:
+        int linha = tblVeiculoCmp.getSelectedRow();
+        if ( linha >= 0 ) {
+            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 5);
+            gerenciadorVIEW.setRevenda(revendaSelecionada);
+            gerenciadorVIEW.janelaCadVeiculoVendido();
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -678,23 +723,50 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             cmbCombustivel.setSelectedItem(objetoVeiculo.getCombustivel());
             cmbCambio.setSelectedItem(objetoVeiculo.getCambio());
             cmbDirecao.setSelectedItem(objetoVeiculo.getDirecao());
-            spnMotor.setValue(objetoVeiculo.getMotor());
-            
-            
-            
-            
+            spnMotor.setValue(objetoVeiculo.getMotor());   
         }
     }//GEN-LAST:event_cmbAnoActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         //botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
+        gerenciadorVIEW.carregarComboBox(cmbFornecedor, Fornecedor.class);
         cmbMarca.setSelectedIndex(-1);
+        cmbFornecedor.setSelectedIndex(-1);
     }//GEN-LAST:event_formComponentShown
 
-    /**
-     * @param args the command line arguments
-     */
+      private String dateToString(Date dataSQL){
+        return new SimpleDateFormat("dd/MM/yyyy").format(dataSQL);
+    }
+ 
+    private Date stringToDate(String dataString) throws ParseException{
+        return new SimpleDateFormat("dd/MM/yyyy").parse(dataString);
+    }
+    
+    
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        Veiculo objetoVeiculo = (Veiculo) cmbAno.getSelectedItem();
+        String placa = txtPlaca.getText();
+        String cor = txtCor.getText();
+        int km = Integer.valueOf(txtKM.getText());
+        Fornecedor fornecedor = (Fornecedor) cmbFornecedor.getSelectedItem();
+        Date data_compra = null;
+        float valor_compra = Float.valueOf(txtValor.getText());
+        
+        try {
+            data_compra = stringToDate(txtData.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(CadVeiculoComprado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ 
+        gerenciadorVIEW.getGerDominio().inserirVeiculoComprado(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
+    }//GEN-LAST:event_btnCadastrarActionPerformed
+
+    private void txtKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKMActionPerformed
+
+  
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

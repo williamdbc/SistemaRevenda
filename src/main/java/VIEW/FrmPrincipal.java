@@ -221,7 +221,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuItemVeiculoCmpActionPerformed
 
     private void mnuItemVeiculoVndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuItemVeiculoVndActionPerformed
+        gerenciadorVIEW.setRevenda(null);
         gerenciadorVIEW.janelaCadVeiculoVendido();
+        
     }//GEN-LAST:event_mnuItemVeiculoVndActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

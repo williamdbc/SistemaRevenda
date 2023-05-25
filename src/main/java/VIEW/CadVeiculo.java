@@ -611,7 +611,8 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
-        // TODO add your handling code here:
+
+        
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnAddMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMarcaActionPerformed

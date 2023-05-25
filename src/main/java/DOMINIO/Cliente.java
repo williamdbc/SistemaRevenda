@@ -17,4 +17,9 @@ public class Cliente extends RelacaoComercial implements Serializable{
         return new Object[] {getId_cli_forn(), getNome_cli_forn(), getCidade_cli_forn(), getTelefone_cli_forn()};
     }
     
+    @Override
+    public String toString() {
+        return getNome_cli_forn();
+    }
+    
 }

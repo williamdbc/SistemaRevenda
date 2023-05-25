@@ -62,7 +62,10 @@ public class RelacaoComercial {
         this.telefone_cli_forn = telefone_cli_forn;
     }
     
-    
+       @Override
+    public String toString() {
+        return getNome_cli_forn();
+    }
     
     
     

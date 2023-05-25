@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import javax.transaction.Transactional;
 
 @Entity
+@Transactional
 public class Revenda {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_revenda;
@@ -27,7 +29,7 @@ public class Revenda {
     @Column (name="data_venda") @Temporal (TemporalType.DATE)
     private Date data_venda;
     
-    @Column (name="valor_vemda")
+    @Column (name="valor_venda")
     private float valor_venda;
     
     @ManyToOne (fetch = FetchType.EAGER) @JoinColumn (name = "id_veiculo")
@@ -107,6 +109,71 @@ public class Revenda {
     public void setValor_venda(float valor_venda) {
         this.valor_venda = valor_venda;
     }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public List<Despesa> getDespesas() {
+        return despesas;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public Revenda() {
+    }
+   
+    public Revenda(Veiculo veiculo, Fornecedor fornecedor, String placa, String cor, int quilometragem, Date data_compra, float valor_compra) {
+        this.placa = placa;
+        this.cor = cor;
+        this.quilometragem = quilometragem;
+        this.data_compra = data_compra;
+        this.valor_compra = valor_compra;
+        this.veiculo = veiculo;
+        this.fornecedor = fornecedor;
+    }
+    
+    public Revenda(Cliente cliente, Date data_venda, float valor_venda) {
+        this.data_compra = data_compra;
+        this.valor_compra = valor_compra;
+        this.cliente = cliente;
+    }
+    
+    public Object[] toArray_Compra(){
+        return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
+                            veiculo.getVersao().getModelo().getNome_modelo() + " " +
+                            veiculo.getVersao().getNome_versao(),
+                            veiculo.getAno(), cor, quilometragem, fornecedor.getNome_cli_forn(), this, valor_compra, data_compra};
+    }
+    
+    public Object[] toArray_Venda(){
+        return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
+                            veiculo.getVersao().getModelo().getNome_modelo() + " " +
+                            veiculo.getVersao().getNome_versao(),
+                            veiculo.getAno(), this, fornecedor.getNome_cli_forn(), valor_compra, data_compra, 0, valor_venda, data_venda, (valor_venda-valor_compra)};
+    }
+
+    @Override
+    public String toString() {
+        return placa; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    
+    
     
     
 }

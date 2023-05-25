@@ -5,6 +5,7 @@ import DAO.ConexaoHibernate;
 import DAO.*;
 import DOMINIO.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
 
@@ -18,6 +19,7 @@ public class GerenciadorDOMINIO {
     VeiculoDAO veiculoDAO = null;
     ClienteDAO clienteDAO = null;
     FornecedorDAO fornecedorDAO = null;
+    RevendaDAO revendaDAO = null;
     
     public GerenciadorDOMINIO() throws HibernateException {
         ConexaoHibernate.getSessionFactory();
@@ -29,6 +31,8 @@ public class GerenciadorDOMINIO {
         veiculoDAO = new VeiculoDAO();
         clienteDAO = new ClienteDAO();
         fornecedorDAO = new FornecedorDAO();
+        revendaDAO = new RevendaDAO();
+        
     }   
     
     public void inserirMarca(String nomeMarca){
@@ -60,6 +64,16 @@ public class GerenciadorDOMINIO {
     public void inserirFornecedor(String nome, String cidade, String telefone){
         Fornecedor objetoFornecedor = new Fornecedor(nome, cidade, telefone);
         fornecedorDAO.inserir(objetoFornecedor);
+    }
+    
+    public void inserirVeiculoComprado(Veiculo veiculo, Fornecedor fornecedor, String placa, String cor, int km, Date data_compra, float valor_compra){
+        Revenda objetoRevenda = new Revenda(veiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
+        revendaDAO.inserir(objetoRevenda); 
+    }
+    
+     public void inserirVeiculoVendido(Cliente cliente, Date data_venda, float valor_venda){
+        Revenda objetoRevenda = new Revenda(cliente, data_venda, valor_venda);
+        revendaDAO.alterar(objetoRevenda); 
     }
     
 
