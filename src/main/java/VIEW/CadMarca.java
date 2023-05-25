@@ -113,6 +113,11 @@ public class CadMarca extends javax.swing.JDialog {
 
         btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/apagar.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         btnEditarOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar_ok.png"))); // NOI18N
@@ -323,30 +328,43 @@ public class CadMarca extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarOKActionPerformed
 
-    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        String marca = txtMarca.getText();
-        try {
-            if (marcaSelecionada == null) {
-                gerenciadorVIEW.getGerDominio().inserirMarca(marca);
-                JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
-            } else {
-                // ALTERAR
-               // gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, dt, sexo, cep, ender,  bairro, num, complemento, referencia, telFixo, celular, email, fotoBytes, cidade);
-                //int id = cliSelecionado.getIdCliente();
-                //JOptionPane.showMessageDialog(this, "Cliente " + id + "alterado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );                    
-            }
-
-        } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+    private boolean checkFields(){
+        String msgErro = "";
+        if(txtMarca.getText().isBlank()){
+            msgErro += "O campo 'Marca' não pode estar vazio.\n";
         }
         
         
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
+    
+    
+    
+    
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        String marca = txtMarca.getText();
         
+        if(checkFields()){
+            try {
+                gerenciadorVIEW.getGerDominio().inserirMarca(marca);
+                JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir marca", JOptionPane.INFORMATION_MESSAGE);
+                btnLimparActionPerformed(null);
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO Marca", JOptionPane.ERROR_MESSAGE  );
+            }
+        }  
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         botaoCancelar();
     }//GEN-LAST:event_formComponentShown
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        txtMarca.setText("");
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     /**
      * @param args the command line arguments

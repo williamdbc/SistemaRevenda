@@ -623,10 +623,44 @@ public class CadVeiculo extends javax.swing.JDialog {
         botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
         cmbMarca.setSelectedIndex(-1);
-        
-        
     }//GEN-LAST:event_formComponentShown
 
+    private boolean checkFields(){
+        String msgErro = "";
+        if(cmbMarca.getSelectedItem().toString().isBlank()){
+            msgErro += "O campo 'Marca' não pode estar vazio.\n";
+        }
+        
+        if(cmbModelo.getSelectedItem().toString().isBlank()){
+            msgErro += "O campo 'Modelo' não pode estar vazio.\n";
+        }
+        
+        if(cmbVersao.getSelectedItem().toString().isBlank()){
+             msgErro += "O campo 'Versão' não pode estar vazio.\n";
+        }
+        
+        if(cmbCombustivel.getSelectedItem().toString().isBlank()){
+             msgErro += "O campo 'Combustível' não pode estar vazio.\n";
+        }
+        
+        if(cmbCambio.getSelectedItem().toString().isBlank()){
+             msgErro += "O campo 'Câmbio' não pode estar vazio.\n";
+        }
+        
+        if(cmbDirecao.getSelectedItem().toString().isBlank()){
+             msgErro += "O campo 'Direção' não pode estar vazio.\n";
+        }
+
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
+
+    
+    
+    
+    
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         Versao objetoVersao = (Versao) cmbVersao.getSelectedItem();
         int ano = Integer.valueOf(spnAno.getValue().toString());
@@ -643,20 +677,13 @@ public class CadVeiculo extends javax.swing.JDialog {
         boolean vidro_eletrico = chkVidroEletrico.isSelected();
         
 
-        try {
-            if (veiculoSelecionado == null) {
-                gerenciadorVIEW.getGerDominio().inserirVeiculo(objetoVersao, ano, combustivel, cambio, direcao, motor, airbag, 
-                                                                alarme, ar_condicionado, freios_abs, trava_eletrica, vidro_eletrico);
-                JOptionPane.showMessageDialog(this, "Modelo inserido com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
-            } else {
-                // ALTERAR
-               // gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, dt, sexo, cep, ender,  bairro, num, complemento, referencia, telFixo, celular, email, fotoBytes, cidade);
-                //int id = cliSelecionado.getIdCliente();
-                //JOptionPane.showMessageDialog(this, "Cliente " + id + "alterado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );                    
-            }
-
-        } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+        if(checkFields()){
+            try{
+                gerenciadorVIEW.getGerDominio().inserirVeiculo(objetoVersao, ano, combustivel, cambio, direcao, motor, airbag, alarme, ar_condicionado, freios_abs, trava_eletrica, vidro_eletrico);
+                JOptionPane.showMessageDialog(this, "Veiculo inserido com sucesso.", "Inserir veiculo", JOptionPane.INFORMATION_MESSAGE  );
+            } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO Veiculo", JOptionPane.ERROR_MESSAGE  );
+            }  
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 

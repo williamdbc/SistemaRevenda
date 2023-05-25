@@ -79,6 +79,7 @@
     </Component>
     <Component class="javax.swing.JPasswordField" name="pswSenha">
       <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pswSenhaActionPerformed"/>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="pswSenhaKeyPressed"/>
       </Events>
     </Component>

@@ -35,6 +35,11 @@ public class Login extends javax.swing.JDialog {
 
         lblCarro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/carroLogin.png"))); // NOI18N
 
+        pswSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pswSenhaActionPerformed(evt);
+            }
+        });
         pswSenha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 pswSenhaKeyPressed(evt);
@@ -104,7 +109,7 @@ public class Login extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pswSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswSenhaKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             btnLoginActionPerformed(null);
         }
     }//GEN-LAST:event_pswSenhaKeyPressed
@@ -122,6 +127,10 @@ public class Login extends javax.swing.JDialog {
     private void btnLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyPressed
 
     }//GEN-LAST:event_btnLoginKeyPressed
+
+    private void pswSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswSenhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pswSenhaActionPerformed
 
 
 

@@ -20,7 +20,6 @@ public class CadVersao extends javax.swing.JDialog {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
         versaoSelecionada = null;
-        btnPesquisarActionPerformed(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -158,6 +157,11 @@ public class CadVersao extends javax.swing.JDialog {
 
         btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/apagar.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         btnEditarOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar_ok.png"))); // NOI18N
@@ -348,27 +352,43 @@ public class CadVersao extends javax.swing.JDialog {
         botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
         cmbMarca.setSelectedIndex(-1);
-
-        
     }//GEN-LAST:event_formComponentShown
 
+    private boolean checkFields(){
+        String msgErro = "";
+        if(cmbMarca.getSelectedItem().toString().isBlank()){
+            msgErro += "O campo 'Marca' não pode estar vazio.\n";
+        }
+        
+        if(cmbModelo.getSelectedItem().toString().isBlank()){
+            msgErro += "O campo 'Modelo' não pode estar vazio.\n";
+        }
+        
+        if(txtVersao.getText().isBlank()){
+             msgErro += "O campo 'Versão' não pode estar vazio.\n";
+        }
+        
+       
+
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
+    
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         Modelo objetoModelo = (Modelo) cmbModelo.getSelectedItem();
         String nomeVersao = txtVersao.getText();
 
-        try {
-            if (versaoSelecionada == null) {
+        if(checkFields()){
+            try {
                 gerenciadorVIEW.getGerDominio().inserirVersao(objetoModelo, nomeVersao);
                 JOptionPane.showMessageDialog(this, "Modelo inserido com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
-            } else {
-                // ALTERAR
-               // gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, dt, sexo, cep, ender,  bairro, num, complemento, referencia, telFixo, celular, email, fotoBytes, cidade);
-                //int id = cliSelecionado.getIdCliente();
-                //JOptionPane.showMessageDialog(this, "Cliente " + id + "alterado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );                    
-            }
+                btnLimparActionPerformed(null);
 
-        } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+            }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
@@ -382,14 +402,22 @@ public class CadVersao extends javax.swing.JDialog {
 
     private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
         Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
-        List <Modelo> listaModelos = objetoMarca.getModelos();
-        gerenciadorVIEW.carregarGenerico(cmbModelo, listaModelos);
-        cmbModelo.setSelectedIndex(-1);
+        if(objetoMarca != null){
+            List <Modelo> listaModelos = objetoMarca.getModelos();
+            gerenciadorVIEW.carregarGenerico(cmbModelo, listaModelos);
+            cmbModelo.setSelectedIndex(-1);
+        }
     }//GEN-LAST:event_cmbMarcaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         botaoCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        cmbMarca.setSelectedIndex(-1);
+        cmbModelo.setSelectedIndex(-1);
+        txtVersao.setText("");
+    }//GEN-LAST:event_btnLimparActionPerformed
 
   
 
