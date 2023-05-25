@@ -1,5 +1,6 @@
 package VIEW;
 
+import CONTROL.FuncoesUteis;
 import CONTROL.GerenciadorVIEW;
 import DOMINIO.Marca;
 import DOMINIO.Modelo;
@@ -292,28 +293,20 @@ public class CadModelo extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+        jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
    
-    private void botaoEditar(){
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+      private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
     
     private void botaoCancelar(){
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);  
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
  
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed

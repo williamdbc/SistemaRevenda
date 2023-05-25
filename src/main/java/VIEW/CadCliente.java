@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package VIEW;
 
+import CONTROL.FuncoesUteis;
 import CONTROL.GerenciadorVIEW;
 import DOMINIO.Cliente;
 import java.util.List;
@@ -11,10 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
-/**
- *
- * @author usuario
- */
 public class CadCliente extends javax.swing.JDialog {
 
     private GerenciadorVIEW gerenciadorVIEW;
@@ -331,18 +324,12 @@ public class CadCliente extends javax.swing.JDialog {
      
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    private void botaoEditar(){
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+     private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
     
     private void botaoCancelar(){
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);  
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
     
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed

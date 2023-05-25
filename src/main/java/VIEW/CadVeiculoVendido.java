@@ -4,6 +4,7 @@
  */
 package VIEW;
 
+import CONTROL.FuncoesUteis;
 import CONTROL.GerenciadorVIEW;
 import DOMINIO.*;
 import java.text.ParseException;
@@ -683,16 +684,21 @@ import org.hibernate.HibernateException;
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
+    private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
+    private void botaoCancelar(){
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        jTabbedPane1.setSelectedIndex(1);
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);
+        botaoCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
-        // TODO add your handling code here:
+        jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private String dateToString(Date dataSQL){
@@ -745,6 +751,7 @@ import org.hibernate.HibernateException;
     }
     
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbCliente, Cliente.class);
         revendaSelecionada = gerenciadorVIEW.getRevenda();
         if(revendaSelecionada != null){

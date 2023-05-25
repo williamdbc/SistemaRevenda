@@ -1,5 +1,5 @@
 package VIEW;
-import CONTROL.GerenciadorVIEW;
+import CONTROL.*;
 import DOMINIO.*;
 import DOMINIO.Modelo;
 import DOMINIO.Veiculo;
@@ -399,6 +399,11 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                 btnEditarOKComponentShown(evt);
             }
         });
+        btnEditarOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarOKActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnEditarOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         javax.swing.GroupLayout pnlCadVeiculoCmpLayout = new javax.swing.GroupLayout(pnlCadVeiculoCmp);
@@ -627,10 +632,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         jTabbedPane1.setSelectedIndex(0);
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
@@ -647,18 +649,18 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             }
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
-        } 
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        }    
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
+    
+    private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
+    private void botaoCancelar(){
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
@@ -674,11 +676,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        jTabbedPane1.setSelectedIndex(1);
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);
+        botaoCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
@@ -728,20 +726,14 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbAnoActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        //botaoCancelar();
+        botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
         gerenciadorVIEW.carregarComboBox(cmbFornecedor, Fornecedor.class);
         cmbMarca.setSelectedIndex(-1);
         cmbFornecedor.setSelectedIndex(-1);
     }//GEN-LAST:event_formComponentShown
 
-      private String dateToString(Date dataSQL){
-        return new SimpleDateFormat("dd/MM/yyyy").format(dataSQL);
-    }
  
-    private Date stringToDate(String dataString) throws ParseException{
-        return new SimpleDateFormat("dd/MM/yyyy").parse(dataString);
-    }
     
     
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -754,7 +746,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         float valor_compra = Float.valueOf(txtValor.getText());
         
         try {
-            data_compra = stringToDate(txtData.getText());
+            data_compra = FuncoesUteis.stringToDate(txtData.getText());
         } catch (ParseException ex) {
             Logger.getLogger(CadVeiculoComprado.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -765,6 +757,10 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private void txtKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKMActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtKMActionPerformed
+
+    private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarOKActionPerformed
 
   
 

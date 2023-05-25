@@ -4,6 +4,7 @@
  */
 package VIEW;
 
+import CONTROL.FuncoesUteis;
 import CONTROL.GerenciadorVIEW;
 import DOMINIO.Marca;
 import DOMINIO.Modelo;
@@ -582,21 +583,16 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void botaoEditar(){
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
     
     private void botaoCancelar(){
-        lblEditando.setVisible(false);
-        btnLimpar.setVisible(true);
-        btnEditarOK.setVisible(false);
-        btnCancelar.setVisible(false);  
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
     
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
 

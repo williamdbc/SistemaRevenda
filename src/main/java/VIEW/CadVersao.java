@@ -1,5 +1,6 @@
 package VIEW;
 
+import CONTROL.FuncoesUteis;
 import CONTROL.GerenciadorVIEW;
 import DOMINIO.Marca;
 import DOMINIO.Modelo;
@@ -148,6 +149,11 @@ public class CadVersao extends javax.swing.JDialog {
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/erro.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setAutoscrolls(true);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 0, -1, 25));
 
         btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/apagar.png"))); // NOI18N
@@ -312,6 +318,13 @@ public class CadVersao extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
+    private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
+    private void botaoCancelar(){
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
     
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
@@ -327,15 +340,14 @@ public class CadVersao extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        btnLimpar.setVisible(false);
-        lblEditando.setVisible(true);
-        btnEditarOK.setVisible(true);
-        btnCancelar.setVisible(true);
+        jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
-        cmbModelo.setSelectedIndex(-1);
+        cmbMarca.setSelectedIndex(-1);
 
         
     }//GEN-LAST:event_formComponentShown
@@ -374,6 +386,10 @@ public class CadVersao extends javax.swing.JDialog {
         gerenciadorVIEW.carregarGenerico(cmbModelo, listaModelos);
         cmbModelo.setSelectedIndex(-1);
     }//GEN-LAST:event_cmbMarcaActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        botaoCancelar();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
   
 
