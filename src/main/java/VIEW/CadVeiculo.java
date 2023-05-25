@@ -627,27 +627,27 @@ public class CadVeiculo extends javax.swing.JDialog {
 
     private boolean checkFields(){
         String msgErro = "";
-        if(cmbMarca.getSelectedItem().toString().isBlank()){
+        if(cmbMarca.getSelectedIndex() == -1){
             msgErro += "O campo 'Marca' não pode estar vazio.\n";
         }
         
-        if(cmbModelo.getSelectedItem().toString().isBlank()){
+        if(cmbModelo.getSelectedIndex() == -1){
             msgErro += "O campo 'Modelo' não pode estar vazio.\n";
         }
         
-        if(cmbVersao.getSelectedItem().toString().isBlank()){
+        if(cmbVersao.getSelectedIndex() == -1){
              msgErro += "O campo 'Versão' não pode estar vazio.\n";
         }
         
-        if(cmbCombustivel.getSelectedItem().toString().isBlank()){
+        if(cmbCombustivel.getSelectedIndex() == -1){
              msgErro += "O campo 'Combustível' não pode estar vazio.\n";
         }
         
-        if(cmbCambio.getSelectedItem().toString().isBlank()){
+        if(cmbCambio.getSelectedIndex() == -1){
              msgErro += "O campo 'Câmbio' não pode estar vazio.\n";
         }
         
-        if(cmbDirecao.getSelectedItem().toString().isBlank()){
+        if(cmbDirecao.getSelectedIndex() == -1){
              msgErro += "O campo 'Direção' não pode estar vazio.\n";
         }
 
@@ -662,23 +662,22 @@ public class CadVeiculo extends javax.swing.JDialog {
     
     
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        Versao objetoVersao = (Versao) cmbVersao.getSelectedItem();
-        int ano = Integer.valueOf(spnAno.getValue().toString());
-        String combustivel = cmbCombustivel.getSelectedItem().toString();
-        String cambio = cmbCambio.getSelectedItem().toString();
-        String direcao = cmbDirecao.getSelectedItem().toString();
-        float motor = Float.valueOf(spnMotor.getValue().toString());
-        
-        boolean airbag = chkAirbag.isSelected();
-        boolean alarme = chkAlarme.isSelected();
-        boolean ar_condicionado = chkArCondicionado.isSelected();
-        boolean freios_abs = chkFreiosABS.isSelected();
-        boolean trava_eletrica = chkTravaEletrica.isSelected();
-        boolean vidro_eletrico = chkVidroEletrico.isSelected();
-        
-
-        if(checkFields()){
+      if(checkFields()){
             try{
+                Versao objetoVersao = (Versao) cmbVersao.getSelectedItem();
+                int ano = Integer.valueOf(spnAno.getValue().toString());
+                String combustivel = cmbCombustivel.getSelectedItem().toString();
+                String cambio = cmbCambio.getSelectedItem().toString();
+                String direcao = cmbDirecao.getSelectedItem().toString();
+                float motor = Float.valueOf(spnMotor.getValue().toString());
+
+                boolean airbag = chkAirbag.isSelected();
+                boolean alarme = chkAlarme.isSelected();
+                boolean ar_condicionado = chkArCondicionado.isSelected();
+                boolean freios_abs = chkFreiosABS.isSelected();
+                boolean trava_eletrica = chkTravaEletrica.isSelected();
+                boolean vidro_eletrico = chkVidroEletrico.isSelected();
+                
                 gerenciadorVIEW.getGerDominio().inserirVeiculo(objetoVersao, ano, combustivel, cambio, direcao, motor, airbag, alarme, ar_condicionado, freios_abs, trava_eletrica, vidro_eletrico);
                 JOptionPane.showMessageDialog(this, "Veiculo inserido com sucesso.", "Inserir veiculo", JOptionPane.INFORMATION_MESSAGE  );
             } catch (HibernateException ex) {

@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
@@ -762,22 +762,43 @@ import org.hibernate.HibernateException;
         }
     }//GEN-LAST:event_formComponentShown
 
-    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        try {
-            Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
-            float valor_venda = Float.valueOf(txtValorVenda.getText());
-            Date data_venda = stringToDate(txtDataVenda.getText());
-            
-            revendaSelecionada.setCliente(cliente);
-            revendaSelecionada.setValor_venda(valor_venda);
-            revendaSelecionada.setData_venda(data_venda);
-            
-            gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(revendaSelecionada);
-            
-            
-        } catch (ParseException ex) {
-            Logger.getLogger(CadVeiculoVendido.class.getName()).log(Level.SEVERE, null, ex);
+    private boolean checkFields(){
+        String msgErro = "";
+        if(cmbCliente.getSelectedItem().toString().isBlank()){
+            msgErro += "O campo 'Cliente' não pode estar vazio.\n";
         }
+        
+        if(txtValorVenda.getText().isBlank()){
+            msgErro += "O campo 'Valor' não pode estar vazio.\n";
+        }
+        
+        if(ftxtData_compra.getText().isBlank()){
+             msgErro += "O campo 'Datta compra' não pode estar vazio.\n";
+        }
+
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        if(checkFields()){
+            try {
+                Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
+                float valor_venda = Float.valueOf(txtValorVenda.getText());
+                Date data_venda = stringToDate(txtDataVenda.getText());
+
+                revendaSelecionada.setCliente(cliente);
+                revendaSelecionada.setValor_venda(valor_venda);
+                revendaSelecionada.setData_venda(data_venda);
+
+                gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(revendaSelecionada);
+                JOptionPane.showMessageDialog(this, "Veiculo comprado inserido com sucesso.", "Inserir veiculo", JOptionPane.INFORMATION_MESSAGE  );
+        
+            } catch (HibernateException | ParseException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO Veiculo vendido", JOptionPane.ERROR_MESSAGE  );
+            }
+            }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void txtValorVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorVendaActionPerformed

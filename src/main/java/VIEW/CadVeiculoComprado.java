@@ -734,24 +734,61 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_formComponentShown
 
  
+    private boolean checkFields(){
+        String msgErro = "";
+        if(cmbMarca.getSelectedIndex() == -1){
+            msgErro += "O campo 'Marca' não pode estar vazio.\n";
+        }
+        
+        if(cmbModelo.getSelectedIndex() == -1){
+            msgErro += "O campo 'Modelo' não pode estar vazio.\n";
+        }
+        
+        if(cmbVersao.getSelectedIndex() == -1){
+             msgErro += "O campo 'Versão' não pode estar vazio.\n";
+        }
+        
+        if(cmbCombustivel.getSelectedIndex() == -1){
+             msgErro += "O campo 'Combustível' não pode estar vazio.\n";
+        }
+        
+        if(cmbCambio.getSelectedIndex() == -1){
+             msgErro += "O campo 'Câmbio' não pode estar vazio.\n";
+        }
+        
+        if(cmbDirecao.getSelectedIndex() == -1){
+             msgErro += "O campo 'Direção' não pode estar vazio.\n";
+        }
+        
+        if(cmbAno.getSelectedIndex() == -1){
+             msgErro += "O campo 'Ano' não pode estar vazio.\n";
+        }
+
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
     
     
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        Veiculo objetoVeiculo = (Veiculo) cmbAno.getSelectedItem();
-        String placa = txtPlaca.getText();
-        String cor = txtCor.getText();
-        int km = Integer.valueOf(txtKM.getText());
-        Fornecedor fornecedor = (Fornecedor) cmbFornecedor.getSelectedItem();
-        Date data_compra = null;
-        float valor_compra = Float.valueOf(txtValor.getText());
-        
-        try {
-            data_compra = FuncoesUteis.stringToDate(txtData.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(CadVeiculoComprado.class.getName()).log(Level.SEVERE, null, ex);
+        if(checkFields()){
+            try{
+                Veiculo objetoVeiculo = (Veiculo) cmbAno.getSelectedItem();
+                String placa = txtPlaca.getText();
+                String cor = txtCor.getText();
+                int km = Integer.parseInt(txtKM.getText());
+                Fornecedor fornecedor = (Fornecedor) cmbFornecedor.getSelectedItem();
+                Date data_compra = null;
+                float valor_compra = Float.valueOf(txtValor.getText());
+                data_compra = FuncoesUteis.stringToDate(txtData.getText());
+                
+                gerenciadorVIEW.getGerDominio().inserirVeiculoComprado(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
+                JOptionPane.showMessageDialog(this, "Veiculo comprado inserido com sucesso.", "Inserir veiculo", JOptionPane.INFORMATION_MESSAGE  );
+            } catch (HibernateException | ParseException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO Veiculo comprado", JOptionPane.ERROR_MESSAGE  );
+            }
         }
- 
-        gerenciadorVIEW.getGerDominio().inserirVeiculoComprado(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void txtKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKMActionPerformed

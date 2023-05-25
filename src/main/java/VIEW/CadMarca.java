@@ -345,10 +345,10 @@ public class CadMarca extends javax.swing.JDialog {
     
     
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        String marca = txtMarca.getText();
-        
         if(checkFields()){
             try {
+                String marca = txtMarca.getText();
+                
                 gerenciadorVIEW.getGerDominio().inserirMarca(marca);
                 JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir marca", JOptionPane.INFORMATION_MESSAGE);
                 btnLimparActionPerformed(null);

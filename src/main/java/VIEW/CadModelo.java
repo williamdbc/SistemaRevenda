@@ -317,7 +317,7 @@ public class CadModelo extends javax.swing.JDialog {
     
     private boolean checkFields(){
         String msgErro = "";
-        if(cmbMarca.getSelectedItem().toString().isBlank()){
+        if(cmbMarca.getSelectedIndex() == -1){
             msgErro += "O campo 'Marca' não pode estar vazio.\n";
         }
         
@@ -370,11 +370,11 @@ public class CadModelo extends javax.swing.JDialog {
     }//GEN-LAST:event_formComponentShown
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
-        String nomeModelo = txtModelo.getText();
-
         if(checkFields()){
             try {
+                Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
+                String nomeModelo = txtModelo.getText();
+        
                 gerenciadorVIEW.getGerDominio().inserirModelo(objetoMarca, nomeModelo);
                 JOptionPane.showMessageDialog(this, "Modelo inserido com sucesso.", "Inserir modelo", JOptionPane.INFORMATION_MESSAGE  );
                 btnLimparActionPerformed(null);
