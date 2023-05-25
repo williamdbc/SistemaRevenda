@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -664,7 +667,16 @@ import javax.swing.JTextField;
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        // TODO add your handling code here:
+        try {
+            List<Revenda> listaVeiculoComprado = gerenciadorVIEW.getGerDominio().listar(Revenda.class); 
+            ((DefaultTableModel) tblVeiculoVnd.getModel()).setNumRows(0);
+            
+            for (Revenda revenda : listaVeiculoComprado ) {
+                ((DefaultTableModel)tblVeiculoVnd.getModel()).addRow(revenda.toArray_Venda());     
+            }
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+        } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -702,6 +714,9 @@ import javax.swing.JTextField;
     }
     
     private void limparCampos(){
+       
+        
+        
         JComboBox[] listaCombos = new JComboBox[]{cmbAno, cmbCambio, cmbCliente, cmbCombustivel, cmbDirecao, cmbFiltrar, 
                                                 cmbFiltrarOrdem, cmbMarca, cmbModelo, cmbPesquisar, cmbVersao};
                 
@@ -746,7 +761,11 @@ import javax.swing.JTextField;
             float valor_venda = Float.valueOf(txtValorVenda.getText());
             Date data_venda = stringToDate(txtDataVenda.getText());
             
-            gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(cliente, data_venda, valor_venda);
+            revendaSelecionada.setCliente(cliente);
+            revendaSelecionada.setValor_venda(valor_venda);
+            revendaSelecionada.setData_venda(data_venda);
+            
+            gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(revendaSelecionada);
             
             
         } catch (ParseException ex) {

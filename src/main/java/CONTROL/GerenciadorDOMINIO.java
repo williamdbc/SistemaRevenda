@@ -56,6 +56,7 @@ public class GerenciadorDOMINIO {
         veiculoDAO.inserir(objetoVeiculo);
     }
     
+  
     public void inserirCliente(String nome, String cidade, String telefone){
         Cliente objetoCliente = new Cliente(nome, cidade, telefone);
         clienteDAO.inserir(objetoCliente);
@@ -71,9 +72,8 @@ public class GerenciadorDOMINIO {
         revendaDAO.inserir(objetoRevenda); 
     }
     
-     public void inserirVeiculoVendido(Cliente cliente, Date data_venda, float valor_venda){
-        Revenda objetoRevenda = new Revenda(cliente, data_venda, valor_venda);
-        revendaDAO.alterar(objetoRevenda); 
+     public void inserirVeiculoVendido(Revenda revendaParametro){
+        revendaDAO.alterar(revendaParametro); 
     }
     
 

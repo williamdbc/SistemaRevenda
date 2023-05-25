@@ -125,6 +125,23 @@ public class Revenda {
     public List<Despesa> getDespesas() {
         return despesas;
     }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public void setDespesas(List<Despesa> despesas) {
+        this.despesas = despesas;
+    }
+    
     
     
     
@@ -164,7 +181,7 @@ public class Revenda {
         return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
                             veiculo.getVersao().getModelo().getNome_modelo() + " " +
                             veiculo.getVersao().getNome_versao(),
-                            veiculo.getAno(), this, fornecedor.getNome_cli_forn(), valor_compra, data_compra, 0, valor_venda, data_venda, (valor_venda-valor_compra)};
+                            veiculo.getAno(), cor, this, fornecedor.getNome_cli_forn(), valor_compra, data_compra, 0, valor_venda, data_venda, valor_venda - valor_compra};
     }
 
     @Override
