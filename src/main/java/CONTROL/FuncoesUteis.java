@@ -1,13 +1,21 @@
-
 package CONTROL;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class FuncoesUteis {
     
@@ -19,16 +27,25 @@ public class FuncoesUteis {
         return new SimpleDateFormat("dd/MM/yyyy").parse(dataString);
     }
     
-    public static void limparComboText(JComboBox[] listaCombos, JTextField[] listaTextos){
-        for(JComboBox combo : listaCombos){
-            combo.setSelectedIndex(-1);
-        }
-        
-        for(JTextField textField : listaTextos){
-            textField.setText("");
+    
+    public static void cleanTextFields(JTextField[] listaTextFields){
+        for(JTextField txt : listaTextFields){
+            txt.setText("");
         }
     }
     
+    public static void cleanComboBoxs(JComboBox[] listaComboBoxs){
+         for(JComboBox cmb : listaComboBoxs){
+            cmb.setSelectedIndex(-1);
+        }
+    }
+    
+    public static void cleanCheckBoxs(JCheckBox[] listaComboBoxs){
+         for(JCheckBox chk : listaComboBoxs){
+            chk.setSelected(false);
+        }
+    }
+        
     public static void isEditando(boolean editando, JButton botao1, JButton botao2, JButton botao3, JLabel label){
         if(editando){
             botao1.setVisible(false);
@@ -43,4 +60,14 @@ public class FuncoesUteis {
         }
     }
     
+    
+    public static void ordenarTabela(JTable tabela, int coluna, SortOrder tipoOrdem){
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabela.getModel());
+        tabela.setRowSorter(sorter);
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        
+        sortKeys.clear();
+        sortKeys.add(new RowSorter.SortKey(coluna, tipoOrdem));
+        sorter.setSortKeys(sortKeys);
+    }
 }

@@ -1,29 +1,26 @@
 package VIEW;
+
 import CONTROL.*;
 import DOMINIO.*;
-import DOMINIO.Modelo;
-import DOMINIO.Veiculo;
-import DOMINIO.Versao;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
 public class CadVeiculoComprado extends javax.swing.JDialog {
-
     private GerenciadorVIEW gerenciadorVIEW;
     private Revenda revendaSelecionada;
     
     public CadVeiculoComprado(java.awt.Frame parent, boolean modal, GerenciadorVIEW gerVIEW) {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
-        revendaSelecionada = null;
-        
+        revendaSelecionada = null;  
     }
 
     @SuppressWarnings("unchecked")
@@ -88,7 +85,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         btnPesquisar = new javax.swing.JButton();
         btnFiltrar = new javax.swing.JButton();
         btnVender = new javax.swing.JButton();
-        btnVender1 = new javax.swing.JButton();
+        btnDespesa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -390,6 +387,11 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
         btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/apagar.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         btnEditarOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar_ok.png"))); // NOI18N
@@ -515,12 +517,12 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             }
         });
 
-        btnVender1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/venda.png"))); // NOI18N
-        btnVender1.setText("Despesa");
-        btnVender1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnVender1.addActionListener(new java.awt.event.ActionListener() {
+        btnDespesa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/venda.png"))); // NOI18N
+        btnDespesa.setText("Despesa");
+        btnDespesa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnDespesa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVender1ActionPerformed(evt);
+                btnDespesaActionPerformed(evt);
             }
         });
 
@@ -546,7 +548,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                                     .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlListVeiculoCmpLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnVender1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnDespesa, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(pnlListVeiculoCmpLayout.createSequentialGroup()
                         .addGroup(pnlListVeiculoCmpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblListVeiculoCmp)
@@ -598,7 +600,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                         .addGap(15, 15, 15)
                         .addComponent(btnInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
-                        .addComponent(btnVender1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDespesa, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
@@ -612,12 +614,88 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-    public Revenda getRevenda(){
-        return revendaSelecionada;
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    private void cleanFields(){
+        JComboBox[] listaComboBox = new JComboBox[]{cmbMarca, cmbModelo, cmbVersao, cmbAno, cmbCombustivel, cmbCambio, cmbDirecao, cmbFornecedor};
+        JTextField[] listaTextField = new JTextField[]{txtPlaca, txtCor, txtKM, txtValor};
+        
+        FuncoesUteis.cleanComboBoxs(listaComboBox);
+        FuncoesUteis.cleanTextFields(listaTextField);
+        
+        spnMotor.setValue(1);
     }
     
     
+    private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
+    private void botaoCancelar(){
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+        cleanFields();
+    }
+    
+    private boolean checkFields(){
+        String msgErro = "";
+        if(cmbMarca.getSelectedIndex() == -1){
+            msgErro += "O campo 'Marca' não pode estar vazio.\n";
+        }
+        
+        if(cmbModelo.getSelectedIndex() == -1){
+            msgErro += "O campo 'Modelo' não pode estar vazio.\n";
+        }
+        
+        if(cmbVersao.getSelectedIndex() == -1){
+             msgErro += "O campo 'Versão' não pode estar vazio.\n";
+        }
+        
+        if(cmbCombustivel.getSelectedIndex() == -1){
+             msgErro += "O campo 'Combustível' não pode estar vazio.\n";
+        }
+        
+        if(cmbCambio.getSelectedIndex() == -1){
+             msgErro += "O campo 'Câmbio' não pode estar vazio.\n";
+        }
+        
+        if(cmbDirecao.getSelectedIndex() == -1){
+             msgErro += "O campo 'Direção' não pode estar vazio.\n";
+        }
+        
+        if(cmbAno.getSelectedIndex() == -1){
+             msgErro += "O campo 'Ano' não pode estar vazio.\n";
+        }
+        
+        if(cmbFornecedor.getSelectedIndex() == -1){
+             msgErro += "O campo 'Ano' não pode estar vazio.\n";
+        }
+        
+        if(txtCor.getText().isBlank()){
+             msgErro += "O campo 'Cor' não pode estar vazio.\n";
+        }
+
+        if(txtKM.getText().isBlank()){
+             msgErro += "O campo 'KM' não pode estar vazio.\n";
+        }
+                
+        if(txtPlaca.getText().isBlank()){
+             msgErro += "O campo 'Placa' não pode estar vazio.\n";
+        }
+        
+        if(txtData.getText().isBlank()){
+             msgErro += "O campo 'Data' não pode estar vazio.\n";
+        }
+        
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
+    
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
     private void btnAddVersaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVersaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAddVersaoActionPerformed
@@ -648,19 +726,10 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                 ((DefaultTableModel)tblVeiculoCmp.getModel()).addRow(revenda.toArray_Compra());     
             }
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar compra de veiculo", JOptionPane.ERROR_MESSAGE  );
         }    
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-    
-    private void botaoEditar(){
-        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
-    }
-    
-    private void botaoCancelar(){
-        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
-    }
-    
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
@@ -680,12 +749,18 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnEditarOKComponentShown
 
-    private void btnVender1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVender1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnVender1ActionPerformed
+    private void btnDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDespesaActionPerformed
+        int linha = tblVeiculoCmp.getSelectedRow();
+        if ( linha >= 0 ) {
+            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 5);
+            gerenciadorVIEW.setRevenda(revendaSelecionada);
+            gerenciadorVIEW.janelaListaDespesa();
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_btnDespesaActionPerformed
 
     private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
         Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
@@ -715,7 +790,6 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbVersaoActionPerformed
 
     private void cmbAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAnoActionPerformed
-        //Integer.
         Veiculo objetoVeiculo = (Veiculo) cmbAno.getSelectedItem();
         if(objetoVeiculo != null){
             cmbCombustivel.setSelectedItem(objetoVeiculo.getCombustivel());
@@ -726,51 +800,11 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbAnoActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
         gerenciadorVIEW.carregarComboBox(cmbFornecedor, Fornecedor.class);
-        cmbMarca.setSelectedIndex(-1);
-        cmbFornecedor.setSelectedIndex(-1);
+        botaoCancelar();
     }//GEN-LAST:event_formComponentShown
 
- 
-    private boolean checkFields(){
-        String msgErro = "";
-        if(cmbMarca.getSelectedIndex() == -1){
-            msgErro += "O campo 'Marca' não pode estar vazio.\n";
-        }
-        
-        if(cmbModelo.getSelectedIndex() == -1){
-            msgErro += "O campo 'Modelo' não pode estar vazio.\n";
-        }
-        
-        if(cmbVersao.getSelectedIndex() == -1){
-             msgErro += "O campo 'Versão' não pode estar vazio.\n";
-        }
-        
-        if(cmbCombustivel.getSelectedIndex() == -1){
-             msgErro += "O campo 'Combustível' não pode estar vazio.\n";
-        }
-        
-        if(cmbCambio.getSelectedIndex() == -1){
-             msgErro += "O campo 'Câmbio' não pode estar vazio.\n";
-        }
-        
-        if(cmbDirecao.getSelectedIndex() == -1){
-             msgErro += "O campo 'Direção' não pode estar vazio.\n";
-        }
-        
-        if(cmbAno.getSelectedIndex() == -1){
-             msgErro += "O campo 'Ano' não pode estar vazio.\n";
-        }
-
-        if(!msgErro.isBlank()){
-            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } return true;  
-    }
-    
-    
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         if(checkFields()){
             try{
@@ -784,30 +818,34 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                 data_compra = FuncoesUteis.stringToDate(txtData.getText());
                 
                 gerenciadorVIEW.getGerDominio().inserirVeiculoComprado(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
-                JOptionPane.showMessageDialog(this, "Veiculo comprado inserido com sucesso.", "Inserir veiculo", JOptionPane.INFORMATION_MESSAGE  );
+                JOptionPane.showMessageDialog(this, "Veículo comprado inserido com sucesso.", "Inserir veículo", JOptionPane.INFORMATION_MESSAGE);
+                cleanFields();
             } catch (HibernateException | ParseException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Veiculo comprado", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir a compra de um veículo.", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void txtKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKMActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtKMActionPerformed
 
     private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnEditarOKActionPerformed
 
-  
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        cleanFields();
+    }//GEN-LAST:event_btnLimparActionPerformed
 
-
+    // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddMarca;
     private javax.swing.JButton btnAddModelo;
     private javax.swing.JButton btnAddVersao;
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnDespesa;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEditarOK;
     private javax.swing.JButton btnExcluir;
@@ -817,7 +855,6 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnVender;
-    private javax.swing.JButton btnVender1;
     private javax.swing.JComboBox<String> cmbAno;
     private javax.swing.JComboBox<String> cmbCambio;
     private javax.swing.JComboBox<String> cmbCombustivel;
@@ -863,4 +900,5 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private javax.swing.JTextField txtPlaca;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold> 
 }

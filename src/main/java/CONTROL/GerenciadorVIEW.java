@@ -1,13 +1,10 @@
 package CONTROL;
 
-import DAO.ConexaoHibernate;
 import DOMINIO.*;
 import VIEW.*;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -15,10 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 public class GerenciadorVIEW {
     private FrmPrincipal janelaPrincipal = null;
@@ -62,16 +56,16 @@ public class GerenciadorVIEW {
         return dlg;
     }
     
-    
     public void janelaPrincipal() {
         janelaPrincipal = new FrmPrincipal(this);
         janelaPrincipal.setVisible(true);
     }
     
     public void janelaLogin() {
-        janelaLogin = (Login) abrirJanela(null, janelaLogin, Login.class);
+        janelaLogin = new Login(this);
+        janelaLogin.setVisible(true);
     }
-    
+ 
     public void janelaCadCliente() {
         cadCliente = (CadCliente) abrirJanela(janelaPrincipal, cadCliente, CadCliente.class);
     }
@@ -96,9 +90,8 @@ public class GerenciadorVIEW {
         cadVeiculo = (CadVeiculo) abrirJanela(janelaPrincipal, cadVeiculo, CadVeiculo.class);
     }
     
-    public Revenda janelaCadVeiculoComprado() {
+    public void janelaCadVeiculoComprado() {
         cadVeiculoComprado = (CadVeiculoComprado) abrirJanela(janelaPrincipal, cadVeiculoComprado, CadVeiculoComprado.class);
-        return cadVeiculoComprado.getRevenda();
     }
     
     public void janelaCadVeiculoVendido() {
@@ -123,6 +116,7 @@ public class GerenciadorVIEW {
         revendaSelecionada = revendaParametro;
     }
     
+    
     public Revenda getRevenda(){
         return revendaSelecionada;
     }
@@ -131,6 +125,7 @@ public class GerenciadorVIEW {
         comboGenerico.setModel(new DefaultComboBoxModel(listaObjetos.toArray()));   
     }
        
+
     
     
     
@@ -138,7 +133,6 @@ public class GerenciadorVIEW {
          
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                // System.out.println( info.getName() );
                 if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;

@@ -1,15 +1,13 @@
 package VIEW;
 
-import CONTROL.FuncoesUteis;
-import CONTROL.GerenciadorVIEW;
-import DOMINIO.Cliente;
+import CONTROL.*;
+import DOMINIO.*;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
 public class CadCliente extends javax.swing.JDialog {
-
     private GerenciadorVIEW gerenciadorVIEW;
     private Cliente clienteSelecionado;
     
@@ -139,6 +137,11 @@ public class CadCliente extends javax.swing.JDialog {
 
         btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/apagar.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnLimpar, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         btnEditarOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar_ok.png"))); // NOI18N
@@ -298,8 +301,51 @@ public class CadCliente extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    
+    private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
+    private void botaoCancelar(){
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+        cleanFields();
+    }
+    
+    private void cleanFields(){
+        txtNome.setText("");
+        txtCidade.setText("");
+        txtTelefone.setText("");
+    }
+    
+    private boolean checkFields(){
+        String msgErro = "";
+        if(txtNome.getText().isBlank()){
+            msgErro += "O campo 'Nome' não pode estar vazio.\n";
+        }
+        
+        if(txtCidade.getText().isBlank()){
+            msgErro += "O campo 'Cidade' não pode estar vazio.\n";
+        }
+        
+        if(txtTelefone.getText().isBlank()){
+            msgErro += "O campo 'Telefone' não pode estar vazio.\n";
+        }
+        
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
+   
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -307,7 +353,7 @@ public class CadCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
@@ -319,56 +365,45 @@ public class CadCliente extends javax.swing.JDialog {
                 ((DefaultTableModel)tblCliente.getModel()).addRow(cliente.toArray());     
             }
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
         } 
      
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-     private void botaoEditar(){
-        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
-    }
-    
-    private void botaoCancelar(){
-        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
-    }
-    
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         jTabbedPane1.setSelectedIndex(0);
         botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void txtCidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCidadeActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtCidadeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        String nome = txtNome.getText();
-        String cidade = txtCidade.getText();
-        String telefone = txtTelefone.getText();
+        if(checkFields()){
+           try{
+                String nome = txtNome.getText();
+                String cidade = txtCidade.getText();
+                String telefone = txtTelefone.getText();
             
-        try {
-            if (clienteSelecionado == null) {
                 gerenciadorVIEW.getGerDominio().inserirCliente(nome, cidade, telefone);
-                JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
-            } else {
-                // ALTERAR
-               // gerIG.getGerDominio().alterarCliente(cliSelecionado, nome, cpf, dt, sexo, cep, ender,  bairro, num, complemento, referencia, telFixo, celular, email, fotoBytes, cidade);
-                //int id = cliSelecionado.getIdCliente();
-                //JOptionPane.showMessageDialog(this, "Cliente " + id + "alterado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );                    
+                JOptionPane.showMessageDialog(this, "Cliente inserido com sucesso.", "Inserir cliente", JOptionPane.INFORMATION_MESSAGE);
+                cleanFields();
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir cliente.", JOptionPane.ERROR_MESSAGE  );
             }
-
-        } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
         }
-        
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         botaoCancelar();
     }//GEN-LAST:event_formComponentShown
 
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        cleanFields();
+    }//GEN-LAST:event_btnLimparActionPerformed
 
-
+    // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnCancelar;
@@ -400,4 +435,5 @@ public class CadCliente extends javax.swing.JDialog {
     private javax.swing.JTextField txtPesquisar;
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold> 
 }

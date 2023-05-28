@@ -1,17 +1,12 @@
 package CONTROL;
 
-import DAO.ClienteDAO;
-import DAO.ConexaoHibernate;
 import DAO.*;
 import DOMINIO.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
 
-
 public class GerenciadorDOMINIO {
-    
     GenericDAO genericDAO = null;
     MarcaDAO marcaDAO = null;
     ModeloDAO modeloDAO = null;
@@ -32,7 +27,6 @@ public class GerenciadorDOMINIO {
         clienteDAO = new ClienteDAO();
         fornecedorDAO = new FornecedorDAO();
         revendaDAO = new RevendaDAO();
-        
     }   
     
     public void inserirMarca(String nomeMarca){
@@ -75,40 +69,25 @@ public class GerenciadorDOMINIO {
      public void inserirVeiculoVendido(Revenda revendaParametro){
         revendaDAO.alterar(revendaParametro); 
     }
-    
-
-    
-    
-    
-    /*public void inserirVersao(String nomeModelo){
-        Marca objetoMarca = new Marca(nomeMarca);
-        marcaDAO.inserir(objetoMarca);
-    }
-    */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-        public void pesquisarMarca(String nome){
-        List <Marca> listaMarca = listar(Marca.class);
-        List <Marca> auxiliar = new ArrayList<>();  
-    }
-    */
+ 
     public List listar(Class classe){
         return genericDAO.listar(classe); 
     }
     
+ 
+    public List pesquisarModelo(String pesquisa){
+        return versaoDAO.pesquisarModelo(pesquisa);
+    }
     
-    
-    
-    
-    
+    public List<Versao> versaoPesquisar(String pesquisa, int tipoPesquisa){
+        List<Versao> lista = null;
+        
+        switch(tipoPesquisa){
+            case 0 -> lista = versaoDAO.pesquisarMarca(pesquisa);
+            case 1 -> lista = versaoDAO.pesquisarModelo(pesquisa);
+            case 2 -> lista = versaoDAO.pesquisarVersao(pesquisa);
+        }
+        
+        return lista;
+    }
 }

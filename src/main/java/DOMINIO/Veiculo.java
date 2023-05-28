@@ -49,6 +49,7 @@ public class Veiculo {
    
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
 
     public int getId_veiculo() {
         return id_veiculo;
@@ -152,12 +153,13 @@ public class Veiculo {
 
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
     
     public Veiculo() {
     }
 
     public Veiculo(Versao versao, int ano, String combustivel, String cambio, String direcao, float motor, boolean airbag, boolean alarme, 
-                    boolean ar_condicionado, boolean freios_abs, boolean trava_eletrica, boolean vidro_eletrico) {
+                    boolean ar_condicionado, boolean freios_abs, boolean trava_eletrica, boolean vidro_eletrico){
         this.ano = ano;
         this.combustivel = combustivel;
         this.cambio = cambio;
@@ -177,16 +179,11 @@ public class Veiculo {
         return String.valueOf(ano);
     }
     
-    
-    
     public Object[] toArray(){
     return new Object[] {getVersao().getModelo().getMarca().getNome_marca(), 
                         getVersao().getModelo().getNome_modelo(),
                         getVersao().getNome_versao(),
                         this, combustivel, cambio, direcao, motor};
     }
-    
-    
-    
     
 }

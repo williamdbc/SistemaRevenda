@@ -18,6 +18,7 @@ public class RelacaoComercial {
 
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
 
     public int getId_cli_forn() {
         return id_cli_forn;
@@ -50,11 +51,13 @@ public class RelacaoComercial {
     public void setTelefone_cli_forn(String telefone_cli_forn) {
         this.telefone_cli_forn = telefone_cli_forn;
     }
+    
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
 
     public RelacaoComercial() {
     }
-    
-    
 
     public RelacaoComercial(String nome_cli_forn, String cidade_cli_forn, String telefone_cli_forn) {
         this.nome_cli_forn = nome_cli_forn;
@@ -62,11 +65,9 @@ public class RelacaoComercial {
         this.telefone_cli_forn = telefone_cli_forn;
     }
     
-       @Override
+    @Override
     public String toString() {
         return getNome_cli_forn();
     }
-    
-    
-    
+ 
 }

@@ -1,17 +1,13 @@
 package VIEW;
 
-import CONTROL.FuncoesUteis;
-import CONTROL.GerenciadorVIEW;
-import DOMINIO.Marca;
-import java.text.ParseException;
+import CONTROL.*;
+import DOMINIO.*;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
 public class CadMarca extends javax.swing.JDialog {
-    
     private GerenciadorVIEW gerenciadorVIEW;
     private Marca marcaSelecionada;
     
@@ -285,7 +281,39 @@ public class CadMarca extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
- 
+
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    private void cleanFields(){
+        txtMarca.setText("");
+    }
+    
+    private void botaoEditar(){
+        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+    }
+    
+    private void botaoCancelar(){
+        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+        cleanFields();
+    }
+    
+    private boolean checkFields(){
+        String msgErro = "";
+        if(txtMarca.getText().isBlank()){
+            msgErro += "O campo 'Marca' não pode estar vazio.\n";
+        }
+        
+        
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }  
+    
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
          try {
             List<Marca> listaMarcas = gerenciadorVIEW.getGerDominio().listar(Marca.class); 
@@ -295,20 +323,12 @@ public class CadMarca extends javax.swing.JDialog {
                 ((DefaultTableModel)tblMarca.getModel()).addRow(marca.toArray());     
             }
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar marca", JOptionPane.ERROR_MESSAGE  );
         } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
-     private void botaoEditar(){
-        FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
-    }
-    
-    private void botaoCancelar(){
-        FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
-    }
-    
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -325,25 +345,9 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btnEditarOKActionPerformed
 
-    private boolean checkFields(){
-        String msgErro = "";
-        if(txtMarca.getText().isBlank()){
-            msgErro += "O campo 'Marca' não pode estar vazio.\n";
-        }
-        
-        
-        if(!msgErro.isBlank()){
-            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } return true;  
-    }
-    
-    
-    
-    
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         if(checkFields()){
             try {
@@ -351,28 +355,25 @@ public class CadMarca extends javax.swing.JDialog {
                 
                 gerenciadorVIEW.getGerDominio().inserirMarca(marca);
                 JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir marca", JOptionPane.INFORMATION_MESSAGE);
-                btnLimparActionPerformed(null);
+                cleanFields();
             } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Marca", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir marca.", JOptionPane.ERROR_MESSAGE);
             }
         }  
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         botaoCancelar();
+        
     }//GEN-LAST:event_formComponentShown
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        txtMarca.setText("");
+        cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-         
       
 
-
+    // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane TabbedPane;
     private javax.swing.JButton btnCadastrar;
@@ -400,4 +401,5 @@ public class CadMarca extends javax.swing.JDialog {
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold> 
 }

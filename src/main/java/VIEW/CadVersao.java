@@ -1,18 +1,14 @@
 package VIEW;
 
-import CONTROL.FuncoesUteis;
-import CONTROL.GerenciadorVIEW;
-import DOMINIO.Marca;
-import DOMINIO.Modelo;
-import DOMINIO.Versao;
+import CONTROL.*;
+import DOMINIO.*;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
 public class CadVersao extends javax.swing.JDialog {
-
     private GerenciadorVIEW gerenciadorVIEW;
     private Versao versaoSelecionada;
 
@@ -44,7 +40,7 @@ public class CadVersao extends javax.swing.JDialog {
         lblEditando = new javax.swing.JLabel();
         pnlLista = new javax.swing.JPanel();
         lblListVersao = new javax.swing.JLabel();
-        cmbFitlrar = new javax.swing.JComboBox<>();
+        cmbFiltrar = new javax.swing.JComboBox<>();
         cmbFiltrarOrdem = new javax.swing.JComboBox<>();
         txtPesquisar = new javax.swing.JTextField();
         cmbPesquisar = new javax.swing.JComboBox<>();
@@ -203,11 +199,21 @@ public class CadVersao extends javax.swing.JDialog {
         lblListVersao.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblListVersao.setText("LISTA DE VERSÕES");
 
-        cmbFitlrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Versão" }));
+        cmbFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFiltrarActionPerformed(evt);
+            }
+        });
 
-        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente ", "Decrescente" }));
+        cmbFiltrarOrdem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFiltrarOrdemActionPerformed(evt);
+            }
+        });
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Versão" }));
 
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -262,7 +268,7 @@ public class CadVersao extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnlListaLayout.createSequentialGroup()
                         .addGroup(pnlListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cmbFitlrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
                         .addGroup(pnlListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -289,7 +295,7 @@ public class CadVersao extends javax.swing.JDialog {
                 .addGroup(pnlListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlListaLayout.createSequentialGroup()
                         .addGroup(pnlListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbFitlrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cmbFiltrarOrdem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addGroup(pnlListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -318,10 +324,18 @@ public class CadVersao extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFiltrarActionPerformed
-
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    
+    private SortOrder tipoOrdem;
+    
+    private void cleanFields(){
+        cmbMarca.setSelectedIndex(-1);
+        cmbModelo.setSelectedIndex(-1);
+        txtVersao.setText("");
+    }
+    
     private void botaoEditar(){
         FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
@@ -330,16 +344,62 @@ public class CadVersao extends javax.swing.JDialog {
         FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
     
+    private boolean checkFields(){
+        String msgErro = "";
+        if(cmbMarca.getSelectedIndex() == -1){
+            msgErro += "O campo 'Marca' não pode estar vazio.\n";
+        }
+        
+        if(cmbModelo.getSelectedIndex() == -1){
+            msgErro += "O campo 'Modelo' não pode estar vazio.\n";
+        }
+        
+        if(txtVersao.getText().isBlank()){
+             msgErro += "O campo 'Versão' não pode estar vazio.\n";
+        }
+
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
+    
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        switch(cmbFiltrarOrdem.getSelectedIndex()){
+            case 0 -> tipoOrdem = SortOrder.ASCENDING;
+            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        }
+        
+        switch(cmbFiltrar.getSelectedIndex()){
+            case 0 -> FuncoesUteis.ordenarTabela(tblVersao, 1, tipoOrdem);
+            case 1 -> FuncoesUteis.ordenarTabela(tblVersao, 2, tipoOrdem);
+            case 2 -> FuncoesUteis.ordenarTabela(tblVersao, 3, tipoOrdem);
+        }
+    }//GEN-LAST:event_btnFiltrarActionPerformed
+    
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        String pesquisa = txtPesquisar.getText();
+        List<Versao> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 0);
+        
+        switch(cmbPesquisar.getSelectedIndex()){
+            case 0 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 0);
+            case 1 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 1);
+            case 2 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 2);
+        }
+  
         try {
-            List<Versao> listaVersoes = gerenciadorVIEW.getGerDominio().listar(Versao.class); 
             ((DefaultTableModel) tblVersao.getModel()).setNumRows(0);
             
             for (Versao versao : listaVersoes ) {
-                ((DefaultTableModel)tblVersao.getModel()).addRow(versao.toArray());     
+                ((DefaultTableModel)tblVersao.getModel()).addRow(versao.toArray());   
+                
             }
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar versão", JOptionPane.ERROR_MESSAGE  );
         } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -354,28 +414,6 @@ public class CadVersao extends javax.swing.JDialog {
         cmbMarca.setSelectedIndex(-1);
     }//GEN-LAST:event_formComponentShown
 
-    private boolean checkFields(){
-        String msgErro = "";
-        if(cmbMarca.getSelectedIndex() == -1){
-            msgErro += "O campo 'Marca' não pode estar vazio.\n";
-        }
-        
-        if(cmbModelo.getSelectedIndex() == -1){
-            msgErro += "O campo 'Modelo' não pode estar vazio.\n";
-        }
-        
-        if(txtVersao.getText().isBlank()){
-             msgErro += "O campo 'Versão' não pode estar vazio.\n";
-        }
-        
-       
-
-        if(!msgErro.isBlank()){
-            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } return true;  
-    }
-    
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         if(checkFields()){
             try {
@@ -383,11 +421,11 @@ public class CadVersao extends javax.swing.JDialog {
                 String nomeVersao = txtVersao.getText();
         
                 gerenciadorVIEW.getGerDominio().inserirVersao(objetoModelo, nomeVersao);
-                JOptionPane.showMessageDialog(this, "Modelo inserido com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
+                JOptionPane.showMessageDialog(this, "Versão inserida com sucesso.", "Inserir versão", JOptionPane.INFORMATION_MESSAGE  );
                 btnLimparActionPerformed(null);
 
             } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir versão.", JOptionPane.ERROR_MESSAGE  );
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -414,14 +452,18 @@ public class CadVersao extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        cmbMarca.setSelectedIndex(-1);
-        cmbModelo.setSelectedIndex(-1);
-        txtVersao.setText("");
+        cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
 
-  
+    private void cmbFiltrarOrdemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFiltrarOrdemActionPerformed
 
+    }//GEN-LAST:event_cmbFiltrarOrdemActionPerformed
 
+    private void cmbFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFiltrarActionPerformed
+        cmbFiltrarOrdem.setSelectedIndex(0);
+    }//GEN-LAST:event_cmbFiltrarActionPerformed
+
+    // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnCancelar;
@@ -432,8 +474,8 @@ public class CadVersao extends javax.swing.JDialog {
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JComboBox<String> cmbFiltrar;
     private javax.swing.JComboBox<String> cmbFiltrarOrdem;
-    private javax.swing.JComboBox<String> cmbFitlrar;
     private javax.swing.JComboBox<String> cmbMarca;
     private javax.swing.JComboBox<String> cmbModelo;
     private javax.swing.JComboBox<String> cmbPesquisar;
@@ -453,4 +495,5 @@ public class CadVersao extends javax.swing.JDialog {
     private javax.swing.JTextField txtPesquisar;
     private javax.swing.JTextField txtVersao;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold> 
 }

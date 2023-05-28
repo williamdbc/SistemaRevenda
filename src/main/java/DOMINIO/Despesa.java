@@ -25,6 +25,7 @@ public class Despesa implements Serializable {
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
     
     public String getNome_despesa() {
         return nome_despesa;
@@ -57,6 +58,23 @@ public class Despesa implements Serializable {
     public void setResponsavel(String responsavel) {
         this.responsavel = responsavel;
     }
+    
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+
+    public Despesa() {
+    }
+
+    public Despesa(Revenda revenda, String nome_despesa, float valor_despesa, Date data_despesa, String responsavel) {
+        this.nome_despesa = nome_despesa;
+        this.valor_despesa = valor_despesa;
+        this.data_despesa = data_despesa;
+        this.responsavel = responsavel;
+        this.revenda = revenda;
+    }
+    
+    
     
     
 }

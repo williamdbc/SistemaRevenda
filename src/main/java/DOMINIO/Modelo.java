@@ -1,13 +1,10 @@
 package DOMINIO;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
-import javax.transaction.Transactional;
 
 @Entity
-
 public class Modelo implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_modelo;
@@ -20,6 +17,8 @@ public class Modelo implements Serializable {
     
     @OneToMany (mappedBy = "modelo", fetch = FetchType.EAGER)    //Era Lazy
     private List<Versao> versoes = new ArrayList();
+    
+/* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
 
@@ -46,9 +45,8 @@ public class Modelo implements Serializable {
     public List<Versao> getVersoes() {
         return versoes;
     }
-    
-    
-    
+     
+/* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
 
@@ -68,8 +66,5 @@ public class Modelo implements Serializable {
     public Object[] toArray(){
         return new Object[] {id_modelo, marca.getNome_marca(), nome_modelo};
     }
-    
-    
-    
-    
+
 }

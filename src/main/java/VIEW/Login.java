@@ -1,21 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package VIEW;
 
 import CONTROL.GerenciadorVIEW;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author William
- */
-public class Login extends javax.swing.JDialog {
-
+public class Login extends javax.swing.JFrame {
     private GerenciadorVIEW gerenciadorVIEW;
     
-    public Login(java.awt.Frame parent, boolean modal, GerenciadorVIEW gerVIEW) {
+    public Login(GerenciadorVIEW gerVIEW) {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
     }
@@ -24,22 +16,16 @@ public class Login extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtUsuario = new javax.swing.JTextField();
-        lblCarro = new javax.swing.JLabel();
         pswSenha = new javax.swing.JPasswordField();
         lblSenha = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
+        senha = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JTextField();
+        lblCarro = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblCarro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/carroLogin.png"))); // NOI18N
-
-        pswSenha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pswSenhaActionPerformed(evt);
-            }
-        });
         pswSenha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 pswSenhaKeyPressed(evt);
@@ -67,6 +53,15 @@ public class Login extends javax.swing.JDialog {
             }
         });
 
+        senha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/mostrar_senha.png"))); // NOI18N
+        senha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                senhaMouseClicked(evt);
+            }
+        });
+
+        lblCarro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/carroLogin.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,33 +80,50 @@ public class Login extends javax.swing.JDialog {
                             .addGap(18, 18, 18)
                             .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(lblCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(senha)
+                .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(lblCarro, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblUsuario)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSenha)
-                    .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblSenha)
+                        .addComponent(pswSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(senha))
+                .addGap(50, 50, 50)
                 .addComponent(btnLogin)
                 .addGap(50, 50, 50))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void pswSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswSenhaKeyPressed
-            if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    
+    private void pressionarEnter(java.awt.event.KeyEvent evt){
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             btnLoginActionPerformed(null);
         }
+    }
+
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
+    
+    private void pswSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pswSenhaKeyPressed
+        pressionarEnter(evt);
     }//GEN-LAST:event_pswSenhaKeyPressed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
@@ -121,25 +133,34 @@ public class Login extends javax.swing.JDialog {
         if(usuario.equals("admin") && senha.equals("123")){
             gerenciadorVIEW.janelaPrincipal();
             this.dispose();
+        } else{
+            JOptionPane.showMessageDialog(this, "O usuário ou senha informado estão incorretos.", "Erro ao realizar login", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyPressed
-
+        pressionarEnter(evt);
     }//GEN-LAST:event_btnLoginKeyPressed
 
-    private void pswSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswSenhaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pswSenhaActionPerformed
+    private void senhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_senhaMouseClicked
+        if(pswSenha.getEchoChar() == '•'){
+            pswSenha.setEchoChar('\u0000');
+            senha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/esconder_senha.png")));
+        } else{
+            pswSenha.setEchoChar('•');
+            senha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/mostrar_senha.png")));
+        }
+    }//GEN-LAST:event_senhaMouseClicked
 
-
-
+    // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel lblCarro;
     private javax.swing.JLabel lblSenha;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPasswordField pswSenha;
+    private javax.swing.JLabel senha;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold>  
 }

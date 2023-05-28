@@ -1,11 +1,7 @@
 package VIEW;
 
-import CONTROL.FuncoesUteis;
-import CONTROL.GerenciadorVIEW;
-import DOMINIO.Marca;
-import DOMINIO.Modelo;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
+import CONTROL.*;
+import DOMINIO.*;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -297,23 +293,22 @@ public class CadModelo extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        jTabbedPane1.setSelectedIndex(0);
-        botaoEditar();
-    }//GEN-LAST:event_btnEditarActionPerformed
-
-    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFiltrarActionPerformed
-   
-      private void botaoEditar(){
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */   
+    private void cleanFields(){
+        cmbMarca.setSelectedIndex(-1);
+        txtModelo.setText("");
+    }
+    
+    private void botaoEditar(){
         FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
     
     private void botaoCancelar(){
         FuncoesUteis.isEditando(false, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
+        cleanFields();
     }
- 
     
     private boolean checkFields(){
         String msgErro = "";
@@ -332,7 +327,19 @@ public class CadModelo extends javax.swing.JDialog {
         } return true;  
     }
     
+/*                                                                                                                         */
+/*                                                                                                                         */
+/*                                                                                                                         */
     
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+        botaoEditar();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+
+    }//GEN-LAST:event_btnFiltrarActionPerformed
+
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
             List<Modelo> listaModelos = gerenciadorVIEW.getGerDominio().listar(Modelo.class); 
@@ -342,7 +349,7 @@ public class CadModelo extends javax.swing.JDialog {
                 ((DefaultTableModel)tblModelo.getModel()).addRow(modelo.toArray());     
             }
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Cliente", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
         } 
         
     }//GEN-LAST:event_btnPesquisarActionPerformed
@@ -362,11 +369,8 @@ public class CadModelo extends javax.swing.JDialog {
     }//GEN-LAST:event_cmbMarcaActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        botaoCancelar();
         gerenciadorVIEW.carregarComboBox(cmbMarca, Marca.class);
-        cmbMarca.setSelectedIndex(-1);
-        
-        
+        botaoCancelar();
     }//GEN-LAST:event_formComponentShown
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -377,22 +381,19 @@ public class CadModelo extends javax.swing.JDialog {
         
                 gerenciadorVIEW.getGerDominio().inserirModelo(objetoMarca, nomeModelo);
                 JOptionPane.showMessageDialog(this, "Modelo inserido com sucesso.", "Inserir modelo", JOptionPane.INFORMATION_MESSAGE  );
-                btnLimparActionPerformed(null);
+                cleanFields();
             } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Modelo", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir modelo.", JOptionPane.ERROR_MESSAGE  );
             }  
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        cmbMarca.setSelectedIndex(-1);
-        txtModelo.setText("");
+        cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-
+  
+    // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnCancelar;
@@ -422,4 +423,5 @@ public class CadModelo extends javax.swing.JDialog {
     private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtPesquisar;
     // End of variables declaration//GEN-END:variables
+    // </editor-fold> 
 }

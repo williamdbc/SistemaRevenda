@@ -7,6 +7,17 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 public class GenericDAO {
+    private int ordem = 0;
+    
+    public void setOrderBy(int ordemParametro){
+        ordem = ordemParametro;
+    }
+    
+    public int getOrderBy(){
+        return ordem;
+    }
+    
+ 
     //DML = Data Manipulation Language (insert, update, delete, listar)
     public List GenericDML(Object objeto, int tipoDML, Class classe){   // É List por causa do listar, retorna uma lista. Se não entrar if do listar, então retorna null, sendo assim não interfere em nada.
         Session sessao = null;

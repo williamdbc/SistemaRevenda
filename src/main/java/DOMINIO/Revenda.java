@@ -43,6 +43,8 @@ public class Revenda {
     
     @OneToMany (mappedBy = "revenda", fetch = FetchType.LAZY)
     private List<Despesa> despesas = new ArrayList();
+    
+/* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
 
@@ -142,15 +144,10 @@ public class Revenda {
         this.despesas = despesas;
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------------------------------------------- */
+   
     public Revenda() {
     }
    
@@ -163,13 +160,7 @@ public class Revenda {
         this.veiculo = veiculo;
         this.fornecedor = fornecedor;
     }
-    
-    public Revenda(Cliente cliente, Date data_venda, float valor_venda) {
-        this.data_compra = data_compra;
-        this.valor_compra = valor_compra;
-        this.cliente = cliente;
-    }
-    
+
     public Object[] toArray_Compra(){
         return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
                             veiculo.getVersao().getModelo().getNome_modelo() + " " +
@@ -186,11 +177,7 @@ public class Revenda {
 
     @Override
     public String toString() {
-        return placa; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        return placa;
     }
-
-    
-    
-    
-    
+  
 }
