@@ -74,6 +74,9 @@ public class Despesa implements Serializable {
         this.revenda = revenda;
     }
     
+    public Object[] toArray(){
+        return new Object[] {nome_despesa, valor_despesa, data_despesa, responsavel};
+    }
     
     
     

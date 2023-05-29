@@ -650,19 +650,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         if(cmbVersao.getSelectedIndex() == -1){
              msgErro += "O campo 'Versão' não pode estar vazio.\n";
         }
-        
-        if(cmbCombustivel.getSelectedIndex() == -1){
-             msgErro += "O campo 'Combustível' não pode estar vazio.\n";
-        }
-        
-        if(cmbCambio.getSelectedIndex() == -1){
-             msgErro += "O campo 'Câmbio' não pode estar vazio.\n";
-        }
-        
-        if(cmbDirecao.getSelectedIndex() == -1){
-             msgErro += "O campo 'Direção' não pode estar vazio.\n";
-        }
-        
+       
         if(cmbAno.getSelectedIndex() == -1){
              msgErro += "O campo 'Ano' não pode estar vazio.\n";
         }
@@ -723,7 +711,9 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             ((DefaultTableModel) tblVeiculoCmp.getModel()).setNumRows(0);
             
             for (Revenda revenda : listaVeiculoComprado ) {
-                ((DefaultTableModel)tblVeiculoCmp.getModel()).addRow(revenda.toArray_Compra());     
+                if(revenda.getValor_venda() == 0){
+                    ((DefaultTableModel)tblVeiculoCmp.getModel()).addRow(revenda.toArray_Compra());    
+                }
             }
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar compra de veiculo", JOptionPane.ERROR_MESSAGE  );

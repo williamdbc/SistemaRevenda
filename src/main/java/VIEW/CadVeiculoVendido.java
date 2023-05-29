@@ -740,7 +740,9 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
             ((DefaultTableModel) tblVeiculoVnd.getModel()).setNumRows(0);
             
             for (Revenda revenda : listaVeiculoComprado ) {
-                ((DefaultTableModel)tblVeiculoVnd.getModel()).addRow(revenda.toArray_Venda());     
+                if(revenda.getValor_venda() != 0){
+                    ((DefaultTableModel)tblVeiculoVnd.getModel()).addRow(revenda.toArray_Venda());  
+                }
             }
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar venda de veiculo", JOptionPane.ERROR_MESSAGE  );

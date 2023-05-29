@@ -1,9 +1,16 @@
 package VIEW;
 
+import CONTROL.FuncoesUteis;
 import CONTROL.GerenciadorVIEW;
 import DOMINIO.Cliente;
+import DOMINIO.Despesa;
 import DOMINIO.Revenda;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 public class ListaDespesa extends javax.swing.JDialog {
     private GerenciadorVIEW gerenciadorVIEW;
@@ -59,15 +66,31 @@ public class ListaDespesa extends javax.swing.JDialog {
 
         lblAno.setText("Ano");
 
+        cmbVersao.setEditable(true);
+        cmbVersao.setEnabled(false);
+
         lblCor.setText("Cor");
 
         lblPlaca.setText("Placa");
+
+        txtPlaca.setEnabled(false);
+
+        txtCor.setEnabled(false);
+
+        cmbModelo.setEditable(true);
+        cmbModelo.setEnabled(false);
+
+        cmbMarca.setEditable(true);
+        cmbMarca.setEnabled(false);
 
         lblMarca.setText("Marca");
 
         lblModelo.setText("Modelo");
 
         lblVersao.setText("Versão");
+
+        cmbAno.setEditable(true);
+        cmbAno.setEnabled(false);
 
         javax.swing.GroupLayout pnlMarcaLayout = new javax.swing.GroupLayout(pnlMarca);
         pnlMarca.setLayout(pnlMarcaLayout);
@@ -293,12 +316,53 @@ public class ListaDespesa extends javax.swing.JDialog {
         txtCor.setText(revendaSelecionada.getCor());
     }
     
+    private boolean checkFields(){
+        String msgErro = "";
+        if(txtNomeDesp.getText().isBlank()){
+            msgErro += "O campo 'Despesa' não pode estar vazio.\n";
+        }
+        
+        if(txtData.getText().isBlank()){
+            msgErro += "O campo 'Data' não pode estar vazio.\n";
+        }
+
+        if(txtResponsavel.getText().isBlank()){
+            msgErro += "O campo 'Responsável' não pode estar vazio.\n";
+        }
+        
+        if(txtValor.getText().isBlank()){
+            msgErro += "O campo 'Valor' não pode estar vazio.\n";
+        }
+
+        if(!msgErro.isBlank()){
+            JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } return true;  
+    }
     
+    private void cleanFields(){
+        txtNomeDesp.setText("");
+        txtResponsavel.setText("");
+        txtData.setText("");
+        txtValor.setText("");
+    }
     
+    private void carregarTabela(){
+        List<Despesa> listaDespesas = revendaSelecionada.getDespesas();
+
+        try {
+            ((DefaultTableModel) tblDespesa.getModel()).setNumRows(0);
+            
+            for (Despesa despesa : listaDespesas ) {
+                ((DefaultTableModel)tblDespesa.getModel()).addRow(despesa.toArray());   
+                
+            }
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar despesa", JOptionPane.ERROR_MESSAGE  );
+        } 
+    }
     
-    
-    
-    
+
     
     
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -315,14 +379,34 @@ public class ListaDespesa extends javax.swing.JDialog {
           //  botaoCancelar();
             //cleanFieldsVeiculo();
         }
+        carregarTabela();
     }//GEN-LAST:event_formComponentShown
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        String nomeDespesa = txtNomeDesp.getText();
+        if(revendaSelecionada != null){
+            if(checkFields()){
+                try {
+                    String nomeDespesa = txtNomeDesp.getText();
+                    Date data_despesa = FuncoesUteis.stringToDate(txtData.getText());
+                    String responsavel = txtResponsavel.getText();
+                    float valor_despesa = Float.valueOf(txtValor.getText());
+
+                    gerenciadorVIEW.getGerDominio().inserirDespesa(revendaSelecionada, nomeDespesa, valor_despesa, data_despesa, responsavel);
+                    JOptionPane.showMessageDialog(this, "Despesa inserida com sucesso.", "Inserir despesa", JOptionPane.INFORMATION_MESSAGE);
+                    cleanFields();
+                    carregarTabela();
+                } catch (HibernateException | ParseException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao inserir despesa de um veículo.", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+             JOptionPane.showMessageDialog(this, "Você deve selecionar um veículo para vender.", "Erro ao vender veículo", JOptionPane.ERROR_MESSAGE  );
+        }
+        
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-       // cleanFields();
+        cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
 
     

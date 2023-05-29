@@ -41,7 +41,7 @@ public class Revenda {
     @ManyToOne (fetch = FetchType.EAGER) @JoinColumn (name = "id_fornecedor")
     private Fornecedor fornecedor;
     
-    @OneToMany (mappedBy = "revenda", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "revenda", fetch = FetchType.EAGER) //Era Lazy
     private List<Despesa> despesas = new ArrayList();
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -161,6 +161,14 @@ public class Revenda {
         this.fornecedor = fornecedor;
     }
 
+    private float somaDespesas() {
+        float totalDespesa = 0;
+        for (Despesa despesa : despesas) {
+            totalDespesa += despesa.getValor_despesa();
+        }
+        return totalDespesa;
+    }
+    
     public Object[] toArray_Compra(){
         return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
                             veiculo.getVersao().getModelo().getNome_modelo() + " " +
@@ -172,7 +180,7 @@ public class Revenda {
         return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
                             veiculo.getVersao().getModelo().getNome_modelo() + " " +
                             veiculo.getVersao().getNome_versao(),
-                            veiculo.getAno(), cor, this, fornecedor.getNome_cli_forn(), valor_compra, data_compra, 0, valor_venda, data_venda, valor_venda - valor_compra};
+                            veiculo.getAno(), cor, this, fornecedor.getNome_cli_forn(), valor_compra, data_compra, somaDespesas(), valor_venda, data_venda, (valor_venda - valor_compra - somaDespesas())};
     }
 
     @Override

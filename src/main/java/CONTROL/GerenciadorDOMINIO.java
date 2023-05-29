@@ -15,6 +15,7 @@ public class GerenciadorDOMINIO {
     ClienteDAO clienteDAO = null;
     FornecedorDAO fornecedorDAO = null;
     RevendaDAO revendaDAO = null;
+    DespesaDAO despesaDAO = null;
     
     public GerenciadorDOMINIO() throws HibernateException {
         ConexaoHibernate.getSessionFactory();
@@ -27,6 +28,7 @@ public class GerenciadorDOMINIO {
         clienteDAO = new ClienteDAO();
         fornecedorDAO = new FornecedorDAO();
         revendaDAO = new RevendaDAO();
+        despesaDAO = new DespesaDAO();
     }   
     
     public void inserirMarca(String nomeMarca){
@@ -68,6 +70,11 @@ public class GerenciadorDOMINIO {
     
      public void inserirVeiculoVendido(Revenda revendaParametro){
         revendaDAO.alterar(revendaParametro); 
+    }
+     
+    public void inserirDespesa(Revenda revenda, String nome_despesa, float valor_despesa, Date data_despesa, String responsavel){
+        Despesa objetoDespesa = new Despesa(revenda, nome_despesa, valor_despesa, data_despesa, responsavel);
+        despesaDAO.inserir(objetoDespesa); 
     }
  
     public List listar(Class classe){
