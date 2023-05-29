@@ -228,6 +228,11 @@ public class ListaDespesa extends javax.swing.JDialog {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/excluir2.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnCadastrar.setText(" Cadastrar");
@@ -370,8 +375,8 @@ public class ListaDespesa extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        revendaSelecionada = null;
         revendaSelecionada = gerenciadorVIEW.getRevenda();
-        //botaoCancelar();
         
         if(revendaSelecionada != null){
             setarCampos();
@@ -394,7 +399,7 @@ public class ListaDespesa extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirDespesa(revendaSelecionada, nomeDespesa, valor_despesa, data_despesa, responsavel);
                     JOptionPane.showMessageDialog(this, "Despesa inserida com sucesso.", "Inserir despesa", JOptionPane.INFORMATION_MESSAGE);
                     cleanFields();
-                    carregarTabela();
+                    //carregarTabela();
                 } catch (HibernateException | ParseException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao inserir despesa de um veículo.", JOptionPane.ERROR_MESSAGE);
                 }
@@ -408,6 +413,20 @@ public class ListaDespesa extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        carregarTabela();
+        
+        List<Despesa> listaDespesas = revendaSelecionada.getDespesas();
+       // ((DefaultTableModel) tblDespesa.getModel()).setNumRows(0);
+        
+        
+        for (Despesa despesa : listaDespesas ) {
+            System.out.println("Printando despesa: " + despesa.getNome_despesa() + "\n");
+            //((DefaultTableModel)tblDespesa.getModel()).addRow(despesa.toArray());   
+                
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 

@@ -4,6 +4,7 @@ import CONTROL.*;
 import DOMINIO.*;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -178,7 +179,7 @@ public class CadModelo extends javax.swing.JDialog {
         lblListModelo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblListModelo.setText("LISTA DE MODELOS");
 
-        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
 
         cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
 
@@ -296,6 +297,9 @@ public class CadModelo extends javax.swing.JDialog {
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */   
+    
+    private SortOrder tipoOrdem;
+    
     private void cleanFields(){
         cmbMarca.setSelectedIndex(-1);
         txtModelo.setText("");
@@ -337,12 +341,27 @@ public class CadModelo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        switch(cmbFiltrarOrdem.getSelectedIndex()){
+            case 0 -> tipoOrdem = SortOrder.ASCENDING;
+            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        }
 
+        switch(cmbFiltrar.getSelectedIndex()){
+            case 0 -> FuncoesUteis.ordenarTabela(tblModelo, 1, tipoOrdem);
+            case 1 -> FuncoesUteis.ordenarTabela(tblModelo, 2, tipoOrdem);
+        }
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            List<Modelo> listaModelos = gerenciadorVIEW.getGerDominio().listar(Modelo.class); 
+            String pesquisa = txtPesquisar.getText();
+            List<Modelo> listaModelos = null;
+        
+           switch(cmbPesquisar.getSelectedIndex()){
+                case 0 -> listaModelos = gerenciadorVIEW.getGerDominio().modeloPesquisar(pesquisa, 0);
+                case 1 -> listaModelos = gerenciadorVIEW.getGerDominio().modeloPesquisar(pesquisa, 1);
+            }
+
             ((DefaultTableModel) tblModelo.getModel()).setNumRows(0);
             
             for (Modelo modelo : listaModelos ) {

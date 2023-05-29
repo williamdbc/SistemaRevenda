@@ -4,6 +4,7 @@ import CONTROL.*;
 import DOMINIO.*;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -285,6 +286,8 @@ public class CadMarca extends javax.swing.JDialog {
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
+     private SortOrder tipoOrdem;
+    
     private void cleanFields(){
         txtMarca.setText("");
     }
@@ -316,10 +319,12 @@ public class CadMarca extends javax.swing.JDialog {
 /*                                                                                                                         */
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
          try {
-            List<Marca> listaMarcas = gerenciadorVIEW.getGerDominio().listar(Marca.class); 
+            String pesquisa = txtPesquisar.getText();
+            List<Marca> listaMarcas = gerenciadorVIEW.getGerDominio().marcaPesquisar(pesquisa);
+            
             ((DefaultTableModel) tblMarca.getModel()).setNumRows(0);
             
-            for (Marca marca : listaMarcas ) {
+            for (Marca marca : listaMarcas) {
                 ((DefaultTableModel)tblMarca.getModel()).addRow(marca.toArray());     
             }
         } catch (HibernateException ex) {
@@ -328,7 +333,14 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-
+            switch(cmbFiltrarOrdem.getSelectedIndex()){
+            case 0 -> tipoOrdem = SortOrder.ASCENDING;
+            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        }
+        
+        switch(cmbFiltrar.getSelectedIndex()){
+            case 0 -> FuncoesUteis.ordenarTabela(tblMarca, 1, tipoOrdem);
+        }
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed

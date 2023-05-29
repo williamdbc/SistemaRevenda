@@ -382,16 +382,16 @@ public class CadVersao extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFiltrarActionPerformed
     
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        String pesquisa = txtPesquisar.getText();
-        List<Versao> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 0);
-        
-        switch(cmbPesquisar.getSelectedIndex()){
-            case 0 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 0);
-            case 1 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 1);
-            case 2 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 2);
-        }
-  
         try {
+            String pesquisa = txtPesquisar.getText();
+            List<Versao> listaVersoes = null;
+        
+            switch(cmbPesquisar.getSelectedIndex()){
+                case 0 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 0);
+                case 1 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 1);
+                case 2 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 2);
+            }
+
             ((DefaultTableModel) tblVersao.getModel()).setNumRows(0);
             
             for (Versao versao : listaVersoes ) {
