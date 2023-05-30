@@ -7,6 +7,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -385,20 +386,17 @@ public class CadVeiculo extends javax.swing.JDialog {
 
         tblVeiculo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor"
+                "ID", "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor"
             }
         ));
         jScrollPane1.setViewportView(tblVeiculo);
 
-        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Ano" }));
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor" }));
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Ano" }));
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor" }));
 
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -523,6 +521,8 @@ public class CadVeiculo extends javax.swing.JDialog {
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
+    
+    private SortOrder tipoOrdem;
 
     private void botaoEditar(){
         FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
@@ -578,7 +578,12 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddModeloActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
+        switch(cmbFiltrarOrdem.getSelectedIndex()){
+            case 0 -> tipoOrdem = SortOrder.ASCENDING;
+            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        }
         
+        FuncoesUteis.ordenarTabela(tblVeiculo, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed

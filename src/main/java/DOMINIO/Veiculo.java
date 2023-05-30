@@ -180,9 +180,9 @@ public class Veiculo {
     }
     
     public Object[] toArray(){
-    return new Object[] {getVersao().getModelo().getMarca().getNome_marca(), 
-                        getVersao().getModelo().getNome_modelo(),
-                        getVersao().getNome_versao(),
+    return new Object[] {versao.getModelo().getMarca().getNome_marca(), 
+                        versao.getModelo().getNome_modelo(),
+                        versao.getNome_versao(),
                         this, combustivel, cambio, direcao, motor};
     }
     

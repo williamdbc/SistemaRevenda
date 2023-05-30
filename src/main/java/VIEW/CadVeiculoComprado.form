@@ -770,10 +770,18 @@
             <Component class="javax.swing.JComboBox" name="cmbPesquisar">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
-                    <StringItem index="0" value="Marca"/>
-                    <StringItem index="1" value="Modelo"/>
-                    <StringItem index="2" value="Ano"/>
+                  <StringArray count="11">
+                    <StringItem index="0" value="ID"/>
+                    <StringItem index="1" value="Marca"/>
+                    <StringItem index="2" value="Modelo"/>
+                    <StringItem index="3" value="Vers&#xe3;o"/>
+                    <StringItem index="4" value="Ano"/>
+                    <StringItem index="5" value="Cor"/>
+                    <StringItem index="6" value="KM"/>
+                    <StringItem index="7" value="Placa"/>
+                    <StringItem index="8" value="Fornecedor"/>
+                    <StringItem index="9" value="Valor compra"/>
+                    <StringItem index="10" value="Data compra"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -784,11 +792,9 @@
             <Component class="javax.swing.JComboBox" name="cmbFiltrarOrdem">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
+                  <StringArray count="2">
+                    <StringItem index="0" value="Crescente"/>
+                    <StringItem index="1" value="Descrescente"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -801,10 +807,18 @@
             <Component class="javax.swing.JComboBox" name="cmbFiltrar">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
-                    <StringItem index="0" value="Marca"/>
-                    <StringItem index="1" value="Modelo"/>
-                    <StringItem index="2" value="Ano"/>
+                  <StringArray count="11">
+                    <StringItem index="0" value="ID"/>
+                    <StringItem index="1" value="Marca"/>
+                    <StringItem index="2" value="Modelo"/>
+                    <StringItem index="3" value="Vers&#xe3;o"/>
+                    <StringItem index="4" value="Ano"/>
+                    <StringItem index="5" value="Cor"/>
+                    <StringItem index="6" value="KM"/>
+                    <StringItem index="7" value="Placa"/>
+                    <StringItem index="8" value="Fornecedor"/>
+                    <StringItem index="9" value="Valor compra"/>
+                    <StringItem index="10" value="Data compra"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -830,13 +844,16 @@
                 <Component class="javax.swing.JTable" name="tblVeiculoCmp">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="8" rowCount="1">
-                        <Column editable="true" title="Marca / Modelo / Vers&#xe3;o" type="java.lang.Object"/>
+                      <Table columnCount="11" rowCount="0">
+                        <Column editable="true" title="ID" type="java.lang.Object"/>
+                        <Column editable="true" title="Marca" type="java.lang.Object"/>
+                        <Column editable="true" title="Modelo" type="java.lang.Object"/>
+                        <Column editable="true" title="Vers&#xe3;o" type="java.lang.Object"/>
                         <Column editable="true" title="Ano" type="java.lang.Object"/>
                         <Column editable="true" title="Cor" type="java.lang.Object"/>
                         <Column editable="true" title="KM" type="java.lang.Object"/>
-                        <Column editable="true" title="Fornecedor" type="java.lang.Object"/>
                         <Column editable="true" title="Placa" type="java.lang.Object"/>
+                        <Column editable="true" title="Fornecedor" type="java.lang.Object"/>
                         <Column editable="true" title="Valor compra" type="java.lang.Object"/>
                         <Column editable="true" title="Data compra" type="java.lang.Object"/>
                       </Table>

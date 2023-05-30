@@ -181,9 +181,9 @@ public class CadModelo extends javax.swing.JDialog {
 
         cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
 
-        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo" }));
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo" }));
 
         tblModelo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -345,11 +345,8 @@ public class CadModelo extends javax.swing.JDialog {
             case 0 -> tipoOrdem = SortOrder.ASCENDING;
             case 1 -> tipoOrdem = SortOrder.DESCENDING;
         }
-
-        switch(cmbFiltrar.getSelectedIndex()){
-            case 0 -> FuncoesUteis.ordenarTabela(tblModelo, 1, tipoOrdem);
-            case 1 -> FuncoesUteis.ordenarTabela(tblModelo, 2, tipoOrdem);
-        }
+        
+        FuncoesUteis.ordenarTabela(tblModelo, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed

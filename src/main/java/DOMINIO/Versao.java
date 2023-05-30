@@ -63,7 +63,7 @@ public class Versao {
     }
    
     public Object[] toArray(){
-        return new Object[] {getModelo().getId_modelo(), getModelo().getMarca().getNome_marca(), getModelo().getNome_modelo(), getNome_versao()};
+        return new Object[] {id_versao, modelo.getMarca().getNome_marca(), modelo.getNome_modelo(), nome_versao};
     }
     
 }

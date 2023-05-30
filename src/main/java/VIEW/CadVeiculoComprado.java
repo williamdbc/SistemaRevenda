@@ -10,6 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -447,21 +448,21 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("Cadastro", pnlCadVeiculoCmp);
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Ano" }));
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "KM", "Placa", "Fornecedor", "Valor compra", "Data compra" }));
 
-        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Descrescente" }));
 
-        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Ano" }));
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "KM", "Placa", "Fornecedor", "Valor compra", "Data compra" }));
 
         lblListVeiculoCmp.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblListVeiculoCmp.setText("LISTA DE VEÍCULOS COMPRADOS");
 
         tblVeiculoCmp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Marca / Modelo / Versão", "Ano", "Cor", "KM", "Fornecedor", "Placa", "Valor compra", "Data compra"
+                "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "KM", "Placa", "Fornecedor", "Valor compra", "Data compra"
             }
         ));
         jScrollPane1.setViewportView(tblVeiculoCmp);
@@ -617,6 +618,9 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
+    
+    private SortOrder tipoOrdem;
+    
     private void cleanFields(){
         JComboBox[] listaComboBox = new JComboBox[]{cmbMarca, cmbModelo, cmbVersao, cmbAno, cmbCombustivel, cmbCambio, cmbDirecao, cmbFornecedor};
         JTextField[] listaTextField = new JTextField[]{txtPlaca, txtCor, txtKM, txtValor};
@@ -721,7 +725,12 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
+        switch(cmbFiltrarOrdem.getSelectedIndex()){
+            case 0 -> tipoOrdem = SortOrder.ASCENDING;
+            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        }
+        
+        FuncoesUteis.ordenarTabela(tblVeiculoCmp, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed

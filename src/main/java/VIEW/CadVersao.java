@@ -199,7 +199,7 @@ public class CadVersao extends javax.swing.JDialog {
         lblListVersao.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblListVersao.setText("LISTA DE VERSÕES");
 
-        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Versão" }));
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão" }));
         cmbFiltrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbFiltrarActionPerformed(evt);
@@ -213,7 +213,7 @@ public class CadVersao extends javax.swing.JDialog {
             }
         });
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Versão" }));
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão" }));
 
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -374,11 +374,7 @@ public class CadVersao extends javax.swing.JDialog {
             case 1 -> tipoOrdem = SortOrder.DESCENDING;
         }
         
-        switch(cmbFiltrar.getSelectedIndex()){
-            case 0 -> FuncoesUteis.ordenarTabela(tblVersao, 1, tipoOrdem);
-            case 1 -> FuncoesUteis.ordenarTabela(tblVersao, 2, tipoOrdem);
-            case 2 -> FuncoesUteis.ordenarTabela(tblVersao, 3, tipoOrdem);
-        }
+        FuncoesUteis.ordenarTabela(tblVersao, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
     
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed

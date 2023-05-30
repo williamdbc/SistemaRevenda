@@ -4,6 +4,7 @@ import CONTROL.*;
 import DOMINIO.*;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -182,11 +183,11 @@ public class CadFornecedor extends javax.swing.JDialog {
         lblListFornecedor.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblListFornecedor.setText("LISTA DE FORNECEDORES");
 
-        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome", "Cidade", "Telefone" }));
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo" }));
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nome", "Cidade", "Telefone" }));
 
-        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
 
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -257,7 +258,7 @@ public class CadFornecedor extends javax.swing.JDialog {
                     .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         pnlListFornecedorLayout.setVerticalGroup(
             pnlListFornecedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,6 +301,8 @@ public class CadFornecedor extends javax.swing.JDialog {
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
+    
+    private SortOrder tipoOrdem;
     
     private void cleanFields(){
         txtNome.setText("");
@@ -349,7 +352,12 @@ public class CadFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-
+        switch(cmbFiltrarOrdem.getSelectedIndex()){
+            case 0 -> tipoOrdem = SortOrder.ASCENDING;
+            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        }
+        
+        FuncoesUteis.ordenarTabela(tblFornecedor, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed

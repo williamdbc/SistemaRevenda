@@ -63,10 +63,17 @@ public class FuncoesUteis {
     
     public static void ordenarTabela(JTable tabela, int coluna, SortOrder tipoOrdem){
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabela.getModel());
+        
+        if(coluna == 0){
+            sorter.setComparator(coluna, (valor_id_1, valor_id_2) -> {
+            Integer id_1 = Integer.parseInt(valor_id_1.toString());
+            Integer id_2 = Integer.parseInt(valor_id_2.toString());
+            return id_1.compareTo(id_2);
+            });
+        }
+        
         tabela.setRowSorter(sorter);
         List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        
-        sortKeys.clear();
         sortKeys.add(new RowSorter.SortKey(coluna, tipoOrdem));
         sorter.setSortKeys(sortKeys);
     }

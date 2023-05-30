@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
 
@@ -500,21 +501,21 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("Cadastro", pnlCadVeiculoVnd);
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Ano" }));
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Valor venda", "Data venda", "Lucro" }));
 
-        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
 
-        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca", "Modelo", "Ano" }));
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Valor venda", "Data venda", "Lucro" }));
 
         lblListVeiculoVnd.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblListVeiculoVnd.setText("LISTA DE VEÍCULOS VENDIDOS");
 
         tblVeiculoVnd.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Marca / Modelo / Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Valor venda", "Data venda", "Lucro"
+                "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Valor venda", "Data venda", "Lucro"
             }
         ));
         jScrollPane1.setViewportView(tblVeiculoVnd);
@@ -584,7 +585,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                                 .addGroup(pnlListVeiculoVndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(118, 395, Short.MAX_VALUE)))
+                                .addGap(118, 365, Short.MAX_VALUE)))
                         .addGap(15, 15, 15)
                         .addGroup(pnlListVeiculoVndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlListVeiculoVndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -634,6 +635,8 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
+    
+    private SortOrder tipoOrdem;
     
     private void cleanFields(){
         cmbCliente.setSelectedIndex(-1);
@@ -750,7 +753,12 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
+        switch(cmbFiltrarOrdem.getSelectedIndex()){
+            case 0 -> tipoOrdem = SortOrder.ASCENDING;
+            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        }
+        
+        FuncoesUteis.ordenarTabela(tblVeiculoVnd, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

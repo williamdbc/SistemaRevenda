@@ -162,11 +162,9 @@ public class CadMarca extends javax.swing.JDialog {
 
         TabbedPane.addTab("Cadastro", pnlCadMarca);
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca" }));
-        cmbPesquisar.setEnabled(false);
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca" }));
 
-        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Marca" }));
-        cmbFiltrar.setEnabled(false);
+        cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca" }));
 
         cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
 
@@ -333,14 +331,12 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-            switch(cmbFiltrarOrdem.getSelectedIndex()){
+        switch(cmbFiltrarOrdem.getSelectedIndex()){
             case 0 -> tipoOrdem = SortOrder.ASCENDING;
             case 1 -> tipoOrdem = SortOrder.DESCENDING;
         }
         
-        switch(cmbFiltrar.getSelectedIndex()){
-            case 0 -> FuncoesUteis.ordenarTabela(tblMarca, 1, tipoOrdem);
-        }
+        FuncoesUteis.ordenarTabela(tblMarca, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
