@@ -331,6 +331,13 @@ public class CadModelo extends javax.swing.JDialog {
         } return true;  
     }
     
+    private void carregarTabela(List<Modelo> listaModelos){
+        ((DefaultTableModel) tblModelo.getModel()).setNumRows(0);
+            
+        for (Modelo modelo : listaModelos ) {
+            ((DefaultTableModel)tblModelo.getModel()).addRow(modelo.toArray());     
+        }
+    }
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -349,21 +356,23 @@ public class CadModelo extends javax.swing.JDialog {
         FuncoesUteis.ordenarTabela(tblModelo, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
+    
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
             String pesquisa = txtPesquisar.getText();
-            List<Modelo> listaModelos = null;
-        
-           switch(cmbPesquisar.getSelectedIndex()){
-                case 0 -> listaModelos = gerenciadorVIEW.getGerDominio().modeloPesquisar(pesquisa, 0);
-                case 1 -> listaModelos = gerenciadorVIEW.getGerDominio().modeloPesquisar(pesquisa, 1);
-            }
-
-            ((DefaultTableModel) tblModelo.getModel()).setNumRows(0);
             
-            for (Modelo modelo : listaModelos ) {
-                ((DefaultTableModel)tblModelo.getModel()).addRow(modelo.toArray());     
+            if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+                JOptionPane.showMessageDialog(this, "ID possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+                return;
             }
+            
+            if(pesquisa.isBlank()){
+                   carregarTabela(gerenciadorVIEW.getGerDominio().listar(Modelo.class));
+            } else {
+                List<Modelo> listaModelos = gerenciadorVIEW.getGerDominio().modeloPesquisar(pesquisa, cmbPesquisar.getSelectedIndex());
+                carregarTabela(listaModelos);
+            }  
+            
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
         } 

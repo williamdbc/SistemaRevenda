@@ -34,7 +34,7 @@ public class ModeloDAO extends GenericDAO{
             switch (tipoPesquisa) {
                 case ID_MODELO:
                     expressaoPesquisada = tabela.get("id_modelo");
-                    restricoes = builder.like(expressaoPesquisada, Integer.valueOf(pesquisa) + "%" );
+                    restricoes = builder.equal(expressaoPesquisada, pesquisa);
                     break;
                 case MARCA: 
                     expressaoPesquisada = tabela.get("marca").get("nome_marca");

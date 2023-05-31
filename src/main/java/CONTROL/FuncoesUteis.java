@@ -77,4 +77,9 @@ public class FuncoesUteis {
         sortKeys.add(new RowSorter.SortKey(coluna, tipoOrdem));
         sorter.setSortKeys(sortKeys);
     }
+    
+    public static boolean isInteger(String str) {
+        return str != null && str.matches("[0-9]*");
+    }
+
 }
