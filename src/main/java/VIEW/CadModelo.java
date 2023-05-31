@@ -17,7 +17,7 @@ public class CadModelo extends javax.swing.JDialog {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
         modeloSelecionado = null;
-        btnPesquisarActionPerformed(null);
+        //btnPesquisarActionPerformed(null);
     }
 
     @SuppressWarnings("unchecked")

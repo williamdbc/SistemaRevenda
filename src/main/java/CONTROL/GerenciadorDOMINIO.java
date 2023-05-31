@@ -94,8 +94,15 @@ public class GerenciadorDOMINIO {
          List<Modelo> lista = null;
          
          switch(tipoPesquisa){
-            case 0 -> lista = modeloDAO.pesquisarMarca(pesquisa);
-            case 1 -> lista = modeloDAO.pesquisarModelo(pesquisa);
+             case 0:
+                 lista = modeloDAO.pesquisarID(pesquisa);
+                 break;
+             case 1:
+                 lista = modeloDAO.pesquisarMarca(pesquisa);
+                 break;
+             case 2:
+                 lista = modeloDAO.pesquisarModelo(pesquisa);
+                 break;
         }
          return lista;
     }

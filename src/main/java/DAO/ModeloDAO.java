@@ -12,8 +12,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 public class ModeloDAO extends GenericDAO{
-    private final int marca = 0;
-    private final int modelo = 1;  
+    private final int ID_MODELO = 0;
+    private final int MARCA = 1;
+    private final int MODELO = 2;  
     
     private List<Modelo> pesquisar(String pesquisa, int tipoPesquisa) throws HibernateException {
         List lista = null;
@@ -31,11 +32,15 @@ public class ModeloDAO extends GenericDAO{
 
             
             switch (tipoPesquisa) {
-                case marca: 
+                case ID_MODELO:
+                    expressaoPesquisada = tabela.get("id_modelo");
+                    restricoes = builder.like(expressaoPesquisada, Integer.valueOf(pesquisa) + "%" );
+                    break;
+                case MARCA: 
                     expressaoPesquisada = tabela.get("marca").get("nome_marca");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" );
                     break;
-                case modelo: 
+                case MODELO: 
                     expressaoPesquisada = tabela.get("nome_modelo");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" ); 
                     break;                 
@@ -57,12 +62,16 @@ public class ModeloDAO extends GenericDAO{
         return lista;
     }
     
+    public List<Modelo> pesquisarID(String idModelo){
+        return pesquisar(idModelo, ID_MODELO);
+    }
+    
     public List<Modelo> pesquisarMarca(String nomeMarca){
-        return pesquisar(nomeMarca, marca);
+        return pesquisar(nomeMarca, MARCA);
     }
     
     public List<Modelo> pesquisarModelo(String nomeModelo){
-        return pesquisar(nomeModelo, modelo);
+        return pesquisar(nomeModelo, MODELO);
     }
     
     
