@@ -86,25 +86,24 @@ public class GerenciadorDOMINIO {
         return versaoDAO.pesquisarModelo(pesquisa);
     }
     
-    public List<Marca> marcaPesquisar(String pesquisa){
-         return marcaDAO.pesquisarMarca(pesquisa);
-    }
-    
-    public List<Modelo> modeloPesquisar(String pesquisa, int tipoPesquisa){
-         List<Modelo> lista = null;
-         
-         switch(tipoPesquisa){
-             case 0:
-                 lista = modeloDAO.pesquisarID(pesquisa);
-                 break;
-             case 1:
-                 lista = modeloDAO.pesquisarMarca(pesquisa);
-                 break;
-             case 2:
-                 lista = modeloDAO.pesquisarModelo(pesquisa);
-                 break;
+    public List<Marca> marcaPesquisar(String pesquisa, int tipoPesquisa){
+        List<Marca> lista = null;
+        switch(tipoPesquisa){
+            case 0: lista = marcaDAO.pesquisarID(pesquisa); break;
+            case 1: lista = marcaDAO.pesquisarMarca(pesquisa); break;
         }
-         return lista;
+        return lista; 
+    }
+
+    public List<Modelo> modeloPesquisar(String pesquisa, int tipoPesquisa){
+        List<Modelo> lista = null;
+         
+        switch(tipoPesquisa){
+            case 0: lista = modeloDAO.pesquisarID(pesquisa); break;
+            case 1: lista = modeloDAO.pesquisarMarca(pesquisa); break;
+            case 2: lista = modeloDAO.pesquisarModelo(pesquisa); break;
+        }
+        return lista;
     }
     
     public List<Versao> versaoPesquisar(String pesquisa, int tipoPesquisa){

@@ -312,19 +312,32 @@ public class CadMarca extends javax.swing.JDialog {
         } return true;  
     }  
     
+    private void carregarTabela(List<Marca> listaMarcas){
+        ((DefaultTableModel) tblMarca.getModel()).setNumRows(0);
+            
+        for (Marca marca : listaMarcas ) {
+            ((DefaultTableModel)tblMarca.getModel()).addRow(marca.toArray());     
+        }
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
          try {
             String pesquisa = txtPesquisar.getText();
-            List<Marca> listaMarcas = gerenciadorVIEW.getGerDominio().marcaPesquisar(pesquisa);
             
-            ((DefaultTableModel) tblMarca.getModel()).setNumRows(0);
-            
-            for (Marca marca : listaMarcas) {
-                ((DefaultTableModel)tblMarca.getModel()).addRow(marca.toArray());     
+            if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+                JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar marca", JOptionPane.ERROR_MESSAGE  );
+                return;
             }
+
+            if(pesquisa.isBlank()){
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Marca.class));
+            } else {
+                carregarTabela(gerenciadorVIEW.getGerDominio().marcaPesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
+            }  
+            
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar marca", JOptionPane.ERROR_MESSAGE  );
         } 

@@ -362,15 +362,14 @@ public class CadModelo extends javax.swing.JDialog {
             String pesquisa = txtPesquisar.getText();
             
             if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
-                JOptionPane.showMessageDialog(this, "ID possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
                 return;
             }
             
             if(pesquisa.isBlank()){
-                   carregarTabela(gerenciadorVIEW.getGerDominio().listar(Modelo.class));
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Modelo.class));
             } else {
-                List<Modelo> listaModelos = gerenciadorVIEW.getGerDominio().modeloPesquisar(pesquisa, cmbPesquisar.getSelectedIndex());
-                carregarTabela(listaModelos);
+                carregarTabela(gerenciadorVIEW.getGerDominio().modeloPesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
             }  
             
         } catch (HibernateException ex) {

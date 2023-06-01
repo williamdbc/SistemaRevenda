@@ -37,7 +37,9 @@ public class GenericDAO {
             } else if(tipoDML == 4){        //Se for tipo 4, significa que é listar, retorna uma lista.
                 CriteriaQuery consulta = sessao.getCriteriaBuilder().createQuery(classe);
                 consulta.from(classe);
-                lista = sessao.createQuery(consulta).getResultList();                   
+                //consulta.orderBy(lista);
+                lista = sessao.createQuery(consulta).getResultList();     
+                //consulta.orderBy(lista);
             }   
             
             sessao.getTransaction().commit();
