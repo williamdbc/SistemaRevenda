@@ -338,6 +338,14 @@ public class CadModelo extends javax.swing.JDialog {
             ((DefaultTableModel)tblModelo.getModel()).addRow(modelo.toArray());     
         }
     }
+    
+    private boolean pesquisaValida(String pesquisa){
+        if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        return true;
+    }
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -355,14 +363,12 @@ public class CadModelo extends javax.swing.JDialog {
         
         FuncoesUteis.ordenarTabela(tblModelo, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
-
-    
+     
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
             String pesquisa = txtPesquisar.getText();
             
-            if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
-                JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            if(!pesquisaValida(pesquisa)){
                 return;
             }
             

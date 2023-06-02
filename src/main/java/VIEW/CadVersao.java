@@ -364,6 +364,22 @@ public class CadVersao extends javax.swing.JDialog {
         } return true;  
     }
     
+    private void carregarTabela(List<Versao> listaVersoes){
+        ((DefaultTableModel) tblVersao.getModel()).setNumRows(0);
+            
+        for (Versao versao : listaVersoes ) {
+            ((DefaultTableModel)tblVersao.getModel()).addRow(versao.toArray());     
+        }
+    }
+    
+    private boolean pesquisaValida(String pesquisa){
+        if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        return true;
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -380,20 +396,17 @@ public class CadVersao extends javax.swing.JDialog {
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
             String pesquisa = txtPesquisar.getText();
-            List<Versao> listaVersoes = null;
-        
-            switch(cmbPesquisar.getSelectedIndex()){
-                case 0 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 0);
-                case 1 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 1);
-                case 2 -> listaVersoes = gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, 2);
-            }
 
-            ((DefaultTableModel) tblVersao.getModel()).setNumRows(0);
-            
-            for (Versao versao : listaVersoes ) {
-                ((DefaultTableModel)tblVersao.getModel()).addRow(versao.toArray());   
-                
+            if(!pesquisaValida(pesquisa)){
+                return;
             }
+            
+            if(pesquisa.isBlank()){
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Versao.class));
+            } else {
+                carregarTabela(gerenciadorVIEW.getGerDominio().versaoPesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
+            }  
+               
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar versão", JOptionPane.ERROR_MESSAGE  );
         } 

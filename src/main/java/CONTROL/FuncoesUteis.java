@@ -81,5 +81,10 @@ public class FuncoesUteis {
     public static boolean isInteger(String str) {
         return str != null && str.matches("[0-9]*");
     }
+    
+    public static boolean isFloat(String str) {
+        return str != null && str.matches("^\\s*\\d+(\\.\\d+)?\\s*$");
+        
+    }   
 
 }

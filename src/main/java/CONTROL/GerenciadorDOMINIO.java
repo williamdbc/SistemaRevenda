@@ -110,11 +110,31 @@ public class GerenciadorDOMINIO {
         List<Versao> lista = null;
         
         switch(tipoPesquisa){
-            case 0 -> lista = versaoDAO.pesquisarMarca(pesquisa);
-            case 1 -> lista = versaoDAO.pesquisarModelo(pesquisa);
-            case 2 -> lista = versaoDAO.pesquisarVersao(pesquisa);
-        }
-        
+            case 0: lista = versaoDAO.pesquisarID(pesquisa); break;
+            case 1: lista = versaoDAO.pesquisarMarca(pesquisa); break;
+            case 2: lista = versaoDAO.pesquisarModelo(pesquisa); break;
+            case 3: lista = versaoDAO.pesquisarVersao(pesquisa); break;
+        }    
         return lista;
     }
+    
+    public List<Veiculo> veiculoPesquisar(String pesquisa, int tipoPesquisa){
+        List<Veiculo> lista = null;
+        
+        switch(tipoPesquisa){
+            case 0: lista = veiculoDAO.pesquisarID(pesquisa); break;
+            case 1: lista = veiculoDAO.pesquisarMarca(pesquisa); break;
+            case 2: lista = veiculoDAO.pesquisarModelo(pesquisa); break;
+            case 3: lista = veiculoDAO.pesquisarVersao(pesquisa); break;
+            case 4: lista = veiculoDAO.pesquisarAno(pesquisa); break;
+            case 5: lista = veiculoDAO.pesquisarCombustivel(pesquisa); break;
+            case 6: lista = veiculoDAO.pesquisarCambio(pesquisa); break;
+            case 7: lista = veiculoDAO.pesquisarDirecao(pesquisa); break;
+            case 8: lista = veiculoDAO.pesquisarMotor(pesquisa); break;
+            
+        }    
+        return lista;
+    }
+    
+    
 }

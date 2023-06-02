@@ -20,7 +20,7 @@ public class Veiculo {
     @Column (name = "direcao", length = 20)
     private String direcao;
     
-    @Column (name = "motor")
+    @Column (name = "motor") 
     private float motor;
     
     @Column (name = "airbag")
@@ -180,7 +180,7 @@ public class Veiculo {
     }
     
     public Object[] toArray(){
-    return new Object[] {versao.getModelo().getMarca().getNome_marca(), 
+    return new Object[] {id_veiculo, versao.getModelo().getMarca().getNome_marca(), 
                         versao.getModelo().getNome_modelo(),
                         versao.getNome_versao(),
                         this, combustivel, cambio, direcao, motor};

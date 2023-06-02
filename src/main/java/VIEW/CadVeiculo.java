@@ -389,14 +389,16 @@ public class CadVeiculo extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor"
+                "ID", "Marca", "Modelo", "Versão", "Ano", "Combústivel", "Câmbio", "Direção", "Motor"
             }
         ));
         jScrollPane1.setViewportView(tblVeiculo);
 
         cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor" }));
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor" }));
+        cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
+
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Combústivel", "Câmbio", "Direção", "Motor" }));
 
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -557,12 +559,63 @@ public class CadVeiculo extends javax.swing.JDialog {
         if(cmbVersao.getSelectedIndex() == -1){
              msgErro += "O campo 'Versão' não pode estar vazio.\n";
         }
+        
+        if(cmbCombustivel.getSelectedIndex() == -1){
+            msgErro += "O campo 'Combustível' não pode estar vazio.\n";
+        }
+        
+        if(cmbCambio.getSelectedIndex() == -1){
+            msgErro += "O campo 'Câmbio' não pode estar vazio.\n";
+        }
+        
+        if(cmbDirecao.getSelectedIndex() == -1){
+             msgErro += "O campo 'Direção' não pode estar vazio.\n";
+        }
 
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         if(!msgErro.isBlank()){
             JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
             return false;
         } return true;  
+    }
+    
+    private void carregarTabela(List<Veiculo> listaVeiculos){
+        ((DefaultTableModel) tblVeiculo.getModel()).setNumRows(0);
+            
+        for (Veiculo veiculo : listaVeiculos ) {
+            ((DefaultTableModel)tblVeiculo.getModel()).addRow(veiculo.toArray());     
+        }
+    }
+    
+    private boolean pesquisaValida(String pesquisa){
+        if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        if(cmbPesquisar.getSelectedIndex() == 4 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "Ano informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        
+        if(cmbPesquisar.getSelectedIndex() == 8 && !FuncoesUteis.isFloat(pesquisa)){
+            JOptionPane.showMessageDialog(this, "Motor informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        
+        
+        return true;
     }
     
 /*                                                                                                                         */
@@ -587,13 +640,17 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-         try {
-            List<Veiculo> listaVeiculos = gerenciadorVIEW.getGerDominio().listar(Veiculo.class); 
-            ((DefaultTableModel) tblVeiculo.getModel()).setNumRows(0);
-            
-            for (Veiculo veiculo : listaVeiculos ) {
-                ((DefaultTableModel)tblVeiculo.getModel()).addRow(veiculo.toArray());     
+        try {
+            String pesquisa = txtPesquisar.getText();
+
+            if(pesquisa.isBlank()){
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Veiculo.class));
+            } else if(!pesquisaValida(pesquisa)){
+                return;
+            } else{
+                carregarTabela(gerenciadorVIEW.getGerDominio().veiculoPesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
             }
+            
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar veículo", JOptionPane.ERROR_MESSAGE  );
         } 
