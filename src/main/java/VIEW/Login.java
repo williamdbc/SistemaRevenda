@@ -60,6 +60,12 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUsuarioKeyPressed(evt);
+            }
+        });
+
         lblCarro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/carroLogin.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,6 +157,10 @@ public class Login extends javax.swing.JFrame {
             senha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/mostrar_senha.png")));
         }
     }//GEN-LAST:event_senhaMouseClicked
+
+    private void txtUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyPressed
+        pressionarEnter(evt);
+    }//GEN-LAST:event_txtUsuarioKeyPressed
 
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables

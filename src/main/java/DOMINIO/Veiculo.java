@@ -20,7 +20,7 @@ public class Veiculo {
     @Column (name = "direcao", length = 20)
     private String direcao;
     
-    @Column (name = "motor") 
+    @Column (name = "motor", columnDefinition="float(5,2)") 
     private float motor;
     
     @Column (name = "airbag")
@@ -44,7 +44,7 @@ public class Veiculo {
     @ManyToOne (fetch = FetchType.EAGER) @JoinColumn (name = "id_versao")
     private Versao versao;
     
-    @OneToMany (mappedBy = "veiculo", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "veiculo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Revenda> revendas = new ArrayList();
    
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -147,9 +147,11 @@ public class Veiculo {
         this.trava_eletrica = trava_eletrica;
     }
 
+    
     public Versao getVersao() {
         return versao;
     }
+    
 
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */

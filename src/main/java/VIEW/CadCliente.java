@@ -344,6 +344,23 @@ public class CadCliente extends javax.swing.JDialog {
             return false;
         } return true;  
     }
+    
+    private void carregarTabela(List<Cliente> listaClientes){
+        ((DefaultTableModel) tblCliente.getModel()).setNumRows(0);
+            
+        for (Cliente cliente : listaClientes ) {
+            ((DefaultTableModel)tblCliente.getModel()).addRow(cliente.toArray());     
+        }
+    }
+    
+    private boolean pesquisaValida(String pesquisa){
+        if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        return true;
+    }
+    
    
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -368,12 +385,17 @@ public class CadCliente extends javax.swing.JDialog {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            List<Cliente> listaCliente = gerenciadorVIEW.getGerDominio().listar(Cliente.class); 
-            ((DefaultTableModel) tblCliente.getModel()).setNumRows(0);
-            
-            for (Cliente cliente : listaCliente ) {
-                ((DefaultTableModel)tblCliente.getModel()).addRow(cliente.toArray());     
+            String pesquisa = txtPesquisar.getText();
+
+            if(!pesquisaValida(pesquisa)){
+                return;
             }
+            
+            if(pesquisa.isBlank()){
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Cliente.class));
+            } else {
+                carregarTabela(gerenciadorVIEW.getGerDominio().clientePesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
+            } 
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
         } 

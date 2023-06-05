@@ -19,14 +19,17 @@ import javax.swing.table.TableRowSorter;
 
 public class FuncoesUteis {
     
-    public static String dateToString(Date dataSQL){
+    public static String dateToString(Date dataSQL){                                 //Converte uma data de string para SQL
         return new SimpleDateFormat("dd/MM/yyyy").format(dataSQL);
     }
  
-    public static Date stringToDate(String dataString) throws ParseException{
+    public static Date stringToDate(String dataString) throws ParseException{       //Converte uma data de SQL para String
         return new SimpleDateFormat("dd/MM/yyyy").parse(dataString);
     }
     
+    public static String stringToStringSQL(String dataString) throws ParseException{ //Converte uma String para String no formato SQL. Ex: 03/06/2023 > 2023/06/03
+        return new SimpleDateFormat("yyyy/MM/dd").format(stringToDate(dataString));
+    }
     
     public static void cleanTextFields(JTextField[] listaTextFields){
         for(JTextField txt : listaTextFields){
@@ -84,7 +87,10 @@ public class FuncoesUteis {
     
     public static boolean isFloat(String str) {
         return str != null && str.matches("^\\s*\\d+(\\.\\d+)?\\s*$");
-        
     }   
+    
+    public static boolean isData(String str) {
+        return str != null && str.matches("\\d{2}/\\d{2}/\\d{4}");
+    }
 
 }

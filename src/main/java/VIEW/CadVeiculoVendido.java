@@ -2,6 +2,7 @@ package VIEW;
 
 import CONTROL.*;
 import DOMINIO.*;
+import java.awt.Dimension;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -96,6 +97,22 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
+            }
+        });
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
+        jTabbedPane1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jTabbedPane1ComponentShown(evt);
             }
         });
 
@@ -473,7 +490,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                             .addComponent(pnlCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEditando)
                             .addComponent(pnlBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         pnlCadVeiculoVndLayout.setVerticalGroup(
             pnlCadVeiculoVndLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,7 +518,18 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
         jTabbedPane1.addTab("Cadastro", pnlCadVeiculoVnd);
 
-        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Valor venda", "Data venda", "Lucro" }));
+        pnlListVeiculoVnd.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                pnlListVeiculoVndComponentShown(evt);
+            }
+        });
+
+        cmbPesquisar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Cliente", "Valor venda", "Data venda", "Lucro" }));
+        cmbPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPesquisarActionPerformed(evt);
+            }
+        });
 
         cmbFiltrarOrdem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
 
@@ -515,7 +543,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Valor venda", "Data venda", "Lucro"
+                "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Cliente", "Valor venda", "Data venda", "Lucro"
             }
         ));
         jScrollPane1.setViewportView(tblVeiculoVnd);
@@ -532,6 +560,11 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/excluir2.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/informacao.png"))); // NOI18N
         btnInfo.setText("Info");
@@ -662,8 +695,6 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         ftxtData_compra.setText("");
     }
     
-    
-    
     private void botaoEditar(){
         FuncoesUteis.isEditando(true, btnLimpar, btnEditarOK, btnCancelar, lblEditando);
     }
@@ -679,11 +710,15 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
             msgErro += "O campo 'Cliente' não pode estar vazio.\n";
         }
         
-        if(txtValorVenda.getText().isBlank()){
-            msgErro += "O campo 'Valor' não pode estar vazio.\n";
-        }
+         if(txtValorCompra.getText().isBlank()){
+             msgErro += "O campo 'Valor' não pode estar vazio.\n";
+        } 
         
-        if(ftxtData_compra.getText().isEmpty()){
+        if(!FuncoesUteis.isFloat(txtValorCompra.getText())){
+            msgErro += "O campo 'Valor' não é válido.\n";
+        };
+        
+        if(ftxtData_compra.getText().isBlank()){
              msgErro += "O campo 'Data compra' não pode estar vazio.\n";
         }
 
@@ -692,6 +727,49 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
             return false;
         } return true;  
     }
+    
+    private void carregarTabela(List<Revenda> listaVeiculosCmp){
+        ((DefaultTableModel) tblVeiculoVnd.getModel()).setNumRows(0);
+            
+        for (Revenda revenda : listaVeiculosCmp ) {
+            if(revenda.getValor_venda() != 0){
+                ((DefaultTableModel)tblVeiculoVnd.getModel()).addRow(revenda.toArray_Venda());    
+            }
+        }
+    }
+    
+    private boolean pesquisaValida(String pesquisa){
+        if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar revenda", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        if(cmbPesquisar.getSelectedIndex() == 4 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "Ano informado possui caracteres não permitidos.", "Erro ao pesquisar revenda", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+      
+        if((cmbPesquisar.getSelectedIndex() == 8 ||  cmbPesquisar.getSelectedIndex() == 12) && !FuncoesUteis.isFloat(pesquisa)){
+            JOptionPane.showMessageDialog(this, "Valor informado possui caracteres não permitidos.", "Erro ao pesquisar revenda", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        
+        if(cmbPesquisar.getSelectedIndex() == 9 || cmbPesquisar.getSelectedIndex() == 13){
+            if(!FuncoesUteis.isData(pesquisa)){
+                JOptionPane.showMessageDialog(this, "Data informada é inválida. O formato deve ser 'XX/XX/XXXX'.", "Erro ao pesquisar data", JOptionPane.ERROR_MESSAGE  );
+                return false;
+            } else {
+                try {
+                pesquisa = FuncoesUteis.stringToStringSQL(pesquisa);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, ex, "Erro ao tentar converter data.", JOptionPane.ERROR_MESSAGE);
+                return false;  
+            }
+            }
+        }
+        return true;
+    }
+    
+ 
     
     private void setarCampos(){
         cmbMarca.setSelectedItem(revendaSelecionada.getVeiculo().getVersao().getModelo().getMarca());
@@ -739,14 +817,20 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            List<Revenda> listaVeiculoComprado = gerenciadorVIEW.getGerDominio().listar(Revenda.class); 
-            ((DefaultTableModel) tblVeiculoVnd.getModel()).setNumRows(0);
-            
-            for (Revenda revenda : listaVeiculoComprado ) {
-                if(revenda.getValor_venda() != 0){
-                    ((DefaultTableModel)tblVeiculoVnd.getModel()).addRow(revenda.toArray_Venda());  
+            String pesquisa = txtPesquisar.getText();
+
+            if(pesquisa.isBlank()){
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Revenda.class));
+            } else if(!pesquisaValida(pesquisa)){
+                return;
+            } else{
+                if(cmbPesquisar.getSelectedIndex() >= 6){
+                    carregarTabela(gerenciadorVIEW.getGerDominio().revendaPesquisar(pesquisa, cmbPesquisar.getSelectedIndex() + 1));
+                } else {    
+                    carregarTabela(gerenciadorVIEW.getGerDominio().revendaPesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
                 }
             }
+            
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar venda de veiculo", JOptionPane.ERROR_MESSAGE  );
         } 
@@ -814,6 +898,44 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void jTabbedPane1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTabbedPane1ComponentShown
+    }//GEN-LAST:event_jTabbedPane1ComponentShown
+
+    private void pnlListVeiculoVndComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_pnlListVeiculoVndComponentShown
+        pnlListVeiculoVnd.setSize( 1200, 459);
+        this.pack();
+    }//GEN-LAST:event_pnlListVeiculoVndComponentShown
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        if(jTabbedPane1.getSelectedIndex() == 0){
+            pnlListVeiculoVnd.setPreferredSize(new Dimension(871, 459));
+        } else if(jTabbedPane1.getSelectedIndex() == 1){
+            pnlListVeiculoVnd.setPreferredSize(new Dimension(1200, 459));
+        }
+        this.pack();
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void cmbPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPesquisarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbPesquisarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tblVeiculoVnd.getSelectedRow();
+        if(linha >= 0){
+            revendaSelecionada = (Revenda) tblVeiculoVnd.getValueAt(linha, 6);
+            if(JOptionPane.showConfirmDialog(this, "Desejar realmente excluir?\nTodos os itens relacionados a essa venda também serão excluídos.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                ((DefaultTableModel) tblVeiculoVnd.getModel()).removeRow(linha);
+                gerenciadorVIEW.getGerDominio().revendaExcluir(revendaSelecionada);  
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
 
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 

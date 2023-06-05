@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Date;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -483,6 +484,11 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/excluir2.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/informacao.png"))); // NOI18N
         btnInfo.setText("Info");
@@ -659,20 +665,32 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
              msgErro += "O campo 'Ano' não pode estar vazio.\n";
         }
         
-        if(cmbFornecedor.getSelectedIndex() == -1){
-             msgErro += "O campo 'Ano' não pode estar vazio.\n";
+        if(txtPlaca.getText().isBlank()){
+             msgErro += "O campo 'Placa' não pode estar vazio.\n";
         }
         
         if(txtCor.getText().isBlank()){
              msgErro += "O campo 'Cor' não pode estar vazio.\n";
         }
+        
+        if(FuncoesUteis.isInteger(txtCor.getText())){
+             msgErro += "O campo 'Cor' não pode ser um número inteiro.\n";
+        }
 
         if(txtKM.getText().isBlank()){
              msgErro += "O campo 'KM' não pode estar vazio.\n";
         }
-                
-        if(txtPlaca.getText().isBlank()){
-             msgErro += "O campo 'Placa' não pode estar vazio.\n";
+
+        if(txtValor.getText().isBlank()){
+             msgErro += "O campo 'Valor' não pode estar vazio.\n";
+        } 
+        
+        if(!FuncoesUteis.isFloat(txtValor.getText())){
+            msgErro += "O campo 'Valor' não é válido.\n";
+        };
+          
+        if(cmbFornecedor.getSelectedIndex() == -1){
+             msgErro += "O campo 'Fornecedor' não pode estar vazio.\n";
         }
         
         if(txtData.getText().isBlank()){
@@ -684,6 +702,53 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             return false;
         } return true;  
     }
+    
+    private void carregarTabela(List<Revenda> listaVeiculosCmp){
+        ((DefaultTableModel) tblVeiculoCmp.getModel()).setNumRows(0);
+            
+        for (Revenda revenda : listaVeiculosCmp ) {
+            if(revenda.getValor_venda() == 0){
+                ((DefaultTableModel)tblVeiculoCmp.getModel()).addRow(revenda.toArray_Compra());    
+            }
+        }
+    }
+    
+    private boolean pesquisaValida(String pesquisa){
+        if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "ID informado possui caracteres não permitidos.", "Erro ao pesquisar revenda", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        if(cmbPesquisar.getSelectedIndex() == 4 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "Ano informado possui caracteres não permitidos.", "Erro ao pesquisar revenda", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        
+        if(cmbPesquisar.getSelectedIndex() == 6 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "Quilometragem informada possui caracteres não permitidos.", "Erro ao pesquisar revenda", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        
+        if(cmbPesquisar.getSelectedIndex() == 9 && !FuncoesUteis.isFloat(pesquisa)){
+            JOptionPane.showMessageDialog(this, "Valor informado possui caracteres não permitidos.", "Erro ao pesquisar revenda", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        
+        if(cmbPesquisar.getSelectedIndex() == 10){
+            if(!FuncoesUteis.isData(pesquisa)){
+                JOptionPane.showMessageDialog(this, "Data informada é inválida. O formato deve ser 'XX/XX/XXXX'.", "Erro ao pesquisar data", JOptionPane.ERROR_MESSAGE  );
+                return false;
+            } else {
+                try {
+                pesquisa = FuncoesUteis.stringToStringSQL(pesquisa);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, ex, "Erro ao tentar converter data.", JOptionPane.ERROR_MESSAGE);
+                return false;  
+            }
+            }
+        }
+        return true;
+    }
+    
     
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -711,14 +776,16 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            List<Revenda> listaVeiculoComprado = gerenciadorVIEW.getGerDominio().listar(Revenda.class); 
-            ((DefaultTableModel) tblVeiculoCmp.getModel()).setNumRows(0);
-            
-            for (Revenda revenda : listaVeiculoComprado ) {
-                if(revenda.getValor_venda() == 0){
-                    ((DefaultTableModel)tblVeiculoCmp.getModel()).addRow(revenda.toArray_Compra());    
-                }
+            String pesquisa = txtPesquisar.getText();
+
+            if(pesquisa.isBlank()){
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Revenda.class));
+            } else if(!pesquisaValida(pesquisa)){
+                return;
+            } else{
+                carregarTabela(gerenciadorVIEW.getGerDominio().revendaPesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
             }
+            
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar compra de veiculo", JOptionPane.ERROR_MESSAGE  );
         }    
@@ -736,7 +803,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         int linha = tblVeiculoCmp.getSelectedRow();
         if ( linha >= 0 ) {
-            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 5);
+            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 7);
             gerenciadorVIEW.setRevenda(revendaSelecionada);
             gerenciadorVIEW.janelaCadVeiculoVendido();
             this.setVisible(false);
@@ -754,7 +821,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private void btnDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDespesaActionPerformed
         int linha = tblVeiculoCmp.getSelectedRow();
         if ( linha >= 0 ) {
-            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 5);
+            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 7);
             gerenciadorVIEW.setRevenda(revendaSelecionada);
             gerenciadorVIEW.janelaListaDespesa();
             this.setVisible(false);
@@ -836,6 +903,19 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tblVeiculoCmp.getSelectedRow();
+        if(linha >= 0){
+            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 7);
+            if(JOptionPane.showConfirmDialog(this, "Desejar realmente excluir?\nTodos os itens relacionados a essa compra também serão excluídos.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                ((DefaultTableModel) tblVeiculoCmp.getModel()).removeRow(linha);
+                gerenciadorVIEW.getGerDominio().revendaExcluir(revendaSelecionada);  
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables

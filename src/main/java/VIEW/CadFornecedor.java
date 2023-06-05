@@ -339,6 +339,22 @@ public class CadFornecedor extends javax.swing.JDialog {
         } return true;  
     }
     
+    private void carregarTabela(List<Fornecedor> listaFornecedores){
+        ((DefaultTableModel) tblFornecedor.getModel()).setNumRows(0);
+            
+        for (Fornecedor fornecedor : listaFornecedores ) {
+            ((DefaultTableModel)tblFornecedor.getModel()).addRow(fornecedor.toArray());     
+        }
+    }
+    
+    private boolean pesquisaValida(String pesquisa){
+        if(cmbPesquisar.getSelectedIndex() == 0 && !FuncoesUteis.isInteger(pesquisa)){
+            JOptionPane.showMessageDialog(this, "ID informado possui caracteres nÃ£o permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
+            return false;
+        }
+        return true;
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -362,14 +378,19 @@ public class CadFornecedor extends javax.swing.JDialog {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try{
-        List<Fornecedor> listaFornecedor = gerenciadorVIEW.getGerDominio().listar(Fornecedor.class); 
-        ((DefaultTableModel) tblFornecedor.getModel()).setNumRows(0);
-            
-        for (Fornecedor fornecedor : listaFornecedor ) {
-                ((DefaultTableModel)tblFornecedor.getModel()).addRow(fornecedor.toArray());     
+            String pesquisa = txtPesquisar.getText();
+
+            if(!pesquisaValida(pesquisa)){
+                return;
             }
+            
+            if(pesquisa.isBlank()){
+                carregarTabela(gerenciadorVIEW.getGerDominio().listar(Fornecedor.class));
+            } else {
+                carregarTabela(gerenciadorVIEW.getGerDominio().fornecedorPesquisar(pesquisa, cmbPesquisar.getSelectedIndex()));
+            } 
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar fornecedor", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "Erro ao pesquisar cliente", JOptionPane.ERROR_MESSAGE  );
         } 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -385,7 +406,7 @@ public class CadFornecedor extends javax.swing.JDialog {
                 String cidade = txtCidade.getText();
                 String telefone = txtTelefone.getText();
             
-                gerenciadorVIEW.getGerDominio().inserirCliente(nome, cidade, telefone);
+                gerenciadorVIEW.getGerDominio().inserirFornecedor(nome, cidade, telefone);
                 JOptionPane.showMessageDialog(this, "Fornecedor inserido com sucesso.", "Inserir fornecedor", JOptionPane.INFORMATION_MESSAGE);
                 cleanFields();
             } catch (HibernateException ex) {

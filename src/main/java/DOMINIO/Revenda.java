@@ -1,9 +1,14 @@
 package DOMINIO;
+import CONTROL.FuncoesUteis;
 import java.util.ArrayList;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import javax.transaction.Transactional;
+import javax.validation.constraints.Digits;
+import org.hibernate.annotations.Type;
+
+
 
 @Entity
 @Transactional
@@ -23,13 +28,13 @@ public class Revenda {
     @Column (name="data_compra") @Temporal (TemporalType.DATE)
     private Date data_compra;
     
-    @Column (name="valor_compra")
+    @Column(name = "valor_compra", columnDefinition="float(10,2)")
     private float valor_compra;
     
     @Column (name="data_venda") @Temporal (TemporalType.DATE)
     private Date data_venda;
     
-    @Column (name="valor_venda")
+    @Column (name="valor_venda", columnDefinition="float(10,2)")
     private float valor_venda;
     
     @ManyToOne (fetch = FetchType.EAGER) @JoinColumn (name = "id_veiculo")
@@ -41,7 +46,7 @@ public class Revenda {
     @ManyToOne (fetch = FetchType.EAGER) @JoinColumn (name = "id_fornecedor")
     private Fornecedor fornecedor;
     
-    @OneToMany (mappedBy = "revenda", fetch = FetchType.EAGER) //Era Lazy
+    @OneToMany (mappedBy = "revenda", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //Era Lazy
     private List<Despesa> despesas = new ArrayList();
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -170,17 +175,16 @@ public class Revenda {
     }
     
     public Object[] toArray_Compra(){
-        return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
-                            veiculo.getVersao().getModelo().getNome_modelo() + " " +
-                            veiculo.getVersao().getNome_versao(),
-                            veiculo.getAno(), cor, quilometragem, fornecedor.getNome_cli_forn(), this, valor_compra, data_compra};
+        return new Object[] {id_revenda, veiculo.getVersao().getModelo().getMarca().getNome_marca(), 
+                            veiculo.getVersao().getModelo().getNome_modelo(), veiculo.getVersao().getNome_versao(),
+                            veiculo.getAno(), cor, quilometragem, this, fornecedor.getNome_cli_forn(), valor_compra, FuncoesUteis.dateToString(data_compra)};
     }
     
     public Object[] toArray_Venda(){
-        return new Object[] {veiculo.getVersao().getModelo().getMarca().getNome_marca() + " " +
-                            veiculo.getVersao().getModelo().getNome_modelo() + " " +
-                            veiculo.getVersao().getNome_versao(),
-                            veiculo.getAno(), cor, this, fornecedor.getNome_cli_forn(), valor_compra, data_compra, somaDespesas(), valor_venda, data_venda, (valor_venda - valor_compra - somaDespesas())};
+        return new Object[] {id_revenda, veiculo.getVersao().getModelo().getMarca().getNome_marca(), 
+                            veiculo.getVersao().getModelo().getNome_modelo(), veiculo.getVersao().getNome_versao(),
+                            veiculo.getAno(), cor, this, fornecedor.getNome_cli_forn(), valor_compra, FuncoesUteis.dateToString(data_compra),
+                            somaDespesas(), cliente.getNome_cli_forn(), valor_venda, FuncoesUteis.dateToString(data_venda), (valor_venda - valor_compra - somaDespesas())};
     }
 
     @Override

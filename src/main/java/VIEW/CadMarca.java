@@ -4,6 +4,7 @@ import CONTROL.*;
 import DOMINIO.*;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.HibernateException;
@@ -15,8 +16,7 @@ public class CadMarca extends javax.swing.JDialog {
     public CadMarca(java.awt.Frame parent, boolean modal, GerenciadorVIEW gerVIEW) {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
-        marcaSelecionada =  null; 
-        btnPesquisarActionPerformed(null);
+        marcaSelecionada = null; 
     }
 
     @SuppressWarnings("unchecked")
@@ -185,6 +185,11 @@ public class CadMarca extends javax.swing.JDialog {
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar.png"))); // NOI18N
         btnEditar.setText("Editar");
@@ -198,6 +203,11 @@ public class CadMarca extends javax.swing.JDialog {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/excluir2.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -320,6 +330,14 @@ public class CadMarca extends javax.swing.JDialog {
         }
     }
     
+    private void setFields(){
+        txtMarca.setText(marcaSelecionada.getNome_marca());
+    }
+    
+    private void updateFields(String nome_marca){
+        marcaSelecionada.setNome_marca(nome_marca);
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -353,12 +371,21 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        TabbedPane.setSelectedIndex(0);
-        botaoEditar();
+        int linha = tblMarca.getSelectedRow();
+        if(linha >= 0){
+            TabbedPane.setSelectedIndex(0);
+            botaoEditar();
+       
+            marcaSelecionada = (Marca) tblMarca.getValueAt(linha, 1);
+            setFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }
+     
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEditarOKComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_btnEditarOKComponentShown
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -366,7 +393,21 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        if(checkFields()){
+            try {
+                String marca = txtMarca.getText();
+                
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a essa marca também serão editados.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    updateFields(marca);
 
+                    gerenciadorVIEW.getGerDominio().marcaAlterar(marcaSelecionada);  
+                    JOptionPane.showMessageDialog(this, "Marca alterada com sucesso.", "Alterar marca", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
+            }   catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao alterar marca.", JOptionPane.ERROR_MESSAGE);
+            }
+        }    
     }//GEN-LAST:event_btnEditarOKActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -376,7 +417,7 @@ public class CadMarca extends javax.swing.JDialog {
                 
                 gerenciadorVIEW.getGerDominio().inserirMarca(marca);
                 JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir marca", JOptionPane.INFORMATION_MESSAGE);
-                cleanFields();
+                botaoCancelar();
             } catch (HibernateException ex) {
                 JOptionPane.showMessageDialog(this, ex, "Erro ao inserir marca.", JOptionPane.ERROR_MESSAGE);
             }
@@ -391,6 +432,23 @@ public class CadMarca extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tblMarca.getSelectedRow();
+        if(linha >= 0){
+            marcaSelecionada = (Marca) tblMarca.getValueAt(linha, 1);
+            if(JOptionPane.showConfirmDialog(this, "Desejar realmente excluir?\nTodos os itens relacionados a essa marca também serão excluídos.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                ((DefaultTableModel) tblMarca.getModel()).removeRow(linha);
+                gerenciadorVIEW.getGerDominio().marcaExcluir(marcaSelecionada);  
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        TabbedPane.setSelectedIndex(0);
+    }//GEN-LAST:event_btnNovoActionPerformed
 
       
 

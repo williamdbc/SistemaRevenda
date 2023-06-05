@@ -399,7 +399,7 @@ public class ListaDespesa extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirDespesa(revendaSelecionada, nomeDespesa, valor_despesa, data_despesa, responsavel);
                     JOptionPane.showMessageDialog(this, "Despesa inserida com sucesso.", "Inserir despesa", JOptionPane.INFORMATION_MESSAGE);
                     cleanFields();
-                    //carregarTabela();
+                    carregarTabela();
                 } catch (HibernateException | ParseException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao inserir despesa de um veículo.", JOptionPane.ERROR_MESSAGE);
                 }

@@ -8,7 +8,7 @@ public class Fornecedor extends RelacaoComercial implements Serializable{
 
     public Fornecedor() {
     }
-
+    
     public Fornecedor(String nome_cli_forn, String cidade_cli_forn, String telefone_cli_forn) {
         super(nome_cli_forn, cidade_cli_forn, telefone_cli_forn);
     }

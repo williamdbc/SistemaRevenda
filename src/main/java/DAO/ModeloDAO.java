@@ -62,16 +62,16 @@ public class ModeloDAO extends GenericDAO{
         return lista;
     }
     
-    public List<Modelo> pesquisarID(String idModelo){
-        return pesquisar(idModelo, ID_MODELO);
+    public List<Modelo> pesquisarID(String id_modelo){
+        return pesquisar(id_modelo, ID_MODELO);
     }
     
-    public List<Modelo> pesquisarMarca(String nomeMarca){
-        return pesquisar(nomeMarca, MARCA);
+    public List<Modelo> pesquisarMarca(String nome_marca){
+        return pesquisar(nome_marca, MARCA);
     }
     
-    public List<Modelo> pesquisarModelo(String nomeModelo){
-        return pesquisar(nomeModelo, MODELO);
+    public List<Modelo> pesquisarModelo(String nome_modelo){
+        return pesquisar(nome_modelo, MODELO);
     }
     
     

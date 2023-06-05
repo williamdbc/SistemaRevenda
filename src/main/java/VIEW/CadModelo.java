@@ -17,7 +17,6 @@ public class CadModelo extends javax.swing.JDialog {
         initComponents();
         this.gerenciadorVIEW = gerVIEW;
         modeloSelecionado = null;
-        //btnPesquisarActionPerformed(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -68,6 +67,7 @@ public class CadModelo extends javax.swing.JDialog {
 
         lblModelo.setText("Nome do modelo");
 
+        cmbMarca.setEditable(true);
         cmbMarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbMarcaActionPerformed(evt);
@@ -142,6 +142,11 @@ public class CadModelo extends javax.swing.JDialog {
                 btnEditarOKComponentShown(evt);
             }
         });
+        btnEditarOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarOKActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnEditarOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         lblEditando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/alerta.png"))); // NOI18N
@@ -211,6 +216,11 @@ public class CadModelo extends javax.swing.JDialog {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/excluir2.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/filtrar2.png"))); // NOI18N
         btnFiltrar.setText("Filtrar");
@@ -346,13 +356,32 @@ public class CadModelo extends javax.swing.JDialog {
         }
         return true;
     }
+    
+    private void setFields(){
+        cmbMarca.setSelectedItem(modeloSelecionado.getMarca());
+        txtModelo.setText(modeloSelecionado.getNome_modelo());
+    }
+    
+    private void updateFields(Marca marca, String nome_modelo){
+        modeloSelecionado.setMarca(marca);
+        modeloSelecionado.setNome_modelo(nome_modelo);
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
     
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        jTabbedPane1.setSelectedIndex(0);
-        botaoEditar();
+        int linha = tblModelo.getSelectedRow();
+        if(linha >= 0){
+            jTabbedPane1.setSelectedIndex(0);
+            botaoEditar();
+       
+            modeloSelecionado = (Modelo) tblModelo.getValueAt(linha, 2);
+            setFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }   
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
@@ -421,6 +450,38 @@ public class CadModelo extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tblModelo.getSelectedRow();
+        if(linha >= 0){
+            modeloSelecionado = (Modelo) tblModelo.getValueAt(linha, 2);
+            if(JOptionPane.showConfirmDialog(this, "Desejar realmente excluir?\nTodos os itens relacionados a esse modelo também serão excluídos.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                ((DefaultTableModel) tblModelo.getModel()).removeRow(linha);
+                gerenciadorVIEW.getGerDominio().modeloExcluir(modeloSelecionado);  
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        if(checkFields()){
+            try {
+                Marca marca = (Marca) cmbMarca.getSelectedItem();
+                String nomeModelo = txtModelo.getText();
+                
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a esse modelo também serão editados.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    updateFields(marca, nomeModelo);
+
+                    gerenciadorVIEW.getGerDominio().modeloAlterar(modeloSelecionado);  
+                    JOptionPane.showMessageDialog(this, "Modelo alterado com sucesso.", "Alterar modelo", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
+            }   catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao alterar modelo.", JOptionPane.ERROR_MESSAGE);
+            }
+        }  
+    }//GEN-LAST:event_btnEditarOKActionPerformed
 
   
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 

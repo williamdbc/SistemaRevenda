@@ -435,6 +435,11 @@ public class CadVeiculo extends javax.swing.JDialog {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/excluir2.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnInfo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/informacao.png"))); // NOI18N
         btnInfo.setText("Info");
@@ -572,19 +577,6 @@ public class CadVeiculo extends javax.swing.JDialog {
              msgErro += "O campo 'Direção' não pode estar vazio.\n";
         }
 
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
         if(!msgErro.isBlank()){
             JOptionPane.showMessageDialog(this, msgErro, "Verifique os campos.", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -613,8 +605,6 @@ public class CadVeiculo extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Motor informado possui caracteres não permitidos.", "Erro ao pesquisar modelo", JOptionPane.ERROR_MESSAGE  );
             return false;
         }
-        
-        
         return true;
     }
     
@@ -730,6 +720,19 @@ public class CadVeiculo extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_cmbMarcaActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tblVeiculo.getSelectedRow();
+        if(linha >= 0){
+            veiculoSelecionado = (Veiculo) tblVeiculo.getValueAt(linha, 4);
+            if(JOptionPane.showConfirmDialog(this, "Desejar realmente excluir?\nTodos os itens relacionados a esse veículo também serão excluídos.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                ((DefaultTableModel) tblVeiculo.getModel()).removeRow(linha);
+                gerenciadorVIEW.getGerDominio().veiculoExcluir(veiculoSelecionado);  
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
  
     
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 

@@ -13,6 +13,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 public class VeiculoDAO extends GenericDAO{
+    private final int ID_VEICULO = 0;
+    private final int MARCA = 1; 
+    private final int MODELO = 2;
+    private final int VERSAO = 3;
+    private final int ANO = 4;
+    private final int COMBUSTIVEL = 5;
+    private final int CAMBIO = 6;
+    private final int DIRECAO  = 7;
+    private final int MOTOR  = 8;
+    
     
     private List<Veiculo> pesquisar(String pesquisa, int tipoPesquisa) throws HibernateException {
         List lista = null;
@@ -30,39 +40,39 @@ public class VeiculoDAO extends GenericDAO{
 
             
             switch (tipoPesquisa) {
-                case 0: 
+                case ID_VEICULO: 
                     expressaoPesquisada = tabela.get("id_veiculo");
                     restricoes = builder.equal(expressaoPesquisada, pesquisa);
                     break;
-                case 1: 
+                case MARCA: 
                     expressaoPesquisada = tabela.get("versao").get("modelo").get("marca").get("nome_marca");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" );
                     break;
-                case 2: 
+                case MODELO: 
                     expressaoPesquisada = tabela.get("versao").get("modelo").get("nome_modelo");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" ); 
                     break;
-                case 3: 
+                case VERSAO: 
                     expressaoPesquisada = tabela.get("versao").get("nome_versao");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" );
                     break;    
-                case 4: 
+                case ANO: 
                     expressaoPesquisada = tabela.get("ano");
                     restricoes = builder.equal(expressaoPesquisada, pesquisa);
                     break;              
-                case 5: 
+                case COMBUSTIVEL: 
                     expressaoPesquisada = tabela.get("combustivel");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" );
                     break; 
-                case 6: 
+                case CAMBIO: 
                     expressaoPesquisada = tabela.get("cambio");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" );
                     break;   
-                case 7: 
+                case DIRECAO: 
                     expressaoPesquisada = tabela.get("direcao");
                     restricoes = builder.like(expressaoPesquisada, pesquisa + "%" );
                     break;    
-                case 8: 
+                case MOTOR: 
                     expressaoPesquisada = tabela.get("motor");
                     float valorMotor = Float.parseFloat(pesquisa); // Converter a string em float
                     restricoes = builder.equal(expressaoPesquisada, builder.literal(valorMotor));
@@ -86,40 +96,40 @@ public class VeiculoDAO extends GenericDAO{
         return lista;
     }
             
-    public List<Veiculo> pesquisarID(String idVeiculo){
-        return pesquisar(idVeiculo, 0);
+    public List<Veiculo> pesquisarID(String id_veiculo){
+        return pesquisar(id_veiculo, ID_VEICULO);
     }
     
-    public List<Veiculo> pesquisarMarca(String nomeMarca){
-        return pesquisar(nomeMarca, 1);
+    public List<Veiculo> pesquisarMarca(String nome_marca){
+        return pesquisar(nome_marca, MARCA);
     }
     
-    public List<Veiculo> pesquisarModelo(String nomeModelo){
-        return pesquisar(nomeModelo, 2);
+    public List<Veiculo> pesquisarModelo(String nome_modelo){
+        return pesquisar(nome_modelo, MODELO);
     }
 
-    public List<Veiculo> pesquisarVersao(String nomeVersao){
-        return pesquisar(nomeVersao, 3);
+    public List<Veiculo> pesquisarVersao(String nome_versao){
+        return pesquisar(nome_versao, VERSAO);
     }
     
     public List<Veiculo> pesquisarAno(String ano){
-        return pesquisar(ano, 4);
+        return pesquisar(ano, ANO);
     }
     
     public List<Veiculo> pesquisarCombustivel(String combustivel){
-        return pesquisar(combustivel, 5);
+        return pesquisar(combustivel, COMBUSTIVEL);
     }
     
     public List<Veiculo> pesquisarCambio(String cambio){
-        return pesquisar(cambio, 6);
+        return pesquisar(cambio, CAMBIO);
     }
     
     public List<Veiculo> pesquisarDirecao(String direcao){
-        return pesquisar(direcao, 7);
+        return pesquisar(direcao, DIRECAO);
     }
             
     public List<Veiculo> pesquisarMotor(String motor){
-        return pesquisar(motor, 8);
+        return pesquisar(motor, MOTOR);
     }
                 
 

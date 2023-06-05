@@ -15,7 +15,7 @@ public class Marca implements Serializable {
     private String nome_marca;
     
     
-    @OneToMany(mappedBy = "marca", fetch = FetchType.EAGER) //era LAZY
+    @OneToMany(mappedBy = "marca", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //era LAZY
     private List<Modelo> modelos = new ArrayList();
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -59,7 +59,7 @@ public class Marca implements Serializable {
     }
     
     public Object[] toArray(){
-        return new Object[] {id_marca, nome_marca};
+        return new Object[] {id_marca, this};
     }
       
 }

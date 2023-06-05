@@ -57,12 +57,12 @@ public class MarcaDAO extends GenericDAO{
         return lista;
     }
     
-    public List<Marca> pesquisarID(String idModelo){
-        return pesquisar(idModelo, ID_MARCA);
+    public List<Marca> pesquisarID(String id_marca){
+        return pesquisar(id_marca, ID_MARCA);
     }
     
-     public List<Marca> pesquisarMarca(String nomeMarca){
-        return pesquisar(nomeMarca, MARCA);
+     public List<Marca> pesquisarMarca(String nome_marca){
+        return pesquisar(nome_marca, MARCA);
     }
     
     

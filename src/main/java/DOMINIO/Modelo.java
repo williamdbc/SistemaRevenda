@@ -15,7 +15,7 @@ public class Modelo implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER) @JoinColumn(name = "id_marca")
     private Marca marca;
     
-    @OneToMany (mappedBy = "modelo", fetch = FetchType.EAGER)    //Era Lazy
+    @OneToMany (mappedBy = "modelo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)    //Era Lazy
     private List<Versao> versoes = new ArrayList();
     
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -42,6 +42,10 @@ public class Modelo implements Serializable {
         return marca;
     }
 
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+    
     public List<Versao> getVersoes() {
         return versoes;
     }
@@ -64,7 +68,7 @@ public class Modelo implements Serializable {
     }
     
     public Object[] toArray(){
-        return new Object[] {id_modelo, marca.getNome_marca(), nome_modelo};
+        return new Object[] {id_modelo, marca.getNome_marca(), this};
     }
 
 }
