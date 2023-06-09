@@ -68,5 +68,5 @@ public class GenericDAO {
     public List listar(Class classe){
         return GenericDML(null, 4, classe); //Como não utiliza um parâmetro de objeto, passo objeto como null.
     }    
-    
+   
 }

@@ -67,7 +67,6 @@ public class CadModelo extends javax.swing.JDialog {
 
         lblModelo.setText("Nome do modelo");
 
-        cmbMarca.setEditable(true);
         cmbMarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbMarcaActionPerformed(evt);
@@ -472,7 +471,7 @@ public class CadModelo extends javax.swing.JDialog {
                 
                 if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a esse modelo também serão editados.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                     updateFields(marca, nomeModelo);
-
+                    
                     gerenciadorVIEW.getGerDominio().modeloAlterar(modeloSelecionado);  
                     JOptionPane.showMessageDialog(this, "Modelo alterado com sucesso.", "Alterar modelo", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();

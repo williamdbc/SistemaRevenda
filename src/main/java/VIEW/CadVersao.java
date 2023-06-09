@@ -162,6 +162,11 @@ public class CadVersao extends javax.swing.JDialog {
 
         btnEditarOK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar_ok.png"))); // NOI18N
         btnEditarOK.setText("Confirmar");
+        btnEditarOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarOKActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnEditarOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         lblEditando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/alerta.png"))); // NOI18N
@@ -385,6 +390,17 @@ public class CadVersao extends javax.swing.JDialog {
         return true;
     }
     
+    private void setFields(){
+        cmbMarca.setSelectedItem(versaoSelecionada.getModelo().getMarca());
+        cmbModelo.setSelectedItem(versaoSelecionada.getModelo());
+        txtVersao.setText(versaoSelecionada.getNome_versao());
+    }
+    
+    private void updateFields(Modelo modelo, String nome_versao){
+        versaoSelecionada.setModelo(modelo);
+        versaoSelecionada.setNome_versao(nome_versao);
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -418,6 +434,25 @@ public class CadVersao extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        int linha = tblVersao.getSelectedRow();
+        if(linha >= 0){
+            jTabbedPane1.setSelectedIndex(0);
+            botaoEditar();
+       
+            versaoSelecionada = (Versao) tblVersao.getValueAt(linha, 3);
+            setFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }   
+
+
+
+
+
+
+
+
+
         jTabbedPane1.setSelectedIndex(0);
         botaoEditar();
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -489,6 +524,25 @@ public class CadVersao extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        if(checkFields()){
+            try {
+                Modelo modelo = (Modelo) cmbModelo.getSelectedItem();
+                String nomeVersao = txtVersao.getText();
+                
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a essa versão também serão editados.", "Confirmar edição", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    updateFields(modelo, nomeVersao);
+
+                    gerenciadorVIEW.getGerDominio().versaoAlterar(versaoSelecionada);  
+                    JOptionPane.showMessageDialog(this, "Versão alterada com sucesso.", "Alterar versão", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
+            }   catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao alterar versão.", JOptionPane.ERROR_MESSAGE);
+            }
+        }  
+    }//GEN-LAST:event_btnEditarOKActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables

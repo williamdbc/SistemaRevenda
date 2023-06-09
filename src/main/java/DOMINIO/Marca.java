@@ -61,5 +61,19 @@ public class Marca implements Serializable {
     public Object[] toArray(){
         return new Object[] {id_marca, this};
     }
-      
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Marca other = (Marca) obj;
+        return id_marca == other.id_marca;
+    }
+    
 }

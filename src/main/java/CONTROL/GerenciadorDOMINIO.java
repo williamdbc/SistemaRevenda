@@ -206,6 +206,10 @@ public class GerenciadorDOMINIO {
         versaoDAO.alterar(objetoVersao); 
     }
     
+    public void veiculoAlterar(Veiculo objetoVeiculo){
+        veiculoDAO.alterar(objetoVeiculo); 
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -242,5 +246,6 @@ public class GerenciadorDOMINIO {
         despesaDAO.excluir(despesaParametro); 
     }
     */
+
     
 }

@@ -71,4 +71,17 @@ public class Modelo implements Serializable {
         return new Object[] {id_modelo, marca.getNome_marca(), this};
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Modelo other = (Modelo) obj;
+        return id_modelo == other.id_modelo;
+    }
 }

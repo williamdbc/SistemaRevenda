@@ -147,6 +147,11 @@ public class Veiculo {
         this.trava_eletrica = trava_eletrica;
     }
 
+    public void setVersao(Versao versao) {
+        this.versao = versao;
+    }
+
+    
     
     public Versao getVersao() {
         return versao;
@@ -187,5 +192,20 @@ public class Veiculo {
                         versao.getNome_versao(),
                         this, combustivel, cambio, direcao, motor};
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Veiculo other = (Veiculo) obj;
+        return id_veiculo == other.id_veiculo;
+    }
+    
     
 }

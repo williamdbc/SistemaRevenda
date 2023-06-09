@@ -18,7 +18,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class FuncoesUteis {
-    
     public static String dateToString(Date dataSQL){                                 //Converte uma data de string para SQL
         return new SimpleDateFormat("dd/MM/yyyy").format(dataSQL);
     }

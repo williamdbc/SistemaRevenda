@@ -339,6 +339,11 @@ public class CadVeiculo extends javax.swing.JDialog {
                 btnEditarOKComponentShown(evt);
             }
         });
+        btnEditarOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarOKActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnEditarOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         javax.swing.GroupLayout pnlCadVeiculoLayout = new javax.swing.GroupLayout(pnlCadVeiculo);
@@ -608,6 +613,44 @@ public class CadVeiculo extends javax.swing.JDialog {
         return true;
     }
     
+    private void setFields(){
+        cmbMarca.setSelectedItem(veiculoSelecionado.getVersao().getModelo().getMarca());
+        cmbModelo.setSelectedItem(veiculoSelecionado.getVersao().getModelo());
+        cmbVersao.setSelectedItem(veiculoSelecionado.getVersao());
+        spnAno.setValue(veiculoSelecionado.getAno());
+        
+        cmbCombustivel.setSelectedItem(veiculoSelecionado.getCombustivel());
+        cmbCambio.setSelectedItem(veiculoSelecionado.getCambio());
+        cmbDirecao.setSelectedItem(veiculoSelecionado.getDirecao());
+        spnMotor.setValue(veiculoSelecionado.getMotor());
+        
+        chkAirbag.setSelected(veiculoSelecionado.isAirbag());
+        chkAlarme.setSelected(veiculoSelecionado.isAlarme());
+        chkArCondicionado.setSelected(veiculoSelecionado.isAr_condicionado());
+        chkFreiosABS.setSelected(veiculoSelecionado.isFreios_abs());
+        chkTravaEletrica.setSelected(veiculoSelecionado.isTrava_eletrica());
+        chkVidroEletrico.setSelected(veiculoSelecionado.isVidro_eletrico());
+        
+       
+    }
+    
+    private void updateFields(Versao objetoVersao, int ano, String combustivel, String cambio, String direcao, float motor, boolean airbag, boolean alarme, 
+                            boolean ar_condicionado, boolean freios_abs, boolean trava_eletrica, boolean vidro_eletrico) {
+        
+        veiculoSelecionado.setVersao(objetoVersao);
+        veiculoSelecionado.setAno(ano);
+        veiculoSelecionado.setCombustivel(combustivel);
+        veiculoSelecionado.setCambio(cambio);
+        veiculoSelecionado.setDirecao(direcao);
+        veiculoSelecionado.setMotor(motor);
+        veiculoSelecionado.setAirbag(airbag);
+        veiculoSelecionado.setAlarme(alarme);
+        veiculoSelecionado.setAr_condicionado(ar_condicionado);
+        veiculoSelecionado.setFreios_abs(freios_abs);
+        veiculoSelecionado.setTrava_eletrica(trava_eletrica);
+        veiculoSelecionado.setVidro_eletrico(vidro_eletrico);
+}
+      
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -647,8 +690,16 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        jTabbedPane1.setSelectedIndex(0);
-        botaoEditar();
+        int linha = tblVeiculo.getSelectedRow();
+        if(linha >= 0){
+            jTabbedPane1.setSelectedIndex(0);
+            botaoEditar();
+       
+            veiculoSelecionado = (Veiculo) tblVeiculo.getValueAt(linha, 4);
+            setFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }   
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -733,6 +784,38 @@ public class CadVeiculo extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        if(checkFields()){
+            try {
+                Versao objetoVersao = (Versao) cmbVersao.getSelectedItem();
+                int ano = Integer.valueOf(spnAno.getValue().toString());
+                String combustivel = cmbCombustivel.getSelectedItem().toString();
+                String cambio = cmbCambio.getSelectedItem().toString();
+                String direcao = cmbDirecao.getSelectedItem().toString();
+                float motor = Float.valueOf(spnMotor.getValue().toString());
+
+                boolean airbag = chkAirbag.isSelected();
+                boolean alarme = chkAlarme.isSelected();
+                boolean ar_condicionado = chkArCondicionado.isSelected();
+                boolean freios_abs = chkFreiosABS.isSelected();
+                boolean trava_eletrica = chkTravaEletrica.isSelected();
+                boolean vidro_eletrico = chkVidroEletrico.isSelected();
+
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a esse veículo também serão editados.", "Confirmar edição", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    updateFields(objetoVersao, ano, combustivel, cambio, direcao, motor, airbag, alarme, 
+                            ar_condicionado, freios_abs, trava_eletrica, vidro_eletrico);
+
+
+                    gerenciadorVIEW.getGerDominio().veiculoAlterar(veiculoSelecionado);  
+                    JOptionPane.showMessageDialog(this, "Veículo alterado com sucesso.", "Alterar veículo", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
+            }   catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao alterar veículo.", JOptionPane.ERROR_MESSAGE);
+            }
+        }              
+    }//GEN-LAST:event_btnEditarOKActionPerformed
  
     
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 

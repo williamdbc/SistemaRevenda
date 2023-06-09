@@ -41,6 +41,10 @@ public class Versao {
         return modelo;
     }
 
+    public void setModelo(Modelo modelo) {
+        this.modelo = modelo;
+    }
+
     public List<Veiculo> getVeiculos() {
         return veiculos;
     }
@@ -66,4 +70,16 @@ public class Versao {
         return new Object[] {id_versao, modelo.getMarca().getNome_marca(), modelo.getNome_modelo(), this};
     }
     
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Versao other = (Versao) obj;
+        return id_versao == other.id_versao;
+    }
 }
