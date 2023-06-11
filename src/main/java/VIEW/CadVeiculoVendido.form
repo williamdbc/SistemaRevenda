@@ -746,6 +746,7 @@
                   </Properties>
                   <Events>
                     <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="btnEditarOKComponentShown"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarOKActionPerformed"/>
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -946,21 +947,21 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="15" rowCount="0">
-                        <Column editable="true" title="ID" type="java.lang.Object"/>
-                        <Column editable="true" title="Marca" type="java.lang.Object"/>
-                        <Column editable="true" title="Modelo" type="java.lang.Object"/>
-                        <Column editable="true" title="Vers&#xe3;o" type="java.lang.Object"/>
-                        <Column editable="true" title="Ano" type="java.lang.Object"/>
-                        <Column editable="true" title="Cor" type="java.lang.Object"/>
-                        <Column editable="true" title="Placa" type="java.lang.Object"/>
-                        <Column editable="true" title="Fornecedor" type="java.lang.Object"/>
-                        <Column editable="true" title="Valor compra" type="java.lang.Object"/>
-                        <Column editable="true" title="Data compra" type="java.lang.Object"/>
-                        <Column editable="true" title="Despesas" type="java.lang.Object"/>
-                        <Column editable="true" title="Cliente" type="java.lang.Object"/>
-                        <Column editable="true" title="Valor venda" type="java.lang.Object"/>
-                        <Column editable="true" title="Data venda" type="java.lang.Object"/>
-                        <Column editable="true" title="Lucro" type="java.lang.Object"/>
+                        <Column editable="false" title="ID" type="java.lang.Object"/>
+                        <Column editable="false" title="Marca" type="java.lang.Object"/>
+                        <Column editable="false" title="Modelo" type="java.lang.Object"/>
+                        <Column editable="false" title="Vers&#xe3;o" type="java.lang.Object"/>
+                        <Column editable="false" title="Ano" type="java.lang.Object"/>
+                        <Column editable="false" title="Cor" type="java.lang.Object"/>
+                        <Column editable="false" title="Placa" type="java.lang.Object"/>
+                        <Column editable="false" title="Fornecedor" type="java.lang.Object"/>
+                        <Column editable="false" title="Valor compra" type="java.lang.Object"/>
+                        <Column editable="false" title="Data compra" type="java.lang.Object"/>
+                        <Column editable="false" title="Despesas" type="java.lang.Object"/>
+                        <Column editable="false" title="Cliente" type="java.lang.Object"/>
+                        <Column editable="false" title="Valor venda" type="java.lang.Object"/>
+                        <Column editable="false" title="Data venda" type="java.lang.Object"/>
+                        <Column editable="false" title="Lucro" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>

@@ -78,6 +78,7 @@ public class GerenciadorDOMINIO {
      
     public void inserirDespesa(Revenda revenda, String nome_despesa, float valor_despesa, Date data_despesa, String responsavel){
         Despesa objetoDespesa = new Despesa(revenda, nome_despesa, valor_despesa, data_despesa, responsavel);
+        revenda.adicionarDespesa(objetoDespesa);
         despesaDAO.inserir(objetoDespesa); 
     }
  
@@ -210,6 +211,22 @@ public class GerenciadorDOMINIO {
         veiculoDAO.alterar(objetoVeiculo); 
     }
     
+    public void revendaAlterar(Revenda objetoRevenda){
+        revendaDAO.alterar(objetoRevenda);
+    }
+    
+    public void clienteAlterar(Cliente objetoCliente){
+        clienteDAO.alterar(objetoCliente);
+    }
+    
+    public void fornecedorAlterar(Fornecedor objetoFornecedor){
+        fornecedorDAO.alterar(objetoFornecedor);
+    }
+    
+    public void despesaAlterar(Despesa objetoDespesa){
+        despesaDAO.alterar(objetoDespesa);
+    }
+    
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -242,10 +259,8 @@ public class GerenciadorDOMINIO {
         fornecedorDAO.excluir(fornecedorParametro); 
     }
     
-   /* public void despesaExcluir(Despesa despesaParametro){
+   public void despesaExcluir(Despesa despesaParametro){
         despesaDAO.excluir(despesaParametro); 
     }
-    */
-
-    
+   
 }

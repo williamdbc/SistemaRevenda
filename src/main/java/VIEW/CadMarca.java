@@ -170,13 +170,20 @@ public class CadMarca extends javax.swing.JDialog {
 
         tblMarca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "ID", "Marca"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblMarca);
 
         lblListMarca.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -415,11 +422,13 @@ public class CadMarca extends javax.swing.JDialog {
             try {
                 String marca = txtMarca.getText();
                 
-                gerenciadorVIEW.getGerDominio().inserirMarca(marca);
-                JOptionPane.showMessageDialog(this, "Marca inserida com sucesso.", "Inserir marca", JOptionPane.INFORMATION_MESSAGE);
-                botaoCancelar();
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente cadastrar essa marca?", "Cadastrar marca", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    gerenciadorVIEW.getGerDominio().inserirMarca(marca);
+                    JOptionPane.showMessageDialog(this, "Marca cadastrada com sucesso.", "Cadastrar marca", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
             } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir marca.", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar marca.", JOptionPane.ERROR_MESSAGE);
             }
         }  
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -448,6 +457,7 @@ public class CadMarca extends javax.swing.JDialog {
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         TabbedPane.setSelectedIndex(0);
+        botaoCancelar();
     }//GEN-LAST:event_btnNovoActionPerformed
 
       

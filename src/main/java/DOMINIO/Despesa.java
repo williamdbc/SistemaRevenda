@@ -1,4 +1,5 @@
 package DOMINIO;
+import CONTROL.FuncoesUteis;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -75,7 +76,26 @@ public class Despesa implements Serializable {
     }
     
     public Object[] toArray(){
-        return new Object[] {nome_despesa, valor_despesa, data_despesa, responsavel};
+        return new Object[] {this, valor_despesa, FuncoesUteis.dateToString(data_despesa), responsavel};
+    }
+
+    @Override
+    public String toString() {
+        return nome_despesa;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Despesa other = (Despesa) obj;
+        return id_despesa == other.id_despesa;
     }
     
     

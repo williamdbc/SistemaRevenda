@@ -57,8 +57,8 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         lblCor = new javax.swing.JLabel();
         lblKM = new javax.swing.JLabel();
         txtCor = new javax.swing.JTextField();
-        txtPlaca = new javax.swing.JTextField();
         txtKM = new javax.swing.JFormattedTextField();
+        txtPlaca = new javax.swing.JFormattedTextField();
         pnlDadosCompra = new javax.swing.JPanel();
         lblFornecedor = new javax.swing.JLabel();
         lblValor = new javax.swing.JLabel();
@@ -262,12 +262,24 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
         lblKM.setText("KM");
 
+        txtCor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCorActionPerformed(evt);
+            }
+        });
+
         txtKM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         txtKM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtKMActionPerformed(evt);
             }
         });
+
+        try {
+            txtPlaca.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("***-****")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout pnlInformacoesLayout = new javax.swing.GroupLayout(pnlInformacoes);
         pnlInformacoes.setLayout(pnlInformacoesLayout);
@@ -276,26 +288,28 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             .addGroup(pnlInformacoesLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblCor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlInformacoesLayout.createSequentialGroup()
                         .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblKM)
-                            .addComponent(lblPlaca))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(0, 0, 0)
-                .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCor, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtKM, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblCor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblKM))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCor, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtKM, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlInformacoesLayout.createSequentialGroup()
+                        .addComponent(lblPlaca)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlInformacoesLayout.setVerticalGroup(
             pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlInformacoesLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPlaca))
+                    .addComponent(lblPlaca)
+                    .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -444,7 +458,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                         .addComponent(pnlBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblEditando)))
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cadastro", pnlCadVeiculoCmp);
@@ -465,12 +479,25 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             new String [] {
                 "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "KM", "Placa", "Fornecedor", "Valor compra", "Data compra"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblVeiculoCmp);
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar.png"))); // NOI18N
         btnEditar.setText("Editar");
@@ -629,7 +656,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     
     private void cleanFields(){
         JComboBox[] listaComboBox = new JComboBox[]{cmbMarca, cmbModelo, cmbVersao, cmbAno, cmbCombustivel, cmbCambio, cmbDirecao, cmbFornecedor};
-        JTextField[] listaTextField = new JTextField[]{txtPlaca, txtCor, txtKM, txtValor};
+        JTextField[] listaTextField = new JTextField[]{txtPlaca, txtCor, txtKM, txtValor, txtData};
         
         FuncoesUteis.cleanComboBoxs(listaComboBox);
         FuncoesUteis.cleanTextFields(listaTextField);
@@ -669,6 +696,10 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
              msgErro += "O campo 'Placa' não pode estar vazio.\n";
         }
         
+        if(!FuncoesUteis.isPlaca(txtPlaca.getText())){
+            msgErro += "O campo 'Placa' não é valido.\n";
+        }
+
         if(txtCor.getText().isBlank()){
              msgErro += "O campo 'Cor' não pode estar vazio.\n";
         }
@@ -749,6 +780,38 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
         return true;
     }
     
+    private void setFields(){
+        cmbMarca.setSelectedItem(revendaSelecionada.getVeiculo().getVersao().getModelo().getMarca());
+        cmbModelo.setSelectedItem(revendaSelecionada.getVeiculo().getVersao().getModelo());
+        cmbVersao.setSelectedItem(revendaSelecionada.getVeiculo().getVersao());
+        cmbAno.setSelectedItem(revendaSelecionada.getVeiculo());
+
+        cmbCombustivel.setSelectedItem(revendaSelecionada.getVeiculo().getCombustivel());
+        cmbCambio.setSelectedItem(revendaSelecionada.getVeiculo().getCambio());
+        cmbDirecao.setSelectedItem(revendaSelecionada.getVeiculo().getDirecao());
+        spnMotor.setValue(revendaSelecionada.getVeiculo().getMotor());
+
+        txtPlaca.setText(revendaSelecionada.getPlaca());
+        txtCor.setText(revendaSelecionada.getCor());
+        txtKM.setText(String.valueOf(revendaSelecionada.getQuilometragem()));
+        cmbFornecedor.setSelectedItem(revendaSelecionada.getFornecedor());
+        txtValor.setText(String.valueOf(revendaSelecionada.getValor_compra()));
+        txtData.setText(FuncoesUteis.dateToString(revendaSelecionada.getData_compra()));
+    }
+    
+
+    private void updateFields(Veiculo objetoVeiculo, Fornecedor fornecedor, String placa, String cor, int km, 
+                                Date data_compra, float valor_compra) throws ParseException{
+        
+        revendaSelecionada.setVeiculo(objetoVeiculo);
+        revendaSelecionada.setFornecedor(fornecedor);
+        revendaSelecionada.setPlaca(placa);
+        revendaSelecionada.setCor(cor);
+        revendaSelecionada.setQuilometragem(km);
+        revendaSelecionada.setData_compra(data_compra);
+        revendaSelecionada.setValor_compra(valor_compra);
+    }
+    
     
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -766,8 +829,16 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddMarcaActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        jTabbedPane1.setSelectedIndex(0);
-        botaoEditar();
+        int linha = tblVeiculoCmp.getSelectedRow();
+        if(linha >= 0){
+            jTabbedPane1.setSelectedIndex(0);
+            botaoEditar();
+       
+            revendaSelecionada = (Revenda) tblVeiculoCmp.getValueAt(linha, 7);
+            setFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }   
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
@@ -883,11 +954,13 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                 float valor_compra = Float.valueOf(txtValor.getText());
                 data_compra = FuncoesUteis.stringToDate(txtData.getText());
                 
-                gerenciadorVIEW.getGerDominio().inserirVeiculoComprado(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
-                JOptionPane.showMessageDialog(this, "Veículo comprado inserido com sucesso.", "Inserir veículo", JOptionPane.INFORMATION_MESSAGE);
-                cleanFields();
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente cadastrar essa compra?", "Cadastrar compra", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    gerenciadorVIEW.getGerDominio().inserirVeiculoComprado(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
+                    JOptionPane.showMessageDialog(this, "Veículo comprado inserido com sucesso.", "Cadastrar compra", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
             } catch (HibernateException | ParseException ex) {
-                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir a compra de um veículo.", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar a compra de um veículo.", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -897,7 +970,29 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_txtKMActionPerformed
 
     private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        if(checkFields()){
+            try {
+                Veiculo objetoVeiculo = (Veiculo) cmbAno.getSelectedItem();
+                String placa = txtPlaca.getText();
+                String cor = txtCor.getText();
+                int km = Integer.parseInt(txtKM.getText());
+                Fornecedor fornecedor = (Fornecedor) cmbFornecedor.getSelectedItem();
+                Date data_compra = null;
+                float valor_compra = Float.valueOf(txtValor.getText());
+                data_compra = FuncoesUteis.stringToDate(txtData.getText());
 
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a essa compra também serão editados.", "Confirmar edição", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    updateFields(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
+
+
+                    gerenciadorVIEW.getGerDominio().revendaAlterar(revendaSelecionada);  
+                    JOptionPane.showMessageDialog(this, "Compra alterada com sucesso.", "Alterar compra", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
+            }   catch (HibernateException | ParseException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao alterar compra.", JOptionPane.ERROR_MESSAGE);
+            }
+        }              
     }//GEN-LAST:event_btnEditarOKActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
@@ -916,6 +1011,15 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void txtCorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCorActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+        botaoCancelar();
+    }//GEN-LAST:event_btnNovoActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -976,7 +1080,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField txtData;
     private javax.swing.JFormattedTextField txtKM;
     private javax.swing.JTextField txtPesquisar;
-    private javax.swing.JTextField txtPlaca;
+    private javax.swing.JFormattedTextField txtPlaca;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
     // </editor-fold> 

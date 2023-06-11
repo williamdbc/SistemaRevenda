@@ -14,7 +14,7 @@ public class Cliente extends RelacaoComercial implements Serializable{
     }
 
     public Object[] toArray(){
-        return new Object[] {getId_cli_forn(), getNome_cli_forn(), getCidade_cli_forn(), getTelefone_cli_forn()};
+        return new Object[] {getId_cli_forn(), this, getCidade_cli_forn(), getTelefone_cli_forn()};
     }
     
     @Override

@@ -69,5 +69,19 @@ public class RelacaoComercial {
     public String toString() {
         return getNome_cli_forn();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        RelacaoComercial other = (RelacaoComercial) obj;
+        return id_cli_forn == other.id_cli_forn;
+    }
  
 }

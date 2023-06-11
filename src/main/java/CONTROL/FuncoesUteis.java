@@ -91,5 +91,11 @@ public class FuncoesUteis {
     public static boolean isData(String str) {
         return str != null && str.matches("\\d{2}/\\d{2}/\\d{4}");
     }
+    
+    public static boolean isPlaca(String str) {
+        return str != null && str.matches("[a-zA-Z0-9]{3}-[a-zA-Z0-9]{4}");
+    }
+    
+    
 
 }

@@ -191,17 +191,30 @@ public class CadModelo extends javax.swing.JDialog {
 
         tblModelo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null}
+
             },
             new String [] {
                 "ID", "Marca", "Modelo"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblModelo);
 
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar.png"))); // NOI18N
         btnEditar.setText("Editar");
@@ -437,11 +450,13 @@ public class CadModelo extends javax.swing.JDialog {
                 Marca objetoMarca = (Marca) cmbMarca.getSelectedItem();
                 String nomeModelo = txtModelo.getText();
         
-                gerenciadorVIEW.getGerDominio().inserirModelo(objetoMarca, nomeModelo);
-                JOptionPane.showMessageDialog(this, "Modelo inserido com sucesso.", "Inserir modelo", JOptionPane.INFORMATION_MESSAGE  );
-                cleanFields();
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente cadastrar esse modelo?", "Cadastrar modelo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    gerenciadorVIEW.getGerDominio().inserirModelo(objetoMarca, nomeModelo);
+                    JOptionPane.showMessageDialog(this, "Modelo cadastrado com sucesso.", "Cadastrar modelo", JOptionPane.INFORMATION_MESSAGE  );
+                    botaoCancelar();
+                }
             } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir modelo.", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar modelo.", JOptionPane.ERROR_MESSAGE  );
             }  
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -481,6 +496,11 @@ public class CadModelo extends javax.swing.JDialog {
             }
         }  
     }//GEN-LAST:event_btnEditarOKActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+        botaoCancelar();
+    }//GEN-LAST:event_btnNovoActionPerformed
 
   
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 

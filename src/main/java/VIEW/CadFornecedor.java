@@ -146,6 +146,11 @@ public class CadFornecedor extends javax.swing.JDialog {
                 btnEditarOKComponentShown(evt);
             }
         });
+        btnEditarOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarOKActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnEditarOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         lblEditando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/alerta.png"))); // NOI18N
@@ -208,6 +213,11 @@ public class CadFornecedor extends javax.swing.JDialog {
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar.png"))); // NOI18N
         btnEditar.setText("Editar");
@@ -221,6 +231,11 @@ public class CadFornecedor extends javax.swing.JDialog {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/excluir2.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         tblFornecedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -229,7 +244,15 @@ public class CadFornecedor extends javax.swing.JDialog {
             new String [] {
                 "ID", "Nome", "Cidade", "Telefone"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblFornecedor);
 
         javax.swing.GroupLayout pnlListFornecedorLayout = new javax.swing.GroupLayout(pnlListFornecedor);
@@ -355,6 +378,17 @@ public class CadFornecedor extends javax.swing.JDialog {
         return true;
     }
     
+    private void setFields(){
+        txtNome.setText(fornecedorSelecionado.getNome_cli_forn());
+        txtCidade.setText(fornecedorSelecionado.getCidade_cli_forn());
+        txtTelefone.setText(fornecedorSelecionado.getTelefone_cli_forn());
+    }
+    
+    private void updateFields(String nome, String cidade, String telefone){
+        fornecedorSelecionado.setNome_cli_forn(nome);
+        fornecedorSelecionado.setCidade_cli_forn(cidade);
+        fornecedorSelecionado.setTelefone_cli_forn(telefone);
+    }
 /*                                                                                                                         */
 /*                                                                                                                         */
 /*                                                                                                                         */
@@ -395,8 +429,16 @@ public class CadFornecedor extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        jTabbedPane1.setSelectedIndex(0);
-        botaoEditar();
+        int linha = tblFornecedor.getSelectedRow();
+        if(linha >= 0){
+            jTabbedPane1.setSelectedIndex(0);
+            botaoEditar();
+       
+            fornecedorSelecionado = (Fornecedor) tblFornecedor.getValueAt(linha, 1);
+            setFields();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }  
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
@@ -406,11 +448,13 @@ public class CadFornecedor extends javax.swing.JDialog {
                 String cidade = txtCidade.getText();
                 String telefone = txtTelefone.getText();
             
-                gerenciadorVIEW.getGerDominio().inserirFornecedor(nome, cidade, telefone);
-                JOptionPane.showMessageDialog(this, "Fornecedor inserido com sucesso.", "Inserir fornecedor", JOptionPane.INFORMATION_MESSAGE);
-                cleanFields();
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente cadastrar esse fornecedor?", "Cadastrar fornecedor", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    gerenciadorVIEW.getGerDominio().inserirFornecedor(nome, cidade, telefone);
+                    JOptionPane.showMessageDialog(this, "Fornecedor cadastrado com sucesso.", "Cadastrar fornecedor", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
             } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "Erro ao inserir fornecedor", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar fornecedor", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -422,6 +466,44 @@ public class CadFornecedor extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         cleanFields();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        if(checkFields()){
+            try {
+                String nome = txtNome.getText();
+                String cidade = txtCidade.getText();
+                String telefone = txtTelefone.getText();
+                
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a essa fornecedor também serão editados.", "Confirmar edição", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    updateFields(nome, cidade, telefone);
+
+                    gerenciadorVIEW.getGerDominio().fornecedorAlterar(fornecedorSelecionado);  
+                    JOptionPane.showMessageDialog(this, "Fornecedor alterado com sucesso.", "Alterar fornecedor", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
+            }   catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao alterar fornecedor.", JOptionPane.ERROR_MESSAGE);
+            }
+        }  
+    }//GEN-LAST:event_btnEditarOKActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tblFornecedor.getSelectedRow();
+        if(linha >= 0){
+            fornecedorSelecionado = (Fornecedor) tblFornecedor.getValueAt(linha, 1);
+            if(JOptionPane.showConfirmDialog(this, "Desejar realmente excluir?\nTodos os itens relacionados a esse fornecedor também serão excluídos.", "Confirmar exclusão", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                ((DefaultTableModel) tblFornecedor.getModel()).removeRow(linha);
+                gerenciadorVIEW.getGerDominio().fornecedorExcluir(fornecedorSelecionado);  
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+        botaoCancelar();
+    }//GEN-LAST:event_btnNovoActionPerformed
 
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
     // Variables declaration - do not modify//GEN-BEGIN:variables

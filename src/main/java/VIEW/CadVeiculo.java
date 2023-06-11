@@ -396,7 +396,15 @@ public class CadVeiculo extends javax.swing.JDialog {
             new String [] {
                 "ID", "Marca", "Modelo", "Versão", "Ano", "Combústivel", "Câmbio", "Direção", "Motor"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblVeiculo);
 
         cmbFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Marca", "Modelo", "Versão", "Ano", "Câmbio", "Combústivel", "Direção", "Motor" }));
@@ -427,6 +435,11 @@ public class CadVeiculo extends javax.swing.JDialog {
         btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/adicionar.png"))); // NOI18N
         btnNovo.setText("Novo");
         btnNovo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar.png"))); // NOI18N
         btnEditar.setText("Editar");
@@ -630,8 +643,6 @@ public class CadVeiculo extends javax.swing.JDialog {
         chkFreiosABS.setSelected(veiculoSelecionado.isFreios_abs());
         chkTravaEletrica.setSelected(veiculoSelecionado.isTrava_eletrica());
         chkVidroEletrico.setSelected(veiculoSelecionado.isVidro_eletrico());
-        
-       
     }
     
     private void updateFields(Versao objetoVersao, int ano, String combustivel, String cambio, String direcao, float motor, boolean airbag, boolean alarme, 
@@ -744,11 +755,13 @@ public class CadVeiculo extends javax.swing.JDialog {
                 boolean trava_eletrica = chkTravaEletrica.isSelected();
                 boolean vidro_eletrico = chkVidroEletrico.isSelected();
                 
-                gerenciadorVIEW.getGerDominio().inserirVeiculo(objetoVersao, ano, combustivel, cambio, direcao, motor, airbag, alarme, ar_condicionado, freios_abs, trava_eletrica, vidro_eletrico);
-                JOptionPane.showMessageDialog(this, "Veiculo inserido com sucesso.", "Inserir veiculo", JOptionPane.INFORMATION_MESSAGE);
-                cleanFields();
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente cadastrar esse veículo?", "Cadastrar veículo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    gerenciadorVIEW.getGerDominio().inserirVeiculo(objetoVersao, ano, combustivel, cambio, direcao, motor, airbag, alarme, ar_condicionado, freios_abs, trava_eletrica, vidro_eletrico);
+                    JOptionPane.showMessageDialog(this, "Veiculo cadastrado com sucesso.", "Cadsatrar veiculo", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
             } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "Erro ao inserir veículo.", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar veículo.", JOptionPane.ERROR_MESSAGE);
             }  
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -816,6 +829,11 @@ public class CadVeiculo extends javax.swing.JDialog {
             }
         }              
     }//GEN-LAST:event_btnEditarOKActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        jTabbedPane1.setSelectedIndex(0);
+        botaoCancelar();
+    }//GEN-LAST:event_btnNovoActionPerformed
  
     
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 

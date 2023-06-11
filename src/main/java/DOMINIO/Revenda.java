@@ -149,6 +149,8 @@ public class Revenda {
         this.despesas = despesas;
     }
     
+    
+    
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------------------------------------------- */
@@ -174,6 +176,10 @@ public class Revenda {
         return totalDespesa;
     }
     
+    public void adicionarDespesa(Despesa objetoDespesa){
+        despesas.add(objetoDespesa);
+    }
+    
     public Object[] toArray_Compra(){
         return new Object[] {id_revenda, veiculo.getVersao().getModelo().getMarca().getNome_marca(), 
                             veiculo.getVersao().getModelo().getNome_modelo(), veiculo.getVersao().getNome_versao(),
@@ -192,4 +198,19 @@ public class Revenda {
         return placa;
     }
   
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Revenda other = (Revenda) obj;
+        return id_revenda == other.id_revenda;
+    }
+    
+    
 }

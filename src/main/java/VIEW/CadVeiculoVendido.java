@@ -468,6 +468,11 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                 btnEditarOKComponentShown(evt);
             }
         });
+        btnEditarOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarOKActionPerformed(evt);
+            }
+        });
         pnlBotoes.add(btnEditarOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 0, -1, 25));
 
         javax.swing.GroupLayout pnlCadVeiculoVndLayout = new javax.swing.GroupLayout(pnlCadVeiculoVnd);
@@ -545,7 +550,15 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
             new String [] {
                 "ID", "Marca", "Modelo", "Versão", "Ano", "Cor", "Placa", "Fornecedor", "Valor compra", "Data compra", "Despesas", "Cliente", "Valor venda", "Data venda", "Lucro"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblVeiculoVnd);
 
         btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/16px/editar.png"))); // NOI18N
@@ -769,9 +782,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         return true;
     }
     
- 
-    
-    private void setarCampos(){
+    private void setFields(){
         cmbMarca.setSelectedItem(revendaSelecionada.getVeiculo().getVersao().getModelo().getMarca());
         cmbModelo.setSelectedItem(revendaSelecionada.getVeiculo().getVersao().getModelo());
         cmbVersao.setSelectedItem(revendaSelecionada.getVeiculo().getVersao());
@@ -788,6 +799,12 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         txtFornecedor.setText(revendaSelecionada.getFornecedor().toString());
         txtValorCompra.setText(String.valueOf(revendaSelecionada.getValor_compra()));
         ftxtData_compra.setText(FuncoesUteis.dateToString(revendaSelecionada.getData_compra()));
+    }
+    
+    private void updateFields(Cliente cliente, float valor_venda, Date data_venda){
+        revendaSelecionada.setCliente(cliente);
+        revendaSelecionada.setValor_venda(valor_venda);
+        revendaSelecionada.setData_venda(data_venda);
     }
     
 /*                                                                                                                         */
@@ -807,8 +824,20 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddMarcaActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        jTabbedPane1.setSelectedIndex(0);
-        botaoEditar();
+        int linha = tblVeiculoVnd.getSelectedRow();
+        if(linha >= 0){
+            jTabbedPane1.setSelectedIndex(0);
+            botaoEditar();
+       
+            revendaSelecionada = (Revenda) tblVeiculoVnd.getValueAt(linha, 6);
+            setFields();
+            cmbCliente.setSelectedItem(revendaSelecionada.getCliente());
+            txtValorVenda.setText(String.valueOf(revendaSelecionada.getValor_venda()));
+            txtDataVenda.setText(FuncoesUteis.dateToString(revendaSelecionada.getData_venda()));
+                    
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
+        }   
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
@@ -860,7 +889,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
         botaoCancelar();
         
         if(revendaSelecionada != null){
-            setarCampos();
+            setFields();
         } else {
             botaoCancelar();
             cleanFieldsVeiculo();
@@ -875,15 +904,14 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                     float valor_venda = Float.valueOf(txtValorVenda.getText());
                     Date data_venda = FuncoesUteis.stringToDate(txtDataVenda.getText());
 
-                    revendaSelecionada.setCliente(cliente);
-                    revendaSelecionada.setValor_venda(valor_venda);
-                    revendaSelecionada.setData_venda(data_venda);
-
-                    gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(revendaSelecionada);
-                    JOptionPane.showMessageDialog(this, "Veículo vendido inserido com sucesso.", "Inserir veículo", JOptionPane.INFORMATION_MESSAGE);
-                    cleanFields();
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente cadastrar essa venda?", "Cadastrar venda", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                        updateFields(cliente, valor_venda, data_venda);
+                        gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(revendaSelecionada);
+                        JOptionPane.showMessageDialog(this, "Veículo vendido cadastrado com sucesso.", "Cadastrar venda", JOptionPane.INFORMATION_MESSAGE);
+                        botaoCancelar();
+                    }
                 } catch (HibernateException | ParseException ex) {
-                    JOptionPane.showMessageDialog(this, ex, "Erro ao inserir a venda de um veículo.", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar a venda de um veículo.", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else {
@@ -936,6 +964,26 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Selecione uma linha.", "Linha inválida", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnEditarOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOKActionPerformed
+        if(checkFields()){
+            try {
+                Cliente cliente = (Cliente) cmbCliente.getSelectedItem();
+                float valor_venda = Float.valueOf(txtValorVenda.getText());
+                Date data_venda = FuncoesUteis.stringToDate(txtDataVenda.getText());
+
+                if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a essa venda também serão editados.", "Confirmar edição", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                    updateFields(cliente, valor_venda, data_venda);
+
+                    gerenciadorVIEW.getGerDominio().revendaAlterar(revendaSelecionada);  
+                    JOptionPane.showMessageDialog(this, "Venda alterada com sucesso.", "Alterar venda", JOptionPane.INFORMATION_MESSAGE);
+                    botaoCancelar();
+                }
+            }   catch (HibernateException | ParseException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "Erro ao alterar venda.", JOptionPane.ERROR_MESSAGE);
+            }
+        }              
+    }//GEN-LAST:event_btnEditarOKActionPerformed
 
 
     // <editor-fold defaultstate="collapsed" desc="Declaração de variáveis - Java Swing"> 
