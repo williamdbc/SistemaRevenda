@@ -397,9 +397,10 @@ public class CadModelo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        switch(cmbFiltrarOrdem.getSelectedIndex()){
-            case 0 -> tipoOrdem = SortOrder.ASCENDING;
-            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        switch(cmbFiltrarOrdem.getSelectedIndex()) {
+            case 0: tipoOrdem = SortOrder.ASCENDING; break;
+            case 1: tipoOrdem = SortOrder.DESCENDING; break;
+            default: break;
         }
         
         FuncoesUteis.ordenarTabela(tblModelo, cmbFiltrar.getSelectedIndex(), tipoOrdem);
@@ -454,6 +455,7 @@ public class CadModelo extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirModelo(objetoMarca, nomeModelo);
                     JOptionPane.showMessageDialog(this, "Modelo cadastrado com sucesso.", "Cadastrar modelo", JOptionPane.INFORMATION_MESSAGE  );
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Modelo.class));
                 }
             } catch (HibernateException ex) {
                 JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar modelo.", JOptionPane.ERROR_MESSAGE  );
@@ -490,6 +492,7 @@ public class CadModelo extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().modeloAlterar(modeloSelecionado);  
                     JOptionPane.showMessageDialog(this, "Modelo alterado com sucesso.", "Alterar modelo", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Modelo.class));
                 }
             }   catch (HibernateException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao alterar modelo.", JOptionPane.ERROR_MESSAGE);

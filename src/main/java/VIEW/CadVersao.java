@@ -419,9 +419,10 @@ public class CadVersao extends javax.swing.JDialog {
 /*                                                                                                                         */
     
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        switch(cmbFiltrarOrdem.getSelectedIndex()){
-            case 0 -> tipoOrdem = SortOrder.ASCENDING;
-            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        switch(cmbFiltrarOrdem.getSelectedIndex()) {
+            case 0: tipoOrdem = SortOrder.ASCENDING; break;
+            case 1: tipoOrdem = SortOrder.DESCENDING; break;
+            default: break;
         }
         
         FuncoesUteis.ordenarTabela(tblVersao, cmbFiltrar.getSelectedIndex(), tipoOrdem);
@@ -475,6 +476,7 @@ public class CadVersao extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirVersao(objetoModelo, nomeVersao);
                     JOptionPane.showMessageDialog(this, "Versão cadastrada com sucesso.", "Cadastrar versão", JOptionPane.INFORMATION_MESSAGE  );
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Versao.class));
                 }
             } catch (HibernateException ex) {
                 JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar versão.", JOptionPane.ERROR_MESSAGE  );
@@ -540,6 +542,7 @@ public class CadVersao extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().versaoAlterar(versaoSelecionada);  
                     JOptionPane.showMessageDialog(this, "Versão alterada com sucesso.", "Alterar versão", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Versao.class));
                 }
             }   catch (HibernateException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao alterar versão.", JOptionPane.ERROR_MESSAGE);

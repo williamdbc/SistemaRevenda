@@ -167,8 +167,7 @@ public class CadVeiculo extends javax.swing.JDialog {
         cmbCambio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Automático", "Manual", "Semi-automático" }));
         cmbCambio.setSelectedIndex(1);
 
-        cmbDirecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Assistida", "Elétrica", "Hidraulica", "Mecânica" }));
-        cmbDirecao.setSelectedIndex(3);
+        cmbDirecao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Assistida", "Elétrica", "Hidráulica", "Mecânica" }));
 
         spnMotor.setModel(new javax.swing.SpinnerNumberModel(1.0f, null, null, 0.1f));
 
@@ -675,9 +674,10 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAddModeloActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        switch(cmbFiltrarOrdem.getSelectedIndex()){
-            case 0 -> tipoOrdem = SortOrder.ASCENDING;
-            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        switch(cmbFiltrarOrdem.getSelectedIndex()) {
+            case 0: tipoOrdem = SortOrder.ASCENDING; break;
+            case 1: tipoOrdem = SortOrder.DESCENDING; break;
+            default: break;
         }
         
         FuncoesUteis.ordenarTabela(tblVeiculo, cmbFiltrar.getSelectedIndex(), tipoOrdem);
@@ -722,7 +722,7 @@ public class CadVeiculo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarOKComponentShown
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
-
+        JOptionPane.showMessageDialog(this, "Função indisponível no momento.", "Erro", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnAddMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMarcaActionPerformed
@@ -759,6 +759,7 @@ public class CadVeiculo extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirVeiculo(objetoVersao, ano, combustivel, cambio, direcao, motor, airbag, alarme, ar_condicionado, freios_abs, trava_eletrica, vidro_eletrico);
                     JOptionPane.showMessageDialog(this, "Veiculo cadastrado com sucesso.", "Cadsatrar veiculo", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Veiculo.class));
                 }
             } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar veículo.", JOptionPane.ERROR_MESSAGE);
@@ -823,6 +824,7 @@ public class CadVeiculo extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().veiculoAlterar(veiculoSelecionado);  
                     JOptionPane.showMessageDialog(this, "Veículo alterado com sucesso.", "Alterar veículo", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Veiculo.class));
                 }
             }   catch (HibernateException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao alterar veículo.", JOptionPane.ERROR_MESSAGE);

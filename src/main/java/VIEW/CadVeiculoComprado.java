@@ -842,7 +842,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
-        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Função indisponível no momento.", "Erro", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
@@ -863,9 +863,10 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        switch(cmbFiltrarOrdem.getSelectedIndex()){
-            case 0 -> tipoOrdem = SortOrder.ASCENDING;
-            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        switch(cmbFiltrarOrdem.getSelectedIndex()) {
+            case 0: tipoOrdem = SortOrder.ASCENDING; break;
+            case 1: tipoOrdem = SortOrder.DESCENDING; break;
+            default: break;
         }
         
         FuncoesUteis.ordenarTabela(tblVeiculoCmp, cmbFiltrar.getSelectedIndex(), tipoOrdem);
@@ -958,6 +959,7 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirVeiculoComprado(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
                     JOptionPane.showMessageDialog(this, "Veículo comprado inserido com sucesso.", "Cadastrar compra", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Revenda.class));
                 }
             } catch (HibernateException | ParseException ex) {
                 JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar a compra de um veículo.", JOptionPane.ERROR_MESSAGE);
@@ -983,11 +985,10 @@ public class CadVeiculoComprado extends javax.swing.JDialog {
 
                 if(JOptionPane.showConfirmDialog(this, "Desejar realmente editar?\nTodos os itens relacionados a essa compra também serão editados.", "Confirmar edição", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                     updateFields(objetoVeiculo, fornecedor, placa, cor, km, data_compra, valor_compra);
-
-
                     gerenciadorVIEW.getGerDominio().revendaAlterar(revendaSelecionada);  
                     JOptionPane.showMessageDialog(this, "Compra alterada com sucesso.", "Alterar compra", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Revenda.class));
                 }
             }   catch (HibernateException | ParseException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao alterar compra.", JOptionPane.ERROR_MESSAGE);

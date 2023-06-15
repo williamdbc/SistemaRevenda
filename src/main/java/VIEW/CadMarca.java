@@ -369,11 +369,12 @@ public class CadMarca extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        switch(cmbFiltrarOrdem.getSelectedIndex()){
-            case 0 -> tipoOrdem = SortOrder.ASCENDING;
-            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        switch(cmbFiltrarOrdem.getSelectedIndex()) {
+            case 0: tipoOrdem = SortOrder.ASCENDING; break;
+            case 1: tipoOrdem = SortOrder.DESCENDING; break;
+            default: break;
         }
-        
+
         FuncoesUteis.ordenarTabela(tblMarca, cmbFiltrar.getSelectedIndex(), tipoOrdem);
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
@@ -410,6 +411,7 @@ public class CadMarca extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().marcaAlterar(marcaSelecionada);  
                     JOptionPane.showMessageDialog(this, "Marca alterada com sucesso.", "Alterar marca", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Marca.class));
                 }
             }   catch (HibernateException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao alterar marca.", JOptionPane.ERROR_MESSAGE);
@@ -426,6 +428,7 @@ public class CadMarca extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirMarca(marca);
                     JOptionPane.showMessageDialog(this, "Marca cadastrada com sucesso.", "Cadastrar marca", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Marca.class));
                 }
             } catch (HibernateException ex) {
                 JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar marca.", JOptionPane.ERROR_MESSAGE);

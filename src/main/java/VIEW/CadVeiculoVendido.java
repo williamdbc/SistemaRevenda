@@ -841,7 +841,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
-        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Função indisponível no momento.", "Erro", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
@@ -866,9 +866,10 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        switch(cmbFiltrarOrdem.getSelectedIndex()){
-            case 0 -> tipoOrdem = SortOrder.ASCENDING;
-            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        switch(cmbFiltrarOrdem.getSelectedIndex()) {
+            case 0: tipoOrdem = SortOrder.ASCENDING; break;
+            case 1: tipoOrdem = SortOrder.DESCENDING; break;
+            default: break;
         }
         
         FuncoesUteis.ordenarTabela(tblVeiculoVnd, cmbFiltrar.getSelectedIndex(), tipoOrdem);
@@ -909,6 +910,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                         gerenciadorVIEW.getGerDominio().inserirVeiculoVendido(revendaSelecionada);
                         JOptionPane.showMessageDialog(this, "Veículo vendido cadastrado com sucesso.", "Cadastrar venda", JOptionPane.INFORMATION_MESSAGE);
                         botaoCancelar();
+                        carregarTabela(gerenciadorVIEW.getGerDominio().listar(Revenda.class));
                     }
                 } catch (HibernateException | ParseException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar a venda de um veículo.", JOptionPane.ERROR_MESSAGE);
@@ -978,6 +980,7 @@ public class CadVeiculoVendido extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().revendaAlterar(revendaSelecionada);  
                     JOptionPane.showMessageDialog(this, "Venda alterada com sucesso.", "Alterar venda", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Revenda.class));
                 }
             }   catch (HibernateException | ParseException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao alterar venda.", JOptionPane.ERROR_MESSAGE);

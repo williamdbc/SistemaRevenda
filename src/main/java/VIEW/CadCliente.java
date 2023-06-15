@@ -29,9 +29,9 @@ public class CadCliente extends javax.swing.JDialog {
         lblNome = new javax.swing.JLabel();
         lblCidade = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        txtTelefone = new javax.swing.JTextField();
         txtCidade = new javax.swing.JTextField();
         lblTelefone = new javax.swing.JLabel();
+        txtTelefone = new javax.swing.JFormattedTextField();
         pnlBotoes = new javax.swing.JPanel();
         btnCadastrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -76,14 +76,20 @@ public class CadCliente extends javax.swing.JDialog {
 
         lblTelefone.setText("Telefone");
 
+        try {
+            txtTelefone.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout pnlInformacoesLayout = new javax.swing.GroupLayout(pnlInformacoes);
         pnlInformacoes.setLayout(pnlInformacoesLayout);
         pnlInformacoesLayout.setHorizontalGroup(
             pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlInformacoesLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(pnlInformacoesLayout.createSequentialGroup()
+                .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlInformacoesLayout.createSequentialGroup()
                         .addComponent(lblTelefone)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -94,7 +100,8 @@ public class CadCliente extends javax.swing.JDialog {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlInformacoesLayout.createSequentialGroup()
                         .addComponent(lblCidade)
                         .addGap(18, 18, 18)
-                        .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlInformacoesLayout.setVerticalGroup(
@@ -110,9 +117,9 @@ public class CadCliente extends javax.swing.JDialog {
                     .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(pnlInformacoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTelefone))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(lblTelefone)
+                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pnlBotoes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -186,7 +193,7 @@ public class CadCliente extends javax.swing.JDialog {
                 .addComponent(pnlBotoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
                 .addComponent(lblEditando)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cadastro", pnlCadCliente);
@@ -410,9 +417,10 @@ public class CadCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        switch(cmbFiltrarOrdem.getSelectedIndex()){
-            case 0 -> tipoOrdem = SortOrder.ASCENDING;
-            case 1 -> tipoOrdem = SortOrder.DESCENDING;
+        switch(cmbFiltrarOrdem.getSelectedIndex()) {
+            case 0: tipoOrdem = SortOrder.ASCENDING; break;
+            case 1: tipoOrdem = SortOrder.DESCENDING; break;
+            default: break;
         }
         
         FuncoesUteis.ordenarTabela(tblCliente, cmbFiltrar.getSelectedIndex(), tipoOrdem);
@@ -465,6 +473,7 @@ public class CadCliente extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().inserirCliente(nome, cidade, telefone);
                     JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso.", "Cadastrar cliente", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Cliente.class));
                 }      
             } catch (HibernateException ex) {
                 JOptionPane.showMessageDialog(this, ex, "Erro ao cadastrar cliente", JOptionPane.ERROR_MESSAGE  );
@@ -493,6 +502,7 @@ public class CadCliente extends javax.swing.JDialog {
                     gerenciadorVIEW.getGerDominio().clienteAlterar(clienteSelecionado);  
                     JOptionPane.showMessageDialog(this, "Cliente alterado com sucesso.", "Alterar cliente", JOptionPane.INFORMATION_MESSAGE);
                     botaoCancelar();
+                    carregarTabela(gerenciadorVIEW.getGerDominio().listar(Cliente.class));
                 }
             }   catch (HibernateException ex) {
                     JOptionPane.showMessageDialog(this, ex, "Erro ao alterar cliente.", JOptionPane.ERROR_MESSAGE);
@@ -548,7 +558,7 @@ public class CadCliente extends javax.swing.JDialog {
     private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtPesquisar;
-    private javax.swing.JTextField txtTelefone;
+    private javax.swing.JFormattedTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
     // </editor-fold> 
 }

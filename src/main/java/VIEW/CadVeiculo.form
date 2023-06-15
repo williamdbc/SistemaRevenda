@@ -403,11 +403,10 @@
                       <StringArray count="4">
                         <StringItem index="0" value="Assistida"/>
                         <StringItem index="1" value="El&#xe9;trica"/>
-                        <StringItem index="2" value="Hidraulica"/>
+                        <StringItem index="2" value="Hidr&#xe1;ulica"/>
                         <StringItem index="3" value="Mec&#xe2;nica"/>
                       </StringArray>
                     </Property>
-                    <Property name="selectedIndex" type="int" value="3"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
